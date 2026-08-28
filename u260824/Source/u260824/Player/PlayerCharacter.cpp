@@ -39,5 +39,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	TObjectPtr<UEnhancedInputComponent> Input =
+		Cast<UEnhancedInputComponent>(PlayerInputComponent);
+
+
 }
 

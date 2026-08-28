@@ -24,7 +24,11 @@ ARiktor::ARiktor()
 	mArm->SetRelativeLocation(FVector(0.0, 0.0, 176.0));
 	mArm->SetRelativeRotation(FRotator(-10.0, 90.0, 0.0));
 
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		PlayerAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/Player/ABP_Player.ABP_Player_C'"));
 
+	if (PlayerAnim.Succeeded())
+		GetMesh()->SetAnimInstanceClass(PlayerAnim.Class);
 }
 
 void ARiktor::BeginPlay()
