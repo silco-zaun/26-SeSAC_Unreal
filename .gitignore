@@ -1,0 +1,7 @@
+# OS / editor junk that can appear at the repo root
+Thumbs.db
+Desktop.ini
+.DS_Store
+.idea/
+.vs/
+*.user
