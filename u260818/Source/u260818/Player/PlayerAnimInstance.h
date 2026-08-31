@@ -28,6 +28,9 @@ protected:
 	bool mAccelerating = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool mDeath = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float mViewYaw = 0.f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -45,6 +48,17 @@ protected:
 
 	bool mAttackCombo = true;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float mHitAlpha = 0.f;
+
+	// Hit용 애니메이션 몽타주
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> mHitMontage;
+
+	// Hit용 애니메이션 몽타주
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UAnimMontage> mSkill1Montage;
+
 public:
 	void AddViewYaw(float Yaw)
 	{
@@ -56,12 +70,21 @@ public:
 		mViewPitch += Pitch;
 	}
 
+	void Death()
+	{
+		mDeath = true;
+	}
+
 public:
 	virtual void NativeInitializeAnimation();
+	virtual void NativeBeginPlay();
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
 
 public:
 	void PlayAttack();
+	void PlayHit();
+	void PlaySkill1();
+	void PlaySkill1(const FString & SectionName);
 
 public: // Notify
 	// 노티파이 함수 생성방법 : void AnimNotify_노티파이이름() 으로 함수를
@@ -71,6 +94,9 @@ public: // Notify
 
 	UFUNCTION()
 	void AnimNotify_ComboEnd();
+
+	UFUNCTION()
+	void AnimNotify_DeathEnd();
 
 protected:
 	UFUNCTION()

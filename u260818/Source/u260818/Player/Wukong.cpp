@@ -2,6 +2,7 @@
 
 
 #include "Wukong.h"
+#include "MainPlayerState.h"
 
 
 // Sets default values
@@ -30,7 +31,7 @@ AWukong::AWukong()
 	// 애니메이션 블루프린트 클래스를 얻어온다.
 	// 클래스 정보를 찾아올 때 경로의 가장 끝에 _C를 무조건 붙여야 한다.
 	static ConstructorHelpers::FClassFinder<UAnimInstance>
-		PlayerAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/Player/ABP_Player.ABP_Player_C'"));
+		PlayerAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/Player/ABP_Wukong.ABP_Wukong_C'"));
 
 	if (PlayerAnim.Succeeded())
 		GetMesh()->SetAnimInstanceClass(PlayerAnim.Class);
@@ -44,6 +45,24 @@ void AWukong::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// MainPlayerState를 얻어온다.
+	AMainPlayerState* State = GetPlayerState<AMainPlayerState>();
+
+	if (IsValid(State))
+	{
+		State->SetPlayerName(TEXT("Wukong"));
+		State->SetAttack(30.f);
+		State->SetDefense(20.f);
+		State->SetHP(500.f);
+		State->SetHPMax(500.f);
+		State->SetMP(100.f);
+		State->SetMPMax(100.f);
+		State->SetLevel(1);
+		State->SetExp(0);
+		State->SetGold(10000);
+		State->SetMoveSpeed(600.f);
+		State->SetAttackDistance(200.f);
+	}
 }
 
 // Called every frame

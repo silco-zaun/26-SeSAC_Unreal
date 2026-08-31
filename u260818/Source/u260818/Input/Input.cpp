@@ -57,4 +57,16 @@ UTestInput::UTestInput()
 
 	if (AttackAction.Succeeded())
 		mActions.Add(TEXT("Attack"), AttackAction.Object);
+
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		HitTestAction(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/IA_HItTest.IA_HItTest'"));
+
+	if (HitTestAction.Succeeded())
+		mActions.Add(TEXT("HitTest"), HitTestAction.Object);
+
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		Skill1Action(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/IA_Skill1.IA_Skill1'"));
+
+	if (Skill1Action.Succeeded())
+		mActions.Add(TEXT("Skill1"), Skill1Action.Object);
 }

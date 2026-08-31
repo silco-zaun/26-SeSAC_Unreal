@@ -57,7 +57,13 @@ private:
 	void CameraZoomKey(const FInputActionValue& Value);
 	void JumpKey(const FInputActionValue& Value);
 	void AttackKey(const FInputActionValue& Value);
+	void HitKey(const FInputActionValue& Value);
+	void Skill1Key(const FInputActionValue& Value);
+	void Skill1ReleaseKey(const FInputActionValue& Value);
 
 public:
 	virtual void Attack();
+	virtual void Death();
+	virtual void Skill1();
+	virtual void Skill1Release();
 };

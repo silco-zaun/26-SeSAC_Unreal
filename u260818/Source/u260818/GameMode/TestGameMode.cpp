@@ -3,8 +3,10 @@
 
 #include "TestGameMode.h"
 #include "../Player/Wukong.h"
+#include "../Player/MainPlayerState.h"
 
 ATestGameMode::ATestGameMode()
 {
 	DefaultPawnClass = AWukong::StaticClass();
+	PlayerStateClass = AMainPlayerState::StaticClass();
 }

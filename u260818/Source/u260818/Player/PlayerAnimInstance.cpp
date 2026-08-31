@@ -12,6 +12,12 @@ void UPlayerAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
 
+}
+
+void UPlayerAnimInstance::NativeBeginPlay()
+{
+	Super::NativeBeginPlay();
+
 	// 몽타주 재생이 끝났다면 호출될 함수를 지정한다.
 	OnMontageEnded.AddDynamic(this, &UPlayerAnimInstance::MontageEnd);
 }
@@ -82,6 +88,32 @@ void UPlayerAnimInstance::PlayAttack()
 
 }
 
+void UPlayerAnimInstance::PlayHit()
+{
+	UE_LOG(Sac8Debug, Warning, TEXT("PlayHit"));
+
+	// Hit 몽타주가 재생중인지 판단한다.
+	if (Montage_IsPlaying(mHitMontage))
+		return;
+
+	UE_LOG(Sac8Debug, Warning, TEXT("Montage_Play"));
+
+
+	Montage_SetPosition(mHitMontage, 0.f);
+
+	Montage_Play(mHitMontage);
+
+	mHitAlpha = 1.f;
+}
+
+void UPlayerAnimInstance::PlaySkill1()
+{
+}
+
+void UPlayerAnimInstance::PlaySkill1(const FString& SectionName)
+{
+}
+
 void UPlayerAnimInstance::AnimNotify_Combo()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red,
@@ -98,6 +130,17 @@ void UPlayerAnimInstance::AnimNotify_ComboEnd()
 	mAttackCombo = false;
 }
 
+void UPlayerAnimInstance::AnimNotify_DeathEnd()
+{
+	APlayerCharacter* PlayerChar =
+		Cast<APlayerCharacter>(TryGetPawnOwner());
+
+	if (IsValid(PlayerChar))
+	{
+		PlayerChar->Death();
+	}
+}
+
 void UPlayerAnimInstance::MontageEnd(UAnimMontage* Montage, bool Interrupted)
 {
 	// 공격 몽타주 재생이 끝났는지 판단한다.
@@ -107,6 +150,13 @@ void UPlayerAnimInstance::MontageEnd(UAnimMontage* Montage, bool Interrupted)
 		{
 			mAttackCombo = true;
 			mAttackSectionIndex = 0;
+		}
+	}
+	else if (mHitMontage == Montage)
+	{
+		if (!Interrupted)
+		{
+			mHitAlpha = 0.f;
 		}
 	}
 }

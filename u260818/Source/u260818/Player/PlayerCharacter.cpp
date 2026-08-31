@@ -3,6 +3,7 @@
 
 #include "PlayerCharacter.h"
 #include "PlayerAnimInstance.h"
+#include "MainPlayerState.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -104,6 +105,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		Input->BindAction(InputCDO->FindAction(TEXT("Attack")),
 			ETriggerEvent::Started, this, &APlayerCharacter::AttackKey);
+
+		Input->BindAction(InputCDO->FindAction(TEXT("HitTest")),
+			ETriggerEvent::Started, this, &APlayerCharacter::HitKey);
 	}
 }
 
@@ -196,7 +200,72 @@ void APlayerCharacter::AttackKey(const FInputActionValue& Value)
 	mAnimInst->PlayAttack();
 }
 
+void APlayerCharacter::HitKey(const FInputActionValue& Value)
+{
+	mAnimInst->PlayHit();
+
+	AMainPlayerState* State = GetPlayerState<AMainPlayerState>();
+
+	if (IsValid(State))
+	{
+		State->AddHP(-100.f);
+
+		UE_LOG(Sac8Debug, Warning, TEXT("HP : %.2f"),
+			State->GetHP());
+
+		if (State->GetHP() == 0.f)
+		{
+			mAnimInst->Death();
+		}
+		else
+		{
+			mAnimInst->PlayHit();
+		}
+	}
+}
+
+void APlayerCharacter::Skill1Key(const FInputActionValue& Value)
+{
+	UE_LOG(Sac8Debug, Warning, TEXT("Skill1Key"));
+	
+}
+
+void APlayerCharacter::Skill1ReleaseKey(const FInputActionValue& Value)
+{
+	UE_LOG(Sac8Debug, Warning, TEXT("Skill1ReleaseKey"));
+}
+
 void APlayerCharacter::Attack()
 {
 
+}
+
+void APlayerCharacter::Death()
+{
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
+	GetMesh()->SetSimulatePhysics(true);
+
+	GetMesh()->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
+	GetMesh()->SetAllPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+
+	GetMesh()->SetAllBodiesSimulatePhysics(false);
+	GetMesh()->SetAllBodiesBelowSimulatePhysics(TEXT("pelvis"), true,
+		true);
+
+	// 바디의 Sleep 상태를 깨워준다.
+	GetMesh()->WakeAllRigidBodies();
+
+	// 애니메이션 포즈와 물리 결과를 섞어서 반영하도록 한다.
+	GetMesh()->bBlendPhysics = true;
+
+	//SetLifeSpan(3.f);
+}
+
+void APlayerCharacter::Skill1()
+{
+}
+
+void APlayerCharacter::Skill1Release()
+{
 }
