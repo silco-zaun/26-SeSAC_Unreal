@@ -3,7 +3,7 @@
 
 #include "Wukong.h"
 #include "MainPlayerState.h"
-
+#include "PlayerAnimInstance.h"
 
 // Sets default values
 AWukong::AWukong()
@@ -131,4 +131,35 @@ void AWukong::Attack()
 			}
 		}
 	}
+}
+
+void AWukong::Death()
+{
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
+	GetMesh()->SetSimulatePhysics(true);
+
+	GetMesh()->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
+	GetMesh()->SetAllPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+
+	GetMesh()->SetAllBodiesSimulatePhysics(false);
+	GetMesh()->SetAllBodiesBelowSimulatePhysics(TEXT("pelvis"), true,
+		true);
+
+	// 바디의 Sleep 상태를 깨워준다.
+	GetMesh()->WakeAllRigidBodies();
+
+	// 애니메이션 포즈와 물리 결과를 섞어서 반영하도록 한다.
+	GetMesh()->bBlendPhysics = true;
+
+	//SetLifeSpan(3.f);
+}
+
+void AWukong::Skill1()
+{
+	mAnimInst->PlaySkill1();
+}
+
+void AWukong::Skill1Release()
+{
 }

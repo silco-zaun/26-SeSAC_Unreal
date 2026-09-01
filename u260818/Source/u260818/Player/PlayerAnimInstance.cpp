@@ -48,6 +48,9 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 void UPlayerAnimInstance::PlayAttack()
 {
+	if (mSkillEndable)
+		return;
+
 	// 공격용 몽타주가 없을 경우 재생하지 않는다.
 	if (!IsValid(mAttackMontage))
 	{
@@ -108,6 +111,17 @@ void UPlayerAnimInstance::PlayHit()
 
 void UPlayerAnimInstance::PlaySkill1()
 {
+	// Hit 몽타주가 재생중인지 판단한다.
+	if (Montage_IsPlaying(mSkill1Montage))
+		return;
+
+	mSkillEndable = true;
+	mAttackCombo = true;
+	mAttackSectionIndex = 0;
+
+	Montage_SetPosition(mSkill1Montage, 0.f);
+
+	Montage_Play(mSkill1Montage);
 }
 
 void UPlayerAnimInstance::PlaySkill1(const FString& SectionName)
@@ -158,5 +172,9 @@ void UPlayerAnimInstance::MontageEnd(UAnimMontage* Montage, bool Interrupted)
 		{
 			mHitAlpha = 0.f;
 		}
+	}
+	else if (mSkill1Montage == Montage)
+	{
+		mSkillEndable = false;
 	}
 }

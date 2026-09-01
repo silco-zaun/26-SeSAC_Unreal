@@ -28,6 +28,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> mHitSound;
 
+	//TObjectPtr<FName> mInfoName;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

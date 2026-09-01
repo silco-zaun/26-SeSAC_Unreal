@@ -28,4 +28,7 @@ public:
 
 public:
 	virtual void Attack();
+	virtual void Death();
+	virtual void Skill1();
+	virtual void Skill1Release();
 };

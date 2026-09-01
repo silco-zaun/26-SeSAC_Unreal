@@ -4,6 +4,7 @@
 #include "PlayerCharacter.h"
 #include "PlayerAnimInstance.h"
 #include "MainPlayerState.h"
+#include "../Subsystem/AssetSubsystem.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -33,6 +34,13 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UAssetSubsystem* AssetSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
+
+	if (AssetSystem)
+	{
+		//const FPlayerInfo* Info = AssetSystem->FindPlayerInfo<FPlayerInfo>(mInfoName);
+	}
+	
 	mAnimInst = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
 
 	// InputMappingContext를 지정한다.
@@ -108,6 +116,12 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		Input->BindAction(InputCDO->FindAction(TEXT("HitTest")),
 			ETriggerEvent::Started, this, &APlayerCharacter::HitKey);
+
+		Input->BindAction(InputCDO->FindAction(TEXT("Skill1")),
+			ETriggerEvent::Started, this, &APlayerCharacter::Skill1Key);
+
+		Input->BindAction(InputCDO->FindAction(TEXT("Skill1")),
+			ETriggerEvent::Completed, this, &APlayerCharacter::Skill1ReleaseKey);
 	}
 }
 
@@ -227,12 +241,13 @@ void APlayerCharacter::HitKey(const FInputActionValue& Value)
 void APlayerCharacter::Skill1Key(const FInputActionValue& Value)
 {
 	UE_LOG(Sac8Debug, Warning, TEXT("Skill1Key"));
-	
+	Skill1();
 }
 
 void APlayerCharacter::Skill1ReleaseKey(const FInputActionValue& Value)
 {
 	UE_LOG(Sac8Debug, Warning, TEXT("Skill1ReleaseKey"));
+	Skill1Release();
 }
 
 void APlayerCharacter::Attack()
@@ -242,24 +257,7 @@ void APlayerCharacter::Attack()
 
 void APlayerCharacter::Death()
 {
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
-	GetMesh()->SetSimulatePhysics(true);
 
-	GetMesh()->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
-	GetMesh()->SetAllPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
-
-	GetMesh()->SetAllBodiesSimulatePhysics(false);
-	GetMesh()->SetAllBodiesBelowSimulatePhysics(TEXT("pelvis"), true,
-		true);
-
-	// 바디의 Sleep 상태를 깨워준다.
-	GetMesh()->WakeAllRigidBodies();
-
-	// 애니메이션 포즈와 물리 결과를 섞어서 반영하도록 한다.
-	GetMesh()->bBlendPhysics = true;
-
-	//SetLifeSpan(3.f);
 }
 
 void APlayerCharacter::Skill1()

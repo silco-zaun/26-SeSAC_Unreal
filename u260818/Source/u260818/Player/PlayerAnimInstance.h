@@ -59,6 +59,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAnimMontage> mSkill1Montage;
 
+	bool mSkillEndable = false;
+
 public:
 	void AddViewYaw(float Yaw)
 	{
