@@ -3,26 +3,25 @@
 #pragma once
 
 #include "../GameInfo.h"
-#include "GameFramework/PlayerState.h"
-#include "MainPlayerState.generated.h"
+#include "Components/ActorComponent.h"
+#include "MonsterStateComponent.generated.h"
 
-/**
- *
- */
-UCLASS()
-class U260818_API AMainPlayerState : public APlayerState
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class U260818_API UMonsterStateComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:
-	AMainPlayerState();
+public:	
+	// Sets default values for this component's properties
+	UMonsterStateComponent();
 
 protected:
 	UPROPERTY(EditAnywhere)
 	FString		mName;
 
 	UPROPERTY(EditAnywhere)
-	EPlayerJob		mJob;
+	EMonsterType	mMonsterType;
 
 	UPROPERTY(EditAnywhere)
 	float		mAttack = 0.f;
@@ -60,15 +59,18 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float		mAttackDistance = 200.f;
 
+	UPROPERTY(EditAnywhere)
+	float		mDetectRange = 500.f;
+
 public:
 	void SetPlayerName(const FString& Name)
 	{
 		mName = Name;
 	}
 
-	void SetPlayerJob(EPlayerJob Job)
+	void SetMonsterType(EMonsterType Type)
 	{
-		mJob = Job;
+		mMonsterType = Type;
 	}
 
 	void SetAttack(float Attack)
@@ -142,15 +144,20 @@ public:
 		mAttackDistance = Distance;
 	}
 
+	void SetDetectRange(float Range)
+	{
+		mDetectRange = Range;
+	}
+
 public:
 	const FString& GetPlayerName()	const
 	{
 		return mName;
 	}
 
-	EPlayerJob GetPlayerJob()	const
+	EMonsterType GetMonsterType()	const
 	{
-		return mJob;
+		return mMonsterType;
 	}
 
 	float GetAttack()	const
@@ -212,4 +219,19 @@ public:
 	{
 		return mAttackDistance;
 	}
+
+	float GetDetectRange() const
+	{
+		return mDetectRange;
+	}
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
+
+public:	
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+		
 };

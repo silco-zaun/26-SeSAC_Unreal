@@ -92,6 +92,8 @@ struct FMonsterInfo : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
 	float AttackDistance;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
+	float DetectRange;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
 	int32 Level;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
 	int32 Exp;

@@ -103,6 +103,8 @@ void AWukong::Attack()
 
 	if (Hit)
 	{
+		//AMainPlayerState* State = 
+
 		// 차례대로 하나씩 꺼내며 반복한다.
 		for (auto Result : HitArray)
 		{

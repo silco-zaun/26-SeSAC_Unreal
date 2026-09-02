@@ -19,12 +19,12 @@ APlayerCharacter::APlayerCharacter()
 
 	mArm->SetupAttachment(GetMesh());
 	mCamera->SetupAttachment(mArm);
-
 	mArm->TargetArmLength = 500.f;
-	//mArm->bUsePawnControlRotation = true;
 
 	// 충돌 설정
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 
 }
 
@@ -38,7 +38,14 @@ void APlayerCharacter::BeginPlay()
 
 	if (AssetSystem)
 	{
-		//const FPlayerInfo* Info = AssetSystem->FindPlayerInfo<FPlayerInfo>(mInfoName);
+		if (AssetSystem->GetLoadPlayerInfo())
+		{
+			InfoLoadComplete();
+		}
+		else
+		{
+			AssetSystem->AddMonsterDataAssetLoadingDelegate(this, &APlayerCharacter::InfoLoadComplete);
+		}
 	}
 	
 	mAnimInst = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance());
@@ -216,8 +223,6 @@ void APlayerCharacter::AttackKey(const FInputActionValue& Value)
 
 void APlayerCharacter::HitKey(const FInputActionValue& Value)
 {
-	mAnimInst->PlayHit();
-
 	AMainPlayerState* State = GetPlayerState<AMainPlayerState>();
 
 	if (IsValid(State))
@@ -257,7 +262,28 @@ void APlayerCharacter::Attack()
 
 void APlayerCharacter::Death()
 {
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
+	GetCharacterMovement()->StopMovementImmediately();
+
+	GetMesh()->bPauseAnims = true;
+
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
+	GetMesh()->SetSimulatePhysics(true);
+
+	GetMesh()->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
+	GetMesh()->SetAllPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+
+	GetMesh()->SetAllBodiesSimulatePhysics(false);
+	GetMesh()->SetAllBodiesBelowSimulatePhysics(TEXT("pelvis"), true, true);
+
+	// 바디의 Sleep 상태를 깨워준다.
+	GetMesh()->WakeAllRigidBodies();
+
+	// 애니메이션 포즈와 물리 결과를 섞어서 반영하도록 한다.
+	GetMesh()->bBlendPhysics = true;
 }
 
 void APlayerCharacter::Skill1()
@@ -266,4 +292,37 @@ void APlayerCharacter::Skill1()
 
 void APlayerCharacter::Skill1Release()
 {
+}
+
+void APlayerCharacter::InfoLoadComplete()
+{
+	UAssetSubsystem* AssetSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
+
+	if (AssetSystem)
+	{
+		const FPlayerInfo* Info = AssetSystem->FindPlayerInfo(mInfoName);
+
+		if (Info)
+		{
+			AMainPlayerState* State = GetPlayerState<AMainPlayerState>();
+
+			if (IsValid(State))
+			{
+				State->SetPlayerName(Info->PlayerName);
+				State->SetPlayerJob(Info->Job);
+				State->SetAttack(Info->Attack);
+				State->SetDefense(Info->Defense);
+				State->SetHP(Info->HP);
+				State->SetHPMax(Info->HPMax);
+				State->SetMP(Info->MP);
+				State->SetMPMax(Info->MPMax);
+				State->SetLevel(Info->Level);
+				State->SetExp(Info->Exp);
+				State->SetGold(Info->Gold);
+				State->SetMoveSpeed(Info->MoveSpeed);
+				State->SetAttackSpeed(Info->AttackSpeed);
+				State->SetAttackDistance(Info->AttackDistance);
+			}
+		}
+	}
 }

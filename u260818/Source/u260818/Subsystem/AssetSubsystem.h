@@ -6,6 +6,9 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "AssetSubsystem.generated.h"
 
+// Delegate를 생성하면 Delegate를 사용할 수 있는 타입이 만들어진다.
+DECLARE_MULTICAST_DELEGATE(FOnDataLoading);
+
 /**
  * 
  */
@@ -17,20 +20,41 @@ class U260818_API UAssetSubsystem : public UGameInstanceSubsystem
 protected:
 	TObjectPtr<UDataTable> mPlayerInfoTable;
 	TObjectPtr<UDataTable> mMonsterInfoTable;
-	
+	FOnDataLoading mOnPlayerDataLoading;
+	FOnDataLoading mOnMonsterDataLoading;
+	bool mLoadPlayerInfo = false;
+	bool mLoadMonsterInfo = false;
+
+public:
+	bool GetLoadPlayerInfo()	const
+	{
+		return mLoadPlayerInfo;
+	}
+
+	bool GetLoadMonsterInfo()	const
+	{
+		return mLoadMonsterInfo;
+	}
+
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection);
 	virtual void Deinitialize();
 
 public:
-	template <typename T>
-	const T* FindPlayerInfo(const FName& Name) const
+	const FPlayerInfo* FindPlayerInfo(const FName& Name) const
 	{
 		if (!IsValid(mPlayerInfoTable))
 			return nullptr;
 
-		return
-			mPlayerInfoTable->FindRow<FPlayerInfo>(Name, TEXT("FindPlayerInfo"));
+		return mPlayerInfoTable->FindRow<FPlayerInfo>(Name, TEXT("FindPlayerInfo"));
+	}
+
+	const FMonsterInfo* FindMonsterInfo(const FName& Name) const
+	{
+		if (!IsValid(mMonsterInfoTable))
+			return nullptr;
+
+		return mMonsterInfoTable->FindRow<FMonsterInfo>(Name, TEXT("FindMonsterInfo"));
 	}
 
 public:
@@ -40,4 +64,20 @@ public:
 public:
 	UFUNCTION()
 	void PlayerInfoLoadComplete(FPrimaryAssetId LoadId);
+
+	UFUNCTION()
+	void MonsterInfoLoadComplete(FPrimaryAssetId LoadId);
+
+public:
+	template <typename T>
+	void AddDataAssetLoadingDelegate(T* Obj, void (T::* Func)())
+	{
+		mOnPlayerDataLoading.AddUObject(Obj, Func);
+	}
+
+	template <typename T>
+	void AddMonsterDataAssetLoadingDelegate(T* Obj, void (T::* Func)())
+	{
+		mOnMonsterDataLoading.AddUObject(Obj, Func);
+	}
 };

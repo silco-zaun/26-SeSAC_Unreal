@@ -25,10 +25,7 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UPlayerAnimInstance> mAnimInst;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<USoundBase> mHitSound;
-
-	//TObjectPtr<FName> mInfoName;
+	FName mInfoName;
 
 protected:
 	// Called when the game starts or when spawned
@@ -68,4 +65,9 @@ public:
 	virtual void Death();
 	virtual void Skill1();
 	virtual void Skill1Release();
+
+public:
+	UFUNCTION()
+	void InfoLoadComplete();
+
 };
