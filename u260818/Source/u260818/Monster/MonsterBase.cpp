@@ -4,6 +4,7 @@
 #include "MonsterBase.h"
 #include "MonsterStateComponent.h"
 #include "../Subsystem/AssetSubsystem.h"
+#include "MonsterSpawnPoint.h"
 
 // Sets default values
 AMonsterBase::AMonsterBase()
@@ -19,6 +20,9 @@ AMonsterBase::AMonsterBase()
 	SetRootComponent(mCapsule);
 
 	mMesh->SetupAttachment(mCapsule);
+	mCapsule->SetCollisionProfileName(TEXT("Monster"));
+
+	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called when the game starts or when spawned
@@ -43,6 +47,24 @@ void AMonsterBase::BeginPlay()
 	UE_LOG(Sac8Debug, Warning, TEXT("Monster BeginPlay"));
 }
 
+void AMonsterBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if (EndPlayReason == EEndPlayReason::Destroyed)
+	{
+		if (IsValid(mSpawnPoint))
+		{
+			mSpawnPoint->ResetSpawn();
+		}
+	}
+}
+
+void AMonsterBase::OnConstruction(const FTransform& Transform)
+{
+	UE_LOG(Sac8Debug, Warning, TEXT("Monster OnConstruction"));
+}
+
 // Called every frame
 void AMonsterBase::Tick(float DeltaTime)
 {
@@ -50,23 +72,31 @@ void AMonsterBase::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void AMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	DamageAmount = Super::TakeDamage(DamageAmount, DamageEvent,
+		EventInstigator, DamageCauser);
 
+	if (DamageAmount > 0.f)
+	{
+		DamageAmount = DamageAmount - mState->GetDefense();
+
+		DamageAmount = FMath::Max(DamageAmount, 1.f);
+
+		UE_LOG(Sac8Debug, Warning, TEXT("Damage : %.2f"), DamageAmount);
+
+		if (!mState->AddHP(-DamageAmount))
+		{
+			Destroy();
+		}
+	}
+
+	return DamageAmount;
 }
-
-
-void AMonsterBase::OnConstruction(const FTransform& Transform)
-{
-	UE_LOG(Sac8Debug, Warning, TEXT("Monster OnConstruction"));
-}
-
 
 void AMonsterBase::InfoLoadComplete()
 {
-
 	UAssetSubsystem* AssetSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
 
 	if (AssetSystem)

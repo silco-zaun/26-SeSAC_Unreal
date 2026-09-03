@@ -20,6 +20,12 @@ AGoblin::AGoblin()
 
 	mMesh->SetRelativeLocation(FVector(0.f, 0.f, -85.f));
 	mMesh->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
+
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		AnimAsset(TEXT("/Script/Engine.AnimBlueprint'/Game/Monster/ABP_Goblin.ABP_Goblin_C'"));
+
+	if (AnimAsset.Succeeded())
+		mMesh->SetAnimInstanceClass(AnimAsset.Class);
 }
 
 void AGoblin::BeginPlay()
