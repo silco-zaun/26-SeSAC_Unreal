@@ -3,10 +3,30 @@
 #include "EngineMinimal.h"
 #include "Engine.h"
 #include "Engine/DamageEvents.h"
+
+#include "AIController.h"
+#include "Perception/AIPerceptionComponent.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AIPerceptionTypes.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
+#include "Perception/AISenseConfig_Damage.h"
+
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardData.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
+#include "NavigationSystem.h"
+#include "Navigation/PathFollowingComponent.h"
+
 #include "GameInfo.generated.h"
 
 // 로그 카테고리 선언.
 DECLARE_LOG_CATEGORY_EXTERN(Sac8Debug, Warning, All);
+
+#define TeamNeutral 255
+#define TeamPlayer 10
+#define TeamMonster 20
 
 UENUM(BlueprintType)
 enum class EPlayerJob : uint8

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "../GameInfo.h"
 #include "AIController.h"
 #include "MonsterController.generated.h"
 
@@ -14,4 +14,15 @@ class U260818_API AMonsterController : public AAIController
 {
 	GENERATED_BODY()
 	
+public:
+	AMonsterController();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MonsterController")
+	TObjectPtr<UAIPerceptionComponent> mPerception;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MonsterController")
+	TObjectPtr<UAISenseConfig_Sight> mSight;
+
+
 };

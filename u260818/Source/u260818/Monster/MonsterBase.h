@@ -25,9 +25,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UMonsterStateComponent> mState;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UFloatingPawnMovement> mMovement;
+
 	FName mInfoName;
 
 	TObjectPtr<class AMonsterSpawnPoint> mSpawnPoint;
+
+	TObjectPtr<UBehaviorTree> mBehaviorTree;
 
 public:
 	UCapsuleComponent* GetCapsule()	const
@@ -48,6 +53,17 @@ protected:
 public:
 	virtual void OnConstruction(const FTransform& Transform);
 	virtual void Tick(float DeltaTime) override;
+	virtual void PossessedBy(AController* NewController);
+	virtual void UnPossessed();
+	/**
+	 * Apply damage to this actor.
+	 * @see https://www.unrealengine.com/blog/damage-in-ue4
+	 * @param DamageAmount		How much damage to apply
+	 * @param DamageEvent		Data package that fully describes the damage received.
+	 * @param EventInstigator	The Controller responsible for the damage.
+	 * @param DamageCauser		The Actor that directly caused the damage (e.g. the projectile that exploded, the rock that landed on you)
+	 * @return					The amount of damage actually applied.
+	 */
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
 		class AController* EventInstigator, AActor* DamageCauser);
 

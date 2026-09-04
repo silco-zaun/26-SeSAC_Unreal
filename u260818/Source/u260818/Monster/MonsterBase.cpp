@@ -5,6 +5,7 @@
 #include "MonsterStateComponent.h"
 #include "../Subsystem/AssetSubsystem.h"
 #include "MonsterSpawnPoint.h"
+#include "MonsterController.h"
 
 // Sets default values
 AMonsterBase::AMonsterBase()
@@ -16,6 +17,9 @@ AMonsterBase::AMonsterBase()
 	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 
 	mState = CreateDefaultSubobject<UMonsterStateComponent>(TEXT("State"));
+	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
+
+	mMovement->SetUpdatedComponent(mCapsule);
 
 	SetRootComponent(mCapsule);
 
@@ -23,6 +27,11 @@ AMonsterBase::AMonsterBase()
 	mCapsule->SetCollisionProfileName(TEXT("Monster"));
 
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	AIControllerClass = AMonsterController::StaticClass();
+
+	bUseControllerRotationYaw = true;
 }
 
 // Called when the game starts or when spawned
@@ -69,7 +78,16 @@ void AMonsterBase::OnConstruction(const FTransform& Transform)
 void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void AMonsterBase::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+}
+
+void AMonsterBase::UnPossessed()
+{
+	Super::UnPossessed();
 }
 
 float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -122,6 +140,17 @@ void AMonsterBase::InfoLoadComplete()
 			mState->SetDetectRange(Info->DetectRange);
 
 			mMesh->SetSkeletalMeshAsset(Info->BodyMesh);
+
+			mMovement->MaxSpeed = Info->MoveSpeed;
+
+			AMonsterController* AICtrl =
+				GetController<AMonsterController>();
+
+			if (IsValid(AICtrl))
+			{
+				//AICtrl->SetDetectRange(Info->DetectRange);
+				//AICtrl->SetAttackDistance(Info->AttackDistance);
+			}
 		}
 	}
 }
