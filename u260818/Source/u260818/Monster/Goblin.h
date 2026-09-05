@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "MonsterBase.h"
+#include "MonsterNormal.h"
 #include "Goblin.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class U260818_API AGoblin : public AMonsterBase
+class U260818_API AGoblin : public AMonsterNormal
 {
 	GENERATED_BODY()
 	

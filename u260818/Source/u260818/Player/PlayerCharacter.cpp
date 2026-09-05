@@ -12,10 +12,8 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	mArm = CreateDefaultSubobject<USpringArmComponent>(
-		TEXT("Arm"));
-	mCamera = CreateDefaultSubobject<UCameraComponent>(
-		TEXT("Camera"));
+	mArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
+	mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
 	mArm->SetupAttachment(GetMesh());
 	mCamera->SetupAttachment(mArm);
@@ -26,6 +24,7 @@ APlayerCharacter::APlayerCharacter()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 
+	SetGenericTeamId(FGenericTeamId(TeamPlayer));
 }
 
 // Called when the game starts or when spawned
@@ -325,4 +324,29 @@ void APlayerCharacter::InfoLoadComplete()
 			}
 		}
 	}
+}
+
+void APlayerCharacter::SetGenericTeamId(const FGenericTeamId& TeamID)
+{
+	mTeamId = TeamID;
+}
+
+FGenericTeamId APlayerCharacter::GetGenericTeamId() const
+{
+	return mTeamId;
+}
+
+ETeamAttitude::Type APlayerCharacter::GetTeamAttitudeTowards(
+	const AActor& Other) const
+{
+	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<const IGenericTeamAgentInterface>(&Other);
+
+	if (!OtherTeamAgent)
+		return ETeamAttitude::Neutral;
+	else if (OtherTeamAgent->GetGenericTeamId() ==
+		FGenericTeamId(TeamNeutral))
+		return ETeamAttitude::Neutral;
+
+	return GetGenericTeamId() == OtherTeamAgent->GetGenericTeamId() ?
+		ETeamAttitude::Friendly : ETeamAttitude::Hostile;
 }

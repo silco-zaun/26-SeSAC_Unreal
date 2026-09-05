@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Monster/MonsterBase.h"
+#include "MonsterBase.h"
 #include "MonsterNormal.generated.h"
 
 /**
@@ -14,4 +13,15 @@ class U260818_API AMonsterNormal : public AMonsterBase
 {
 	GENERATED_BODY()
 	
+public:
+	AMonsterNormal();
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+	virtual void OnConstruction(const FTransform& Transform);
+	virtual void Tick(float DeltaTime) override;
+	virtual void PossessedBy(AController* NewController);
+	virtual void UnPossessed();
 };

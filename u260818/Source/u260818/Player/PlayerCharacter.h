@@ -7,7 +7,8 @@
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
-class U260818_API APlayerCharacter : public ACharacter
+class U260818_API APlayerCharacter : public ACharacter,
+	public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -26,6 +27,8 @@ protected:
 	TObjectPtr<class UPlayerAnimInstance> mAnimInst;
 
 	FName mInfoName;
+
+	FGenericTeamId mTeamId;
 
 protected:
 	// Called when the game starts or when spawned
@@ -70,4 +73,8 @@ public:
 	UFUNCTION()
 	void InfoLoadComplete();
 
+public:
+	virtual void SetGenericTeamId(const FGenericTeamId& TeamID);
+	virtual FGenericTeamId GetGenericTeamId() const;
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const;
 };
