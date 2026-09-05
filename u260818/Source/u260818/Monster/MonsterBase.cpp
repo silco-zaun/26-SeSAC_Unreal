@@ -148,8 +148,8 @@ void AMonsterBase::InfoLoadComplete()
 
 			if (IsValid(AICtrl))
 			{
-				//AICtrl->SetDetectRange(Info->DetectRange);
-				//AICtrl->SetAttackDistance(Info->AttackDistance);
+				AICtrl->SetDetectRange(Info->DetectRange);
+				AICtrl->SetAttackDistance(Info->AttackDistance);
 			}
 		}
 	}

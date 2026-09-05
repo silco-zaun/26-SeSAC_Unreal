@@ -21,7 +21,7 @@
 
 #include "GameInfo.generated.h"
 
-// ·Î±× Ä«Å×°í¸® ¼±¾ğ.
+// ë¡œê·¸ ì¹´í…Œê³ ë¦¬ ì„ ì–¸.
 DECLARE_LOG_CATEGORY_EXTERN(Sac8Debug, Warning, All);
 
 #define TeamNeutral 255
@@ -37,7 +37,7 @@ enum class EPlayerJob : uint8
 	Gunner
 };
 
-// µ¥ÀÌÅÍÅ×ÀÌºí¿ë ±¸Á¶Ã¼´Â ¹İµå½Ã FTableRowBase¸¦ »ó¼Ó¹Ş¾Æ¾ß ÇÑ´Ù.
+// ë°ì´í„°í…Œì´ë¸”ìš© êµ¬ì¡°ì²´ëŠ” ë°˜ë“œì‹œ FTableRowBaseë¥¼ ìƒì†ë°›ì•„ì•¼ í•œë‹¤.
 USTRUCT(BlueprintType)
 struct FPlayerInfo : public FTableRowBase
 {
@@ -46,31 +46,31 @@ struct FPlayerInfo : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
 	FString PlayerName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	EPlayerJob Job;
+	EPlayerJob Job = EPlayerJob::Knight;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float Attack;
+	float Attack = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float Defense;
+	float Defense = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float HP;
+	float HP = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float HPMax;
+	float HPMax = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float MP;
+	float MP = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float MPMax;
+	float MPMax = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float MoveSpeed;
+	float MoveSpeed = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float AttackSpeed;
+	float AttackSpeed = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	float AttackDistance;
+	float AttackDistance = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	int32 Level;
+	int32 Level = 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	int32 Exp;
+	int32 Exp = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
-	int32 Gold;
+	int32 Gold = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemMesh")
 	TMap<FString, TObjectPtr<USkeletalMesh>>	ItemMesh;
@@ -87,7 +87,7 @@ enum class EMonsterType : uint8
 	Legendary
 };
 
-// µ¥ÀÌÅÍÅ×ÀÌºí¿ë ±¸Á¶Ã¼´Â ¹İµå½Ã FTableRowBase¸¦ »ó¼Ó¹Ş¾Æ¾ß ÇÑ´Ù.
+// ë°ì´í„°í…Œì´ë¸”ìš© êµ¬ì¡°ì²´ëŠ” ë°˜ë“œì‹œ FTableRowBaseë¥¼ ìƒì†ë°›ì•„ì•¼ í•œë‹¤.
 USTRUCT(BlueprintType)
 struct FMonsterInfo : public FTableRowBase
 {
@@ -96,29 +96,29 @@ struct FMonsterInfo : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
 	FString MonsterName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	EMonsterType MonsterType;
+	EMonsterType MonsterType = EMonsterType::Normal;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float Attack;
+	float Attack = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float Defense;
+	float Defense = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float HP;
+	float HP = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float MP;
+	float MP = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float MoveSpeed;
+	float MoveSpeed = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float AttackSpeed;
+	float AttackSpeed = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float AttackDistance;
+	float AttackDistance = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	float DetectRange;
+	float DetectRange = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	int32 Level;
+	int32 Level = 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	int32 Exp;
+	int32 Exp = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
-	int32 Gold;
+	int32 Gold = 0;
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asset")

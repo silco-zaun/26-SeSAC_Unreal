@@ -38,6 +38,8 @@ AWukong::AWukong()
 	else
 		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red,
 			TEXT("Not Valid PlayerAnim"));
+			
+	mInfoName = TEXT("Wukong");
 }
 
 // Called when the game starts or when spawned

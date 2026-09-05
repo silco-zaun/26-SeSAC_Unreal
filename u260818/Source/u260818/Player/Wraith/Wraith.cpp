@@ -34,6 +34,8 @@ AWraith::AWraith()
 
 	if (PlayerAnim.Succeeded())
 		GetMesh()->SetAnimInstanceClass(PlayerAnim.Class);
+
+	mInfoName = TEXT("Wraith");
 }
 
 // Called when the game starts or when spawned
