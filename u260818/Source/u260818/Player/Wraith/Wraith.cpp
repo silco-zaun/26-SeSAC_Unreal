@@ -27,8 +27,8 @@ AWraith::AWraith()
 	mArm->SetRelativeLocation(FVector(0.0, 0.0, 176.0));
 	mArm->SetRelativeRotation(FRotator(-10.0, 90.0, 0.0));
 
-	// ¾Ö´Ï¸ÞÀÌ¼Ç ºí·çÇÁ¸°Æ® Å¬·¡½º¸¦ ¾ò¾î¿Â´Ù.
-	// Å¬·¡½º Á¤º¸¸¦ Ã£¾Æ¿Ã ¶§ °æ·ÎÀÇ °¡Àå ³¡¿¡ _C¸¦ ¹«Á¶°Ç ºÙ¿©¾ß ÇÑ´Ù.
+	// ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
+	// Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ _Cï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
 	static ConstructorHelpers::FClassFinder<UAnimInstance>
 		PlayerAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/Player/ABP_Wraith.ABP_Wraith_C'"));
 
@@ -43,7 +43,7 @@ void AWraith::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// MainPlayerState¸¦ ¾ò¾î¿Â´Ù.
+	// MainPlayerStateï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
 	AMainPlayerState* State = GetPlayerState<AMainPlayerState>();
 
 	if (IsValid(State))
