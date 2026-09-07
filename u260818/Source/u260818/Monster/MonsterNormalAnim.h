@@ -6,16 +6,6 @@
 #include "Animation/AnimInstance.h"
 #include "MonsterNormalAnim.generated.h"
 
-UENUM(BlueprintType)
-enum class EMonsterNormalAnimType : uint8
-{
-	Idle,
-	Walk,
-	Run,
-	Attack,
-	Death
-};
-
 /**
  * 
  */

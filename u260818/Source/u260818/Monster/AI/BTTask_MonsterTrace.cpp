@@ -3,6 +3,7 @@
 
 #include "BTTask_MonsterTrace.h"
 #include "../MonsterBase.h"
+#include "BTTask_MonsterAttack.h"
 
 UBTTask_MonsterTrace::UBTTask_MonsterTrace()
 {
@@ -49,6 +50,8 @@ EBTNodeResult::Type UBTTask_MonsterTrace::ExecuteTask(
 
 	if (!Monster)
 		return EBTNodeResult::Failed;
+
+	Monster->ChangeAnim((uint8)EMonsterNormalAnimType::Run);
 
 	// 도착할때까지 Task가 종료되면 안되기 때문에 계속 진행시킨다. 
 	return EBTNodeResult::InProgress;
@@ -131,7 +134,6 @@ void UBTTask_MonsterTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
-
 }
 
 

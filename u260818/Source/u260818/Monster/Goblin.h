@@ -22,4 +22,5 @@ protected:
 public:
 	virtual void OnConstruction(const FTransform& Transform);
 	virtual void Tick(float DeltaTime) override;
+	virtual void Attack();
 };

@@ -43,3 +43,7 @@ void AGoblinArcher::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+void AGoblinArcher::Attack()
+{
+}

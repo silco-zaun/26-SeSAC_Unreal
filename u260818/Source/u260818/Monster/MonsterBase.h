@@ -46,6 +46,9 @@ public:
 	}
 
 public:
+	virtual void ChangeAnim(uint8 AnimType);
+	virtual void Attack();
+	virtual void AttackEnd();
 
 protected:
 	// Called when the game starts or when spawned

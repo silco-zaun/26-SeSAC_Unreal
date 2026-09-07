@@ -42,3 +42,7 @@ void AGoblin::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
+
+void AGoblin::Attack()
+{
+}

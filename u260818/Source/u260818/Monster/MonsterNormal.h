@@ -17,6 +17,13 @@ public:
 	AMonsterNormal();
 
 protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UMonsterNormalAnim> mAnimInst;
+
+public:
+	virtual void ChangeAnim(uint8 AnimType);
+
+protected:
 	virtual void BeginPlay() override;
 
 public:

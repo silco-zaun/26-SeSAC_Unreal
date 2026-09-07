@@ -34,6 +34,26 @@ AMonsterBase::AMonsterBase()
 	bUseControllerRotationYaw = true;
 }
 
+void AMonsterBase::ChangeAnim(uint8 AnimType)
+{
+}
+
+void AMonsterBase::Attack()
+{
+}
+
+void AMonsterBase::AttackEnd()
+{
+	AMonsterController* AICtrl =
+		GetController<AMonsterController>();
+
+	if (IsValid(AICtrl))
+	{
+		AICtrl->GetBlackboardComponent()->SetValueAsBool(
+			TEXT("AttackEnd"), true);
+	}
+}
+
 // Called when the game starts or when spawned
 void AMonsterBase::BeginPlay()
 {

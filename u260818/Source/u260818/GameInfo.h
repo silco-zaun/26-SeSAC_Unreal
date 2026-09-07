@@ -3,6 +3,7 @@
 #include "EngineMinimal.h"
 #include "Engine.h"
 #include "Engine/DamageEvents.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "AIController.h"
 #include "Perception/AIPerceptionComponent.h"
@@ -23,6 +24,11 @@
 
 // 로그 카테고리 선언.
 DECLARE_LOG_CATEGORY_EXTERN(Sac8Debug, Warning, All);
+
+FRotator GetTargetRotation(const FVector& Target,
+	const FVector& Self);
+FRotator GetTargetRotationYaw(FVector Target,
+	FVector Self);
 
 #define TeamNeutral 255
 #define TeamPlayer 10
@@ -126,4 +132,15 @@ struct FMonsterInfo : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asset")
 	TObjectPtr<USkeletalMesh> BodyMesh;
+};
+
+UENUM(BlueprintType)
+enum class EMonsterNormalAnimType : uint8
+{
+	Idle,
+	Walk,
+	Run,
+	Attack,
+	Death,
+	End
 };

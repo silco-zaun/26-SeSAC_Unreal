@@ -3,6 +3,7 @@
 
 #include "MonsterNormal.h"
 #include "MonsterController.h"
+#include "MonsterNormalAnim.h"
 
 AMonsterNormal::AMonsterNormal()
 {
@@ -13,10 +14,16 @@ AMonsterNormal::AMonsterNormal()
 		mBehaviorTree = BTAsset.Object;
 }
 
+void AMonsterNormal::ChangeAnim(uint8 AnimType)
+{
+	mAnimInst->SetAnimType((EMonsterNormalAnimType)AnimType);
+}
 
 void AMonsterNormal::BeginPlay()
 {
 	Super::BeginPlay();
+
+	mAnimInst = Cast<UMonsterNormalAnim>(mMesh->GetAnimInstance());
 }
 
 void AMonsterNormal::OnConstruction(const FTransform& Transform)
