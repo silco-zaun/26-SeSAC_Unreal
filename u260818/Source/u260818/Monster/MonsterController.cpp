@@ -16,8 +16,8 @@ AMonsterController::AMonsterController()
 	mSight->SetMaxAge(5.f);
 
 	mSight->DetectionByAffiliation.bDetectEnemies = true;
-	mSight->DetectionByAffiliation.bDetectFriendlies = true;
-	mSight->DetectionByAffiliation.bDetectNeutrals = true;
+	mSight->DetectionByAffiliation.bDetectFriendlies = false;
+	mSight->DetectionByAffiliation.bDetectNeutrals = false;
 
 	mPerception->ConfigureSense(*mSight);
 	mPerception->SetDominantSense(mSight->GetSenseImplementation());

@@ -11,6 +11,9 @@ AMonsterSpawnPoint::AMonsterSpawnPoint()
 	PrimaryActorTick.bCanEverTick = true;
 
 	mRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	mPatrolPath = CreateDefaultSubobject<USplineComponent>(TEXT("PatrolPath"));
+
+	mPatrolPath->SetupAttachment(mRoot);
 
 #if WITH_EDITORONLY_DATA
 	// 에디터에서는 RootComponent가 어디에 있는지 표시해준다.
@@ -33,6 +36,24 @@ void AMonsterSpawnPoint::BeginPlay()
 	Super::BeginPlay();
 	
 	SpawnMonster();
+}
+
+void AMonsterSpawnPoint::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	// 배열을 비워준다.
+	mPatrolPoints.Empty();
+
+	int32 Count = mPatrolPath->GetNumberOfSplinePoints();
+
+	for (int32 i = 0; i < Count; ++i)
+	{
+		FVector Point = mPatrolPath->GetLocationAtSplinePoint(i,
+			ESplineCoordinateSpace::World);
+
+		mPatrolPoints.Add(Point);
+	}
 }
 
 // Called every frame
@@ -91,6 +112,9 @@ void AMonsterSpawnPoint::SpawnMonster()
 			GetActorRotation(), SpawnParams);
 
 		mSpawnMonster->SetSpawnPoint(this);
+
+		// 순찰 경로 전달.
+		mSpawnMonster->SetPatrolPoints(mPatrolPoints);
 	}
 }
 

@@ -34,6 +34,8 @@ protected:
 
 	TObjectPtr<UBehaviorTree> mBehaviorTree;
 
+	TArray<FVector> mPatrolPoints;
+
 public:
 	UCapsuleComponent* GetCapsule()	const
 	{
@@ -43,6 +45,11 @@ public:
 	void SetSpawnPoint(class AMonsterSpawnPoint* SpawnPoint)
 	{
 		mSpawnPoint = SpawnPoint;
+	}
+
+	void SetPatrolPoints(const TArray<FVector>& PatrolPoints)
+	{
+		mPatrolPoints = PatrolPoints;
 	}
 
 public:

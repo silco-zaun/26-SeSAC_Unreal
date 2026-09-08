@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../GameInfo.h"
+#include "Components/SplineComponent.h"
 #include "GameFramework/Actor.h"
 #include "MonsterSpawnPoint.generated.h"
 
@@ -26,6 +27,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MonsterSpawnPoint")
 	TObjectPtr<USceneComponent> mRoot;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "MonsterSpawnPoint")
+	TObjectPtr<USplineComponent> mPatrolPath;
+
 #if WITH_EDITORONLY_DATA
 	UPROPERTY()
 	TObjectPtr<UArrowComponent> mArrow;
@@ -44,11 +48,15 @@ protected:
 
 	FTimerHandle mSpawnTimerHandle;
 
+	UPROPERTY(VisibleAnywhere)
+	TArray<FVector> mPatrolPoints;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	virtual void OnConstruction(const FTransform& Transform);
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

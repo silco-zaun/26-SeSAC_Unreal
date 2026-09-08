@@ -110,8 +110,8 @@ void AMonsterBase::UnPossessed()
 	Super::UnPossessed();
 }
 
-float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
-	AActor* DamageCauser)
+float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
+	AController* EventInstigator, AActor* DamageCauser)
 {
 	DamageAmount = Super::TakeDamage(DamageAmount, DamageEvent,
 		EventInstigator, DamageCauser);
