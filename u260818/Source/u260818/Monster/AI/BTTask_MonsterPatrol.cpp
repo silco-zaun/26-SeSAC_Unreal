@@ -41,6 +41,15 @@ EBTNodeResult::Type UBTTask_MonsterPatrol::ExecuteTask(
 	if (!Monster)
 		return EBTNodeResult::Failed;
 
+	// 순찰 지점으로 이동시킨다.
+	EPathFollowingRequestResult::Type PathResult =
+		AIController->MoveToLocation(Monster->GetPatrolPoint());
+
+	if (PathResult == EPathFollowingRequestResult::Failed)
+		return EBTNodeResult::Failed;
+
+	Monster->ChangeAnim((uint8)EMonsterNormalAnimType::Walk);
+
 	return EBTNodeResult::InProgress;
 }
 
@@ -82,7 +91,32 @@ void UBTTask_MonsterPatrol::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+	EPathFollowingStatus::Type PathStatus =
+		AIController->GetMoveStatus();
+
+	if (PathStatus == EPathFollowingStatus::Idle)
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+		return;
+	}
+
+	FVector TargetLocation, MonsterLocation;
+
+	TargetLocation = Monster->GetPatrolPoint();
+
+	MonsterLocation = Monster->GetActorLocation();
+
+	UCapsuleComponent* Capsule =
+		Cast<UCapsuleComponent>(Monster->GetRootComponent());
+
+	// 두 점 사이의 거리를 구한다.
+	float Distance = FVector::Dist(TargetLocation, MonsterLocation);
+
+	if (Distance <= 5.f)
+	{
+		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
+	}
+
 }
 
 void UBTTask_MonsterPatrol::OnTaskFinished(
@@ -92,4 +126,12 @@ void UBTTask_MonsterPatrol::OnTaskFinished(
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	AIController->StopMovement();
+
+	AMonsterBase* Monster = AIController->GetPawn<AMonsterBase>();
+
+	if (Monster)
+	{
+		if (Monster->GetPatrolEnable())
+			Monster->NextPatrol();
+	}
 }

@@ -36,10 +36,27 @@ protected:
 
 	TArray<FVector> mPatrolPoints;
 
+	int32 mPatrolIndex = 0;
+
 public:
 	UCapsuleComponent* GetCapsule()	const
 	{
 		return mCapsule;
+	}
+
+	bool GetPatrolEnable() const
+	{
+		return mPatrolPoints.Num() > 1;
+	}
+
+	FVector GetPatrolPoint() const
+	{
+		return mPatrolPoints[mPatrolIndex];
+	}
+
+	void NextPatrol()
+	{
+		mPatrolIndex = (mPatrolIndex + 1) % mPatrolPoints.Num();
 	}
 
 	void SetSpawnPoint(class AMonsterSpawnPoint* SpawnPoint)
@@ -56,6 +73,7 @@ public:
 	virtual void ChangeAnim(uint8 AnimType);
 	virtual void Attack();
 	virtual void AttackEnd();
+	virtual void DeathEnd();
 
 protected:
 	// Called when the game starts or when spawned

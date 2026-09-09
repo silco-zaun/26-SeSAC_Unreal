@@ -27,6 +27,11 @@ APlayerCharacter::APlayerCharacter()
 	SetGenericTeamId(FGenericTeamId(TeamPlayer));
 }
 
+FVector APlayerCharacter::GetImpactLocation() const
+{
+	return GetMesh()->GetSocketLocation(TEXT("Impact"));
+}
+
 // Called when the game starts or when spawned
 // 빙의된 후에 BeginPlay가 호출된다.
 void APlayerCharacter::BeginPlay()
@@ -138,7 +143,19 @@ float APlayerCharacter::TakeDamage(float DamageAmount,
 	DamageAmount = Super::TakeDamage(DamageAmount, DamageEvent,
 		EventInstigator, DamageCauser);
 
-	UE_LOG(Sac8Debug, Warning, TEXT("Damage : %.2f"), DamageAmount);
+	if (DamageAmount > 0.f)
+	{
+		AMainPlayerState* State = Cast<AMainPlayerState>(GetPlayerState());
+
+		DamageAmount = DamageAmount - State->GetDefense();
+
+		DamageAmount = FMath::Max(DamageAmount, 1.0f);
+
+		if (!State->AddHP(-DamageAmount))
+		{
+			//Destroy();
+		}
+	}
 
 	return DamageAmount;
 }

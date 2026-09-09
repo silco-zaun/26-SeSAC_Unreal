@@ -54,6 +54,11 @@ void AMonsterBase::AttackEnd()
 	}
 }
 
+void AMonsterBase::DeathEnd()
+{
+	Destroy();
+}
+
 // Called when the game starts or when spawned
 void AMonsterBase::BeginPlay()
 {
@@ -126,7 +131,24 @@ float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
 		if (!mState->AddHP(-DamageAmount))
 		{
-			Destroy();
+			//Destroy();
+			// 죽는 모션을 재생한다.
+			ChangeAnim((uint8)EMonsterNormalAnimType::Death);
+
+			// 인공지능을 멈춘다.
+			AAIController* AI = GetController<AAIController>();
+
+			AI->BrainComponent->StopLogic(TEXT("Death"));
+			AI->BrainComponent->Cleanup();
+			AI->StopMovement();
+
+			mCapsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+			// Component 비활성화.
+			mMovement->Deactivate();
+
+			// Tick 비활성화
+			mMovement->SetComponentTickEnabled(false);
 		}
 	}
 
@@ -174,4 +196,3 @@ void AMonsterBase::InfoLoadComplete()
 		}
 	}
 }
-

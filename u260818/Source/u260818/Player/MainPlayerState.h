@@ -116,15 +116,19 @@ public:
 		mGold = Gold;
 	}
 
-	void AddHP(int32 HP)
+	bool AddHP(int32 HP)
 	{
 		mHP += HP;
 
 		if (mHP > mHPMax)
 			mHP = mHPMax;
-
 		else if (mHP < 0.f)
+		{
 			mHP = 0.f;
+			return false;
+		}
+
+		return true;
 	}
 
 	void SetMoveSpeed(float Speed)
