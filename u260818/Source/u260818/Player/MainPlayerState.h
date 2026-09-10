@@ -131,6 +131,19 @@ public:
 		return true;
 	}
 
+	void AddGold(int32 Gold)
+	{
+		mGold += Gold;
+	}
+
+	void AddExp(int32 Exp)
+	{
+		mExp += Exp;
+
+		if (mExp < 0)
+			mExp = 0;
+	}
+
 	void SetMoveSpeed(float Speed)
 	{
 		mMoveSpeed = Speed;

@@ -6,6 +6,7 @@
 #include "../Subsystem/AssetSubsystem.h"
 #include "MonsterSpawnPoint.h"
 #include "MonsterController.h"
+//#include "../Item/ItemBox.h"
 
 // Sets default values
 AMonsterBase::AMonsterBase()
@@ -32,6 +33,21 @@ AMonsterBase::AMonsterBase()
 	AIControllerClass = AMonsterController::StaticClass();
 
 	bUseControllerRotationYaw = true;
+}
+
+bool AMonsterBase::GetDeath()	const
+{
+	return mState->GetHP() <= 0;
+}
+
+int32 AMonsterBase::GetGold()	const
+{
+	return mState->GetGold();
+}
+
+int32 AMonsterBase::GetExp()	const
+{
+	return mState->GetExp();
 }
 
 void AMonsterBase::ChangeAnim(uint8 AnimType)
@@ -91,6 +107,55 @@ void AMonsterBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		{
 			mSpawnPoint->ResetSpawn();
 		}
+
+		UAssetSubsystem* AssetSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
+
+		if (AssetSystem)
+		{
+			if (AssetSystem->GetLoadMonsterInfo())
+			{
+				// Drop 아이템 확률을 계산하고 정보를 넘겨준다.
+				for (auto& Item : mDropItems)
+				{
+					// FRand() 함수는 0 ~ 1 사이의 float타입 난수를 얻어온다.
+					float Percent = FMath::FRand();
+
+					// RoundToFloat 함수는 소수점 자리를 가장 가까운 정수 값으로 반올림해서
+					// float으로 반환해주는 함수이다.
+					Percent = FMath::RoundToFloat(Percent * 10000.f) / 100.f;
+
+					if (Percent <= Item.Percent)
+					{
+						// 아이템 키를 이용해서 정보를 얻어온다.
+						const FItemTableInfo* ItemInfo =
+							AssetSystem->FindItemInfo(*Item.ItemKey);
+
+						// 아이템 정보가 있을 경우 아이템을 생성한다.
+						if (ItemInfo)
+						{
+							UE_LOG(Sac8Debug, Warning, TEXT("DropItem : %s"), *Item.ItemKey);
+							// 칼, 갑옷, 체력회복물약중 1개를 랜덤하게 가지고 있는
+							// 상자를 만들어보자.
+							FActorSpawnParameters param;
+							param.SpawnCollisionHandlingOverride =
+								ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+							FVector ItemLoc;
+
+							GetRandomNavigationPoint(ItemLoc, GetWorld(),
+								GetActorLocation(), 100.f);
+
+							ItemLoc.Z += 80.0;
+
+							//AItemBox* ItemBox = GetWorld()->SpawnActor<AItemBox>(
+							//	ItemLoc, FRotator::ZeroRotator, param);
+
+							//ItemBox->SetItemInfo(ItemInfo);
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -127,7 +192,7 @@ float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
 		DamageAmount = FMath::Max(DamageAmount, 1.f);
 
-		UE_LOG(Sac8Debug, Warning, TEXT("Damage : %.2f"), DamageAmount);
+		UE_LOG(Sac8Debug, Warning, TEXT("Damage(M) : %.2f"), DamageAmount);
 
 		if (!mState->AddHP(-DamageAmount))
 		{
@@ -184,6 +249,8 @@ void AMonsterBase::InfoLoadComplete()
 			mMesh->SetSkeletalMeshAsset(Info->BodyMesh);
 
 			mMovement->MaxSpeed = Info->MoveSpeed;
+
+			mDropItems = Info->DropItems;
 
 			AMonsterController* AICtrl =
 				GetController<AMonsterController>();

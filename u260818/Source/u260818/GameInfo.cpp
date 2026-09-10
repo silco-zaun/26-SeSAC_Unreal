@@ -15,3 +15,25 @@ FRotator GetTargetRotationYaw(FVector Target, FVector Self)
 
 	return FRotator();
 }
+
+bool GetRandomNavigationPoint(FVector& Result, UWorld* World,
+	const FVector& Center, float Radius)
+{
+	// 현재 내비게이션 시스템을 얻어온다.
+	UNavigationSystemV1* NavSystem =
+		FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+
+	if (!NavSystem)
+		return false;
+
+	FNavLocation ResultNavLoc;
+	if (NavSystem->GetRandomPointInNavigableRadius(Center, Radius,
+		ResultNavLoc))
+	{
+		Result = ResultNavLoc.Location;
+
+		return true;
+	}
+
+	return false;
+}

@@ -23,6 +23,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> mCamera;
 
+	//UPROPERTY(VisibleAnywhere)
+	//TObjectPtr<class UInventoryComponent> mInventory;
+
 	UPROPERTY()
 	TObjectPtr<class UPlayerAnimInstance> mAnimInst;
 
@@ -80,4 +83,7 @@ public:
 	virtual void SetGenericTeamId(const FGenericTeamId& TeamID);
 	virtual FGenericTeamId GetGenericTeamId() const;
 	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const;
+
+public:
+	bool AddInventoryItem(const FItemTableInfo& ItemInfo);
 };

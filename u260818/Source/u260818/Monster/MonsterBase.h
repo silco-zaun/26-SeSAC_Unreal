@@ -38,6 +38,8 @@ protected:
 
 	int32 mPatrolIndex = 0;
 
+	TArray<FDropItemInfo> mDropItems;
+
 public:
 	UCapsuleComponent* GetCapsule()	const
 	{
@@ -68,6 +70,10 @@ public:
 	{
 		mPatrolPoints = PatrolPoints;
 	}
+
+	bool GetDeath() const;
+	int32 GetGold() const;
+	int32 GetExp() const;
 
 public:
 	virtual void ChangeAnim(uint8 AnimType);

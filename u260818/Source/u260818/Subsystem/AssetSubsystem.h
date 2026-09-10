@@ -20,10 +20,13 @@ class U260818_API UAssetSubsystem : public UGameInstanceSubsystem
 protected:
 	TObjectPtr<UDataTable> mPlayerInfoTable;
 	TObjectPtr<UDataTable> mMonsterInfoTable;
+	TObjectPtr<UDataTable> mItemInfoTable;
 	FOnDataLoading mOnPlayerDataLoading;
 	FOnDataLoading mOnMonsterDataLoading;
+	FOnDataLoading mOnItemDataLoading;
 	bool mLoadPlayerInfo = false;
 	bool mLoadMonsterInfo = false;
+	bool mLoadItemInfo = false;
 
 public:
 	bool GetLoadPlayerInfo()	const
@@ -34,6 +37,11 @@ public:
 	bool GetLoadMonsterInfo()	const
 	{
 		return mLoadMonsterInfo;
+	}
+
+	bool GetLoadItemInfo() const
+	{
+		return mLoadItemInfo;
 	}
 
 public:
@@ -57,9 +65,18 @@ public:
 		return mMonsterInfoTable->FindRow<FMonsterInfo>(Name, TEXT("FindMonsterInfo"));
 	}
 
+	const FItemTableInfo* FindItemInfo(const FName& Name) const
+	{
+		if (!IsValid(mItemInfoTable))
+			return nullptr;
+
+		return mItemInfoTable->FindRow<FItemTableInfo>(Name, TEXT("FindItem"));
+	}
+
 public:
 	void LoadPlayer();
 	void LoadMonster();
+	void LoadItem();
 
 public:
 	UFUNCTION()
@@ -67,6 +84,9 @@ public:
 
 	UFUNCTION()
 	void MonsterInfoLoadComplete(FPrimaryAssetId LoadId);
+
+	UFUNCTION()
+	void ItemInfoLoadComplete(FPrimaryAssetId LoadId);
 
 public:
 	template <typename T>
@@ -79,5 +99,11 @@ public:
 	void AddMonsterDataAssetLoadingDelegate(T* Obj, void (T::* Func)())
 	{
 		mOnMonsterDataLoading.AddUObject(Obj, Func);
+	}
+
+	template <typename T>
+	void AddItemDataAssetLoadingDelegate(T* Obj, void (T::* Func)())
+	{
+		mOnItemDataLoading.AddUObject(Obj, Func);
 	}
 };

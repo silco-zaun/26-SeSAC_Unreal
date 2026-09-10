@@ -29,10 +29,92 @@ FRotator GetTargetRotation(const FVector& Target,
 	const FVector& Self);
 FRotator GetTargetRotationYaw(FVector Target,
 	FVector Self);
+bool GetRandomNavigationPoint(FVector& Result, UWorld* World,
+	const FVector& Center, float Radius);
 
 #define TeamNeutral 255
 #define TeamPlayer 10
 #define TeamMonster 20
+
+UENUM(BlueprintType)
+enum class EItemType : uint8
+{
+	Weapon,
+	Armor,
+	Potion
+};
+
+UENUM(BlueprintType)
+enum class EItemUILayerType : uint8
+{
+	Single,
+	Layered
+};
+
+UENUM(BlueprintType)
+enum class EItemOptionType : uint8
+{
+	Attack,
+	Defense,
+	HPMax,
+	MPMax,
+	HPRecovery,
+	MPRecovery,
+	MoveSpeed,
+	AttackSpeed,
+	AttackDistance,
+	CriticalRatio,
+	CriticalDamage
+};
+
+USTRUCT(BlueprintType)
+struct FItemOption
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	EItemOptionType Type;
+
+	UPROPERTY(EditANywhere, BlueprintReadWrite, Category = "ItemInfo")
+	float Option;
+};
+
+// 데이터테이블용 구조체는 반드시 FTableRowBase를 상속받아야 한다.
+USTRUCT(BlueprintType)
+struct FItemTableInfo : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	FString ItemName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	EItemType Type;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	EItemUILayerType UILayerType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	int32 Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	FString Desc;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	int32 PurchasePrice;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	int32 SellPrice;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	TObjectPtr<UTexture2D> IconImage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	TObjectPtr<USkeletalMesh> ItemMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	TArray<FItemOption> Option;
+};
 
 UENUM(BlueprintType)
 enum class EPlayerJob : uint8
@@ -93,6 +175,18 @@ enum class EMonsterType : uint8
 	Legendary
 };
 
+USTRUCT(BlueprintType)
+struct FDropItemInfo
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	FString ItemKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	float Percent;
+};
+
 // 데이터테이블용 구조체는 반드시 FTableRowBase를 상속받아야 한다.
 USTRUCT(BlueprintType)
 struct FMonsterInfo : public FTableRowBase
@@ -126,12 +220,14 @@ struct FMonsterInfo : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterInfo")
 	int32 Gold = 0;
 
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asset")
 	TMap<FString, TObjectPtr<UAnimSequenceBase>>	Animation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Asset")
 	TObjectPtr<USkeletalMesh> BodyMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "DropItem")
+	TArray<FDropItemInfo> DropItems;
 };
 
 UENUM(BlueprintType)

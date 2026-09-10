@@ -4,6 +4,7 @@
 #include "Wukong.h"
 #include "MainPlayerState.h"
 #include "PlayerAnimInstance.h"
+#include "../Monster/MonsterBase.h"
 
 // Sets default values
 AWukong::AWukong()
@@ -47,24 +48,6 @@ void AWukong::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// MainPlayerState를 얻어온다.
-	AMainPlayerState* State = GetPlayerState<AMainPlayerState>();
-
-	if (IsValid(State))
-	{
-		State->SetPlayerName(TEXT("Wukong"));
-		State->SetAttack(30.f);
-		State->SetDefense(20.f);
-		State->SetHP(500.f);
-		State->SetHPMax(500.f);
-		State->SetMP(100.f);
-		State->SetMPMax(100.f);
-		State->SetLevel(1);
-		State->SetExp(0);
-		State->SetGold(10000);
-		State->SetMoveSpeed(600.f);
-		State->SetAttackDistance(200.f);
-	}
 }
 
 // Called every frame
@@ -105,15 +88,26 @@ void AWukong::Attack()
 
 	if (Hit)
 	{
-		//AMainPlayerState* State = 
+		AMainPlayerState* State = Cast<AMainPlayerState>(GetPlayerState());
 
 		// 차례대로 하나씩 꺼내며 반복한다.
 		for (auto Result : HitArray)
 		{
 			// GetActor 함수를 이용해서 부딪힌 엑터를 얻어올 수 있다.
 			FDamageEvent DmgEvent;
-			Result.GetActor()->TakeDamage(10.f, DmgEvent, GetController(),
+			Result.GetActor()->TakeDamage(State->GetAttack(), DmgEvent, GetController(),
 				this);
+
+			AMonsterBase* Monster = Cast<AMonsterBase>(Result.GetActor());
+
+			if (Monster)
+			{
+				if (Monster->GetDeath())
+				{
+					State->AddGold(Monster->GetGold());
+					State->AddExp(Monster->GetExp());
+				}
+			}
 			
 			TObjectPtr<USoundBase> HitSound = LoadObject<USoundBase>(GetWorld(),
 				TEXT("/Script/Engine.SoundWave'/Game/Sound/Fire1.Fire1'"));
@@ -135,28 +129,6 @@ void AWukong::Attack()
 			}
 		}
 	}
-}
-
-void AWukong::Death()
-{
-	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetMesh()->SetCollisionProfileName(TEXT("Ragdoll"));
-	GetMesh()->SetSimulatePhysics(true);
-
-	GetMesh()->SetAllPhysicsLinearVelocity(FVector::ZeroVector);
-	GetMesh()->SetAllPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
-
-	GetMesh()->SetAllBodiesSimulatePhysics(false);
-	GetMesh()->SetAllBodiesBelowSimulatePhysics(TEXT("pelvis"), true,
-		true);
-
-	// 바디의 Sleep 상태를 깨워준다.
-	GetMesh()->WakeAllRigidBodies();
-
-	// 애니메이션 포즈와 물리 결과를 섞어서 반영하도록 한다.
-	GetMesh()->bBlendPhysics = true;
-
-	//SetLifeSpan(3.f);
 }
 
 void AWukong::Skill1()

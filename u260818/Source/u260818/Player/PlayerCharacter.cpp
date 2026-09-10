@@ -151,6 +151,8 @@ float APlayerCharacter::TakeDamage(float DamageAmount,
 
 		DamageAmount = FMath::Max(DamageAmount, 1.0f);
 
+		UE_LOG(Sac8Debug, Warning, TEXT("Damage(P) : %.2f"), DamageAmount);
+
 		if (!State->AddHP(-DamageAmount))
 		{
 			//Destroy();
@@ -366,4 +368,11 @@ ETeamAttitude::Type APlayerCharacter::GetTeamAttitudeTowards(
 
 	return GetGenericTeamId() == OtherTeamAgent->GetGenericTeamId() ?
 		ETeamAttitude::Friendly : ETeamAttitude::Hostile;
+}
+
+bool APlayerCharacter::AddInventoryItem(const FItemTableInfo& ItemInfo)
+{
+	//return mInventory->AddItem(ItemInfo);
+
+	return false;
 }
