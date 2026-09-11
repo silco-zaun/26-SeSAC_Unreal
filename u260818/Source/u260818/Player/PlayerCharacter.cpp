@@ -5,6 +5,7 @@
 #include "PlayerAnimInstance.h"
 #include "MainPlayerState.h"
 #include "../Subsystem/AssetSubsystem.h"
+#include "InventoryComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -14,6 +15,9 @@ APlayerCharacter::APlayerCharacter()
 
 	mArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
 	mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	// Scene Component 가 아니라 Actor Component이기 때문에
+	// 계증 구조 구성이 필요 없다.
+	mInventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
 
 	mArm->SetupAttachment(GetMesh());
 	mCamera->SetupAttachment(mArm);
@@ -372,7 +376,5 @@ ETeamAttitude::Type APlayerCharacter::GetTeamAttitudeTowards(
 
 bool APlayerCharacter::AddInventoryItem(const FItemTableInfo& ItemInfo)
 {
-	//return mInventory->AddItem(ItemInfo);
-
-	return false;
+	return mInventory->AddItem(ItemInfo);
 }

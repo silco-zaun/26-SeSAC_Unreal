@@ -6,7 +6,7 @@
 #include "../Subsystem/AssetSubsystem.h"
 #include "MonsterSpawnPoint.h"
 #include "MonsterController.h"
-//#include "../Item/ItemBox.h"
+#include "../Item/ItemBox.h"
 
 // Sets default values
 AMonsterBase::AMonsterBase()
@@ -124,6 +124,8 @@ void AMonsterBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 					// float으로 반환해주는 함수이다.
 					Percent = FMath::RoundToFloat(Percent * 10000.f) / 100.f;
 
+					UE_LOG(Sac8Debug, Warning, TEXT("%s (%.2f <= %.2f)"), *Item.ItemKey, Percent, Item.Percent);
+
 					if (Percent <= Item.Percent)
 					{
 						// 아이템 키를 이용해서 정보를 얻어온다.
@@ -147,10 +149,10 @@ void AMonsterBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 							ItemLoc.Z += 80.0;
 
-							//AItemBox* ItemBox = GetWorld()->SpawnActor<AItemBox>(
-							//	ItemLoc, FRotator::ZeroRotator, param);
+							AItemBox* ItemBox = GetWorld()->SpawnActor<AItemBox>(
+								ItemLoc, FRotator::ZeroRotator, param);
 
-							//ItemBox->SetItemInfo(ItemInfo);
+							ItemBox->SetItemInfo(ItemInfo);
 						}
 					}
 				}

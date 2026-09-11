@@ -112,8 +112,8 @@ void UAssetSubsystem::ItemInfoLoadComplete(FPrimaryAssetId LoadId)
 	if (IsValid(DataAsset))
 	{
 		mItemInfoTable = DataAsset->mPlayerInfoDataTable.LoadSynchronous();
-
-		UE_LOG(Sac8Debug, Warning, TEXT("LoadSynchronous"));
+		
+		UE_LOG(Sac8Debug, Warning, TEXT("Load Item Info"));
 		mLoadItemInfo = true;
 
 		// 델리게이트에 등록된 함수가 있을 경우

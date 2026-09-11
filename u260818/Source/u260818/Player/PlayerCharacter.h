@@ -23,8 +23,8 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> mCamera;
 
-	//UPROPERTY(VisibleAnywhere)
-	//TObjectPtr<class UInventoryComponent> mInventory;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UInventoryComponent> mInventory;
 
 	UPROPERTY()
 	TObjectPtr<class UPlayerAnimInstance> mAnimInst;
