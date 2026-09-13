@@ -4,15 +4,15 @@
 #include "AnimNotify_WukongAttack.h"
 #include "../PlayerCharacter.h"
 
-// ÀÌ ³ëÆ¼ÆÄÀÌ¸¦ »ç¿ëÇÏ´Â AnimationBlueprint°¡ ÁöÁ¤µÈ SeletalMeshCompnent
-// ÀÇ ÁÖ¼Ò°¡ Àü´ŞµÈ´Ù.
+// ì´ ë…¸í‹°íŒŒì´ë¥¼ ì‚¬ìš©í•˜ëŠ” AnimationBlueprintê°€ ì§€ì •ëœ SeletalMeshCompnent
+// ì˜ ì£¼ì†Œê°€ ì „ë‹¬ëœë‹¤.
 void UAnimNotify_WukongAttack::Notify(USkeletalMeshComponent* MeshComp,
 	UAnimSequenceBase* Animation,
 	const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
 
-	// SkeletalMeshComponent¸¦ °¡Áö°í ÀÖ´Â Actor¸¦ ¾ò¾î¿Â´Ù.
+	// SkeletalMeshComponentë¥¼ ê°€ì§€ê³  ìˆëŠ” Actorë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	TObjectPtr<APlayerCharacter> PlayerChar =
 		MeshComp->GetOwner<APlayerCharacter>();
 

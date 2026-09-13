@@ -27,7 +27,7 @@ void UAssetSubsystem::LoadPlayer()
 
 	FPrimaryAssetId AssetId(TEXT("PlayerInfoAsset"), TEXT("DA_PlayerInfo"));
 
-	// AssetId¿¡ ÇØ´çÇÏ´Â ¿¡¼ÂÀ» ·Îµù.
+	// AssetIdì— í•´ë‹¹í•˜ëŠ” ì—ì…‹ì„ ë¡œë”©.
 	AssetManager.LoadPrimaryAsset(AssetId, TArray<FName>(),
 		FStreamableDelegate::CreateUObject(this, &UAssetSubsystem::PlayerInfoLoadComplete, AssetId));
 }
@@ -38,7 +38,7 @@ void UAssetSubsystem::LoadMonster()
 
 	FPrimaryAssetId AssetId(TEXT("PlayerInfoAsset"), TEXT("DA_MonsterInfo"));
 
-	// AssetId¿¡ ÇØ´çÇÏ´Â ¿¡¼ÂÀ» ·Îµù.
+	// AssetIdì— í•´ë‹¹í•˜ëŠ” ì—ì…‹ì„ ë¡œë”©.
 	AssetManager.LoadPrimaryAsset(AssetId, TArray<FName>(),
 		FStreamableDelegate::CreateUObject(this, &UAssetSubsystem::MonsterInfoLoadComplete, AssetId));
 }
@@ -55,7 +55,7 @@ void UAssetSubsystem::LoadItem()
 
 void UAssetSubsystem::PlayerInfoLoadComplete(FPrimaryAssetId LoadId)
 {
-	// ·ÎµùµÈ ¿ÀºêÁ§Æ®¸¦ ¾ò¾î¿Â´Ù.
+	// ë¡œë”©ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	TObjectPtr<UObject> LoadedObject = UAssetManager::Get().GetPrimaryAssetObject(LoadId);
 
 	TObjectPtr<UPlayerInfoAsset> DataAsset =
@@ -63,14 +63,14 @@ void UAssetSubsystem::PlayerInfoLoadComplete(FPrimaryAssetId LoadId)
 
 	if (IsValid(DataAsset))
 	{
-		// ºñµ¿±â ·Îµå Ã³¸®.
+		// ë¹„ë™ê¸° ë¡œë“œ ì²˜ë¦¬.
 		mPlayerInfoTable = DataAsset->mPlayerInfoDataTable.LoadSynchronous();
 		mLoadPlayerInfo = true;
 
-		// µ¨¸®°ÔÀÌÆ®¿¡ µî·ÏµÈ ÇÔ¼ö°¡ ÀÖÀ» °æ¿ì
+		// ë¸ë¦¬ê²Œì´íŠ¸ì— ë“±ë¡ëœ í•¨ìˆ˜ê°€ ìˆì„ ê²½ìš°
 		if (mOnPlayerDataLoading.IsBound())
 		{
-			// µî·ÏµÈ ¸ğµç ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+			// ë“±ë¡ëœ ëª¨ë“  í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•œë‹¤.
 			mOnPlayerDataLoading.Broadcast();
 		}
 	}
@@ -80,7 +80,7 @@ void UAssetSubsystem::MonsterInfoLoadComplete(FPrimaryAssetId LoadId)
 {
 	UE_LOG(Sac8Debug, Warning, TEXT("MonsterInfoLoadComplete"));
 
-	// ·ÎµùµÈ ¿ÀºêÁ§Æ®¸¦ ¾ò¾î¿Â´Ù.
+	// ë¡œë”©ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	TObjectPtr<UObject> LoadedObject = UAssetManager::Get().GetPrimaryAssetObject(LoadId);
 
 	TObjectPtr<UPlayerInfoAsset> DataAsset =
@@ -88,14 +88,14 @@ void UAssetSubsystem::MonsterInfoLoadComplete(FPrimaryAssetId LoadId)
 
 	if (IsValid(DataAsset))
 	{
-		// ºñµ¿±â ·Îµå Ã³¸®.
+		// ë¹„ë™ê¸° ë¡œë“œ ì²˜ë¦¬.
 		mMonsterInfoTable = DataAsset->mPlayerInfoDataTable.LoadSynchronous();
 		mLoadMonsterInfo = true;
 
-		// µ¨¸®°ÔÀÌÆ®¿¡ µî·ÏµÈ ÇÔ¼ö°¡ ÀÖÀ» °æ¿ì
+		// ë¸ë¦¬ê²Œì´íŠ¸ì— ë“±ë¡ëœ í•¨ìˆ˜ê°€ ìˆì„ ê²½ìš°
 		if (mOnMonsterDataLoading.IsBound())
 		{
-			// µî·ÏµÈ ¸ğµç ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+			// ë“±ë¡ëœ ëª¨ë“  í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•œë‹¤.
 			mOnMonsterDataLoading.Broadcast();
 		}
 	}
@@ -104,7 +104,7 @@ void UAssetSubsystem::MonsterInfoLoadComplete(FPrimaryAssetId LoadId)
 
 void UAssetSubsystem::ItemInfoLoadComplete(FPrimaryAssetId LoadId)
 {
-	// ·ÎµùµÈ ¿ÀºêÁ§Æ®¸¦ ¾ò¾î¿Â´Ù.
+	// ë¡œë”©ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	TObjectPtr<UObject> LoadedObject = UAssetManager::Get().GetPrimaryAssetObject(LoadId);
 
 	TObjectPtr<UPlayerInfoAsset> DataAsset = Cast<UPlayerInfoAsset>(LoadedObject);
@@ -116,10 +116,10 @@ void UAssetSubsystem::ItemInfoLoadComplete(FPrimaryAssetId LoadId)
 		UE_LOG(Sac8Debug, Warning, TEXT("Load Item Info"));
 		mLoadItemInfo = true;
 
-		// µ¨¸®°ÔÀÌÆ®¿¡ µî·ÏµÈ ÇÔ¼ö°¡ ÀÖÀ» °æ¿ì
+		// ë¸ë¦¬ê²Œì´íŠ¸ì— ë“±ë¡ëœ í•¨ìˆ˜ê°€ ìˆì„ ê²½ìš°
 		if (mOnItemDataLoading.IsBound())
 		{
-			// µî·ÏµÈ ¸ğµç ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+			// ë“±ë¡ëœ ëª¨ë“  í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•œë‹¤.
 			mOnItemDataLoading.Broadcast();
 		}
 	}

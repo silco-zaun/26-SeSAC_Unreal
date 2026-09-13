@@ -15,8 +15,8 @@ class U260818_API UPlayerInfoAsset : public UPrimaryDataAsset
 	GENERATED_BODY()
 	
 public:
-	// TSoftObjectPtr : ¿¡¼ÂÀÌ³ª ¿ÀºêÁ§Æ®¸¦ °æ·Î¸¸ °¡Áö°í ÀÖ´Ù°¡ ÇÊ¿äÇÒ ¶§
-	// ·ÎµåÇÏ´Â Æ÷ÀÎÅÍ.
+	// TSoftObjectPtr : ì—ì…‹ì´ë‚˜ ì˜¤ë¸Œì íŠ¸ë¥¼ ê²½ë¡œë§Œ ê°€ì§€ê³  ìˆë‹¤ê°€ í•„ìš”í•  ë•Œ
+	// ë¡œë“œí•˜ëŠ” í¬ì¸í„°.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "PlayerInfo")
 	TSoftObjectPtr<UDataTable> mPlayerInfoDataTable;
 };

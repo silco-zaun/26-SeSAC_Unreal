@@ -8,29 +8,29 @@ UBTTask_MonsterPatrol::UBTTask_MonsterPatrol()
 {
 	NodeName = TEXT("MonsterPatrol");
 
-	// TickÀ» È£ÃâÇÒ ¼ö ÀÖ°Ô ÇÑ´Ù.
+	// Tickì„ í˜¸ì¶œí•  ìˆ˜ ìˆê²Œ í•œë‹¤.
 	bNotifyTick = true;
 
-	// Task°¡ ³¡³µÀ» ¶§, OnTaskFinished¸¦ È£ÃâÇÒ ¼ö ÀÖ°Ô ÇÑ´Ù.
+	// Taskê°€ ëë‚¬ì„ ë•Œ, OnTaskFinishedë¥¼ í˜¸ì¶œí•  ìˆ˜ ìˆê²Œ í•œë‹¤.
 	bNotifyTaskFinished = true;
 }
 
 EBTNodeResult::Type UBTTask_MonsterPatrol::ExecuteTask(
 	UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	// AIController¸¦ ¾ò¾î¿Â´Ù.
+	// AIControllerë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
 		return EBTNodeResult::Failed;
 
-	// OwnerComp°¡ °¡Áö°í ÀÖ´Â BlackboardComponent¸¦ ¾ò¾î¿Â´Ù.
+	// OwnerCompê°€ ê°€ì§€ê³  ìˆëŠ” BlackboardComponentë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
 		return EBTNodeResult::Failed;
 
-	// ºí·¢º¸µå¿¡¼­ TargetÀ» ¾ò¾î¿Â´Ù.
+	// ë¸”ë™ë³´ë“œì—ì„œ Targetì„ ì–»ì–´ì˜¨ë‹¤.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (Target)
@@ -41,7 +41,7 @@ EBTNodeResult::Type UBTTask_MonsterPatrol::ExecuteTask(
 	if (!Monster)
 		return EBTNodeResult::Failed;
 
-	// ¼øÂû ÁöÁ¡À¸·Î ÀÌµ¿½ÃÅ²´Ù.
+	// ìˆœì°° ì§€ì ìœ¼ë¡œ ì´ë™ì‹œí‚¨ë‹¤.
 	EPathFollowingRequestResult::Type PathResult =
 		AIController->MoveToLocation(Monster->GetPatrolPoint());
 
@@ -56,7 +56,7 @@ EBTNodeResult::Type UBTTask_MonsterPatrol::ExecuteTask(
 void UBTTask_MonsterPatrol::TickTask(UBehaviorTreeComponent& OwnerComp,
 	uint8* NodeMemory, float DeltaSeconds)
 {
-	// AIController¸¦ ¾ò¾î¿Â´Ù.
+	// AIControllerë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
@@ -65,7 +65,7 @@ void UBTTask_MonsterPatrol::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// OwnerComp°¡ °¡Áö°í ÀÖ´Â BlackboardComponent¸¦ ¾ò¾î¿Â´Ù.
+	// OwnerCompê°€ ê°€ì§€ê³  ìˆëŠ” BlackboardComponentë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
@@ -74,7 +74,7 @@ void UBTTask_MonsterPatrol::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// ºí·¢º¸µå¿¡¼­ TargetÀ» ¾ò¾î¿Â´Ù.
+	// ë¸”ë™ë³´ë“œì—ì„œ Targetì„ ì–»ì–´ì˜¨ë‹¤.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (Target)
@@ -109,7 +109,7 @@ void UBTTask_MonsterPatrol::TickTask(UBehaviorTreeComponent& OwnerComp,
 	UCapsuleComponent* Capsule =
 		Cast<UCapsuleComponent>(Monster->GetRootComponent());
 
-	// µÎ Á¡ »çÀÌÀÇ °Å¸®¸¦ ±¸ÇÑ´Ù.
+	// ë‘ ì  ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ êµ¬í•œë‹¤.
 	float Distance = FVector::Dist(TargetLocation, MonsterLocation);
 
 	if (Distance <= 5.f)

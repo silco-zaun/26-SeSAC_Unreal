@@ -61,7 +61,7 @@ void AGoblin::Attack()
 
 			FVector ImpactLocation = mMesh->GetSocketLocation(TEXT("FX_MeleeImpact"));
 
-			// ¸¸¾à ÇÃ·¹ÀÌ¾î¶ó¸é ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ ¾ò¾î¿Â´Ù.
+			// ë§Œì•½ í”Œë ˆì´ì–´ë¼ë©´ í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 			APlayerCharacter* PlayerChar = Cast<APlayerCharacter>(Target);
 
 			if (IsValid(PlayerChar))
@@ -74,7 +74,7 @@ void AGoblin::Attack()
 
 			if (IsValid(HitSound))
 			{
-				// ImpactPoint´Â ºÎµúÈù À§Ä¡ÀÌ´Ù.
+				// ImpactPointëŠ” ë¶€ë”ªíŒ ìœ„ì¹˜ì´ë‹¤.
 				UGameplayStatics::SpawnSoundAtLocation(GetWorld(),
 					HitSound, ImpactLocation);
 			}

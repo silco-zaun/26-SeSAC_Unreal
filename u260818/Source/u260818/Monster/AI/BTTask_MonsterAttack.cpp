@@ -17,19 +17,19 @@ UBTTask_MonsterAttack::UBTTask_MonsterAttack()
 EBTNodeResult::Type UBTTask_MonsterAttack::ExecuteTask(
 	UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	// AIController¸¦ ¾ò¾î¿Â´Ù.
+	// AIControllerë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
 		return EBTNodeResult::Failed;
 
-	// OwnerComp°¡ °¡Áö°í ÀÖ´Â BlackboardComponent¸¦ ¾ò¾î¿Â´Ù.
+	// OwnerCompê°€ ê°€ì§€ê³  ìˆëŠ” BlackboardComponentë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
 		return EBTNodeResult::Failed;
 
-	// ºí·¢º¸µå¿¡¼­ TargetÀ» ¾ò¾î¿Â´Ù.
+	// ë¸”ë™ë³´ë“œì—ì„œ Targetì„ ì–»ì–´ì˜¨ë‹¤.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (!Target)
@@ -40,17 +40,17 @@ EBTNodeResult::Type UBTTask_MonsterAttack::ExecuteTask(
 	if (!Monster)
 		return EBTNodeResult::Failed;
 
-	// °ø°İ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» Àç»ıÇÑ´Ù.
+	// ê³µê²© ì• ë‹ˆë©”ì´ì…˜ì„ ì¬ìƒí•œë‹¤.
 	Monster->ChangeAnim((uint8)EMonsterNormalAnimType::Attack);
 
-	// µµÂøÇÒ¶§±îÁö Task°¡ Á¾·áµÇ¸é ¾ÈµÇ±â ¶§¹®¿¡ °è¼Ó ÁøÇà½ÃÅ²´Ù.
+	// ë„ì°©í• ë•Œê¹Œì§€ Taskê°€ ì¢…ë£Œë˜ë©´ ì•ˆë˜ê¸° ë•Œë¬¸ì— ê³„ì† ì§„í–‰ì‹œí‚¨ë‹¤.
 	return EBTNodeResult::InProgress;
 }
 
 void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 	uint8* NodeMemory, float DeltaSeconds)
 {
-	// AIController¸¦ ¾ò¾î¿Â´Ù.
+	// AIControllerë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
@@ -59,7 +59,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// OwnerComp°¡ °¡Áö°í ÀÖ´Â BlackboardComponent¸¦ ¾ò¾î¿Â´Ù.
+	// OwnerCompê°€ ê°€ì§€ê³  ìˆëŠ” BlackboardComponentë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
@@ -68,7 +68,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// ºí·¢º¸µå¿¡¼­ TargetÀ» ¾ò¾î¿Â´Ù.
+	// ë¸”ë™ë³´ë“œì—ì„œ Targetì„ ì–»ì–´ì˜¨ë‹¤.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (!Target)
@@ -85,7 +85,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// °ø°İ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» Àç»ıÇÑ´Ù.
+	// ê³µê²© ì• ë‹ˆë©”ì´ì…˜ì„ ì¬ìƒí•œë‹¤.
 	// Monster->ChangeAnim((uint8)EMonsterNormalAnimType::Attack);
 
 	bool AttackEnd = BlackboardComp->GetValueAsBool(TEXT("AttackEnd"));
@@ -94,8 +94,8 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 	{
 		BlackboardComp->SetValueAsBool(TEXT("AttackEnd"), false);
 
-		// °ø°İ¸ğ¼ÇÀÌ ³¡³µÀ»¶§ Å¸°Ù°ú ¸ó½ºÅÍÀÇ °Å¸®¸¦ ±¸ÇÏ¿© °ø°İ°Å¸® ¹Ù±ùÀ¸·Î
-		// ºüÁ®³ª°¬À» °æ¿ì °ø°İÀ» Á¾·áÇÑ´Ù.
+		// ê³µê²©ëª¨ì…˜ì´ ëë‚¬ì„ë•Œ íƒ€ê²Ÿê³¼ ëª¬ìŠ¤í„°ì˜ ê±°ë¦¬ë¥¼ êµ¬í•˜ì—¬ ê³µê²©ê±°ë¦¬ ë°”ê¹¥ìœ¼ë¡œ
+		// ë¹ ì ¸ë‚˜ê°”ì„ ê²½ìš° ê³µê²©ì„ ì¢…ë£Œí•œë‹¤.
 		FVector TargetLocation, MonsterLocation;
 
 		TargetLocation = Target->GetActorLocation();
@@ -113,19 +113,19 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 		if (Capsule)
 			MonsterLocation.Z -= Capsule->GetScaledCapsuleHalfHeight();
 
-		// µÎ Á¡ »çÀÌÀÇ °Å¸®¸¦ ±¸ÇÑ´Ù.
+		// ë‘ ì  ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ êµ¬í•œë‹¤.
 		float Distance = FVector::Dist(TargetLocation, MonsterLocation);
 
 		float AttackDist = BlackboardComp->GetValueAsFloat(TEXT("AttackDistance"));
 
-		// °ø°İ°Å¸® ¹Ù±ùÀ¸·Î ºüÁ®³ª°¬À» °æ¿ì
+		// ê³µê²©ê±°ë¦¬ ë°”ê¹¥ìœ¼ë¡œ ë¹ ì ¸ë‚˜ê°”ì„ ê²½ìš°
 		if (Distance > AttackDist)
 		{
 			FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 			return;
 		}
 
-		// ¿©ÀüÈ÷ °ø°İ°Å¸® ¾ÈÂÊ¿¡ ÀÖÀ» °æ¿ì
+		// ì—¬ì „íˆ ê³µê²©ê±°ë¦¬ ì•ˆìª½ì— ìˆì„ ê²½ìš°
 		else
 		{
 			FRotator Rot = GetTargetRotationYaw(TargetLocation,

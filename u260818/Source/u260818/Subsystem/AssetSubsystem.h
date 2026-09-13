@@ -6,7 +6,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "AssetSubsystem.generated.h"
 
-// Delegate¸¦ »ı¼ºÇÏ¸é Delegate¸¦ »ç¿ëÇÒ ¼ö ÀÖ´Â Å¸ÀÔÀÌ ¸¸µé¾îÁø´Ù.
+// Delegateë¥¼ ìƒì„±í•˜ë©´ Delegateë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” íƒ€ì…ì´ ë§Œë“¤ì–´ì§„ë‹¤.
 DECLARE_MULTICAST_DELEGATE(FOnDataLoading);
 
 /**

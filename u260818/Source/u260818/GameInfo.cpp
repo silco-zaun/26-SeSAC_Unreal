@@ -1,6 +1,6 @@
 #include "GameInfo.h"
 
-// ·Î±× Á¤ÀÇ
+// ë¡œê·¸ ì •ì˜
 DEFINE_LOG_CATEGORY(Sac8Debug);
 
 FRotator GetTargetRotation(const FVector& Target, const FVector& Self)
@@ -19,7 +19,7 @@ FRotator GetTargetRotationYaw(FVector Target, FVector Self)
 bool GetRandomNavigationPoint(FVector& Result, UWorld* World,
 	const FVector& Center, float Radius)
 {
-	// ÇöÀç ³»ºñ°ÔÀÌ¼Ç ½Ã½ºÅÛÀ» ¾ò¾î¿Â´Ù.
+	// í˜„ì¬ ë‚´ë¹„ê²Œì´ì…˜ ì‹œìŠ¤í…œì„ ì–»ì–´ì˜¨ë‹¤.
 	UNavigationSystemV1* NavSystem =
 		FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 

@@ -23,7 +23,7 @@ public:
 	TObjectPtr<UInputMappingContext> mContext;
 	
 protected:
-	// FString : ¾ğ¸®¾ó¿£Áø¿¡¼­ Á¦°øÇØÁÖ´Â ¹®ÀÚ¿­ Å¬·¡½ºÀÌ´Ù.
+	// FString : ì–¸ë¦¬ì–¼ì—”ì§„ì—ì„œ ì œê³µí•´ì£¼ëŠ” ë¬¸ìì—´ í´ë˜ìŠ¤ì´ë‹¤.
 	TMap<FString, TObjectPtr<UInputAction>> mActions;
 
 public:

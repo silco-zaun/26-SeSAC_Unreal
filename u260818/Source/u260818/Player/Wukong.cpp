@@ -29,8 +29,8 @@ AWukong::AWukong()
 	mArm->SetRelativeLocation(FVector(0.0, 0.0, 176.0));
 	mArm->SetRelativeRotation(FRotator(-10.0, 90.0, 0.0));
 
-	// ¾Ö´Ï¸ŞÀÌ¼Ç ºí·çÇÁ¸°Æ® Å¬·¡½º¸¦ ¾ò¾î¿Â´Ù.
-	// Å¬·¡½º Á¤º¸¸¦ Ã£¾Æ¿Ã ¶§ °æ·ÎÀÇ °¡Àå ³¡¿¡ _C¸¦ ¹«Á¶°Ç ºÙ¿©¾ß ÇÑ´Ù.
+	// ì• ë‹ˆë©”ì´ì…˜ ë¸”ë£¨í”„ë¦°íŠ¸ í´ë˜ìŠ¤ë¥¼ ì–»ì–´ì˜¨ë‹¤.
+	// í´ë˜ìŠ¤ ì •ë³´ë¥¼ ì°¾ì•„ì˜¬ ë•Œ ê²½ë¡œì˜ ê°€ì¥ ëì— _Cë¥¼ ë¬´ì¡°ê±´ ë¶™ì—¬ì•¼ í•œë‹¤.
 	static ConstructorHelpers::FClassFinder<UAnimInstance>
 		PlayerAnim(TEXT("/Script/Engine.AnimBlueprint'/Game/Player/ABP_Wukong.ABP_Wukong_C'"));
 
@@ -61,7 +61,7 @@ void AWukong::Attack()
 {
 	TArray<FHitResult> HitArray;
 
-	// GetActorLocation : ÀÌ ¿¢ÅÍÀÇ À§Ä¡¸¦ ¾ò¾î¿Â´Ù.
+	// GetActorLocation : ì´ ì—‘í„°ì˜ ìœ„ì¹˜ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	FVector Start = GetActorLocation() + GetActorForwardVector() *
 		(GetCapsuleComponent()->GetScaledCapsuleRadius() + 50.f);
 	FVector End = Start + GetActorForwardVector() * 200.f;
@@ -73,7 +73,7 @@ void AWukong::Attack()
 		FQuat::Identity, ECollisionChannel::ECC_GameTraceChannel2,
 		FCollisionShape::MakeSphere(50.f), param);
 
-	// µğ¹ö±ë¿ëÀ¸·Î Ä¸½¶À» ±×¸°´Ù.
+	// ë””ë²„ê¹…ìš©ìœ¼ë¡œ ìº¡ìŠì„ ê·¸ë¦°ë‹¤.
 	FColor DebugColor = Hit ? FColor::Red : FColor::Green;
 
 #if WITH_EDITOR
@@ -81,7 +81,7 @@ void AWukong::Attack()
 
 	float HalfHeight = (End - Start).Size() * 0.5f + 50.f;
 
-	// ¿¡µğÅÍ¿¡¼­´Â Ãæµ¹Ã¼¸¦ ±×·ÁÁØ´Ù.
+	// ì—ë””í„°ì—ì„œëŠ” ì¶©ëŒì²´ë¥¼ ê·¸ë ¤ì¤€ë‹¤.
 	DrawDebugCapsule(GetWorld(), (Start + End) / 2.f, 100.f, 50.f,
 		Rot, DebugColor, false, 1.f);
 #endif
@@ -90,10 +90,10 @@ void AWukong::Attack()
 	{
 		AMainPlayerState* State = Cast<AMainPlayerState>(GetPlayerState());
 
-		// Â÷·Ê´ë·Î ÇÏ³ª¾¿ ²¨³»¸ç ¹İº¹ÇÑ´Ù.
+		// ì°¨ë¡€ëŒ€ë¡œ í•˜ë‚˜ì”© êº¼ë‚´ë©° ë°˜ë³µí•œë‹¤.
 		for (auto Result : HitArray)
 		{
-			// GetActor ÇÔ¼ö¸¦ ÀÌ¿ëÇØ¼­ ºÎµúÈù ¿¢ÅÍ¸¦ ¾ò¾î¿Ã ¼ö ÀÖ´Ù.
+			// GetActor í•¨ìˆ˜ë¥¼ ì´ìš©í•´ì„œ ë¶€ë”ªíŒ ì—‘í„°ë¥¼ ì–»ì–´ì˜¬ ìˆ˜ ìˆë‹¤.
 			FDamageEvent DmgEvent;
 			Result.GetActor()->TakeDamage(State->GetAttack(), DmgEvent, GetController(),
 				this);

@@ -17,15 +17,15 @@ public:
 	ATestActor();
 
 protected:
-	// TObjectPtrÀº ¾ğ¸®¾ó UObject¸¦ »ó¼Ó¹ŞÀº °´Ã¼ÀÇ ÁÖ¼Ò¸¦ °¡Áö°í ÀÖÀ»¶§
-	// »ç¿ëÇÑ´Ù.
+	// TObjectPtrì€ ì–¸ë¦¬ì–¼ UObjectë¥¼ ìƒì†ë°›ì€ ê°ì²´ì˜ ì£¼ì†Œë¥¼ ê°€ì§€ê³  ìˆì„ë•Œ
+	// ì‚¬ìš©í•œë‹¤.
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> mMesh;
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> mChildMesh;
 
-	// VisibleAnywhere : ¿¡µğÅÍ¿¡¼­ º¸¿©Áö°Ô ¸¸µé ¶§ »ç¿ëÇÑ´Ù.
+	// VisibleAnywhere : ì—ë””í„°ì—ì„œ ë³´ì—¬ì§€ê²Œ ë§Œë“¤ ë•Œ ì‚¬ìš©í•œë‹¤.
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<URotatingMovementComponent> mRotMovement;
 

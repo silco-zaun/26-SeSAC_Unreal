@@ -36,11 +36,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float mViewPitch = 0.f;
 
-	// °ø°İ¿ë ¾Ö´Ï¸ŞÀÌ¼Ç ¸ùÅ¸ÁÖ
+	// ê³µê²©ìš© ì• ë‹ˆë©”ì´ì…˜ ëª½íƒ€ì£¼
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAnimMontage> mAttackMontage;
 
-	// ¿¡µğÅÍ¿¡¼­ ÆíÁı °¡´ÉÇÑ º¯¼ö¸¦ ¸¸µç´Ù.
+	// ì—ë””í„°ì—ì„œ í¸ì§‘ ê°€ëŠ¥í•œ ë³€ìˆ˜ë¥¼ ë§Œë“ ë‹¤.
 	UPROPERTY(EditAnywhere)
 	TArray<FName> mAttackSectionNames;
 
@@ -51,11 +51,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float mHitAlpha = 0.f;
 
-	// Hit¿ë ¾Ö´Ï¸ŞÀÌ¼Ç ¸ùÅ¸ÁÖ
+	// Hitìš© ì• ë‹ˆë©”ì´ì…˜ ëª½íƒ€ì£¼
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAnimMontage> mHitMontage;
 
-	// Hit¿ë ¾Ö´Ï¸ŞÀÌ¼Ç ¸ùÅ¸ÁÖ
+	// Hitìš© ì• ë‹ˆë©”ì´ì…˜ ëª½íƒ€ì£¼
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UAnimMontage> mSkill1Montage;
 
@@ -89,8 +89,8 @@ public:
 	void PlaySkill1(const FString & SectionName);
 
 public: // Notify
-	// ³ëÆ¼ÆÄÀÌ ÇÔ¼ö »ı¼º¹æ¹ı : void AnimNotify_³ëÆ¼ÆÄÀÌÀÌ¸§() À¸·Î ÇÔ¼ö¸¦
-	// ¸¸µç´Ù.
+	// ë…¸í‹°íŒŒì´ í•¨ìˆ˜ ìƒì„±ë°©ë²• : void AnimNotify_ë…¸í‹°íŒŒì´ì´ë¦„() ìœ¼ë¡œ í•¨ìˆ˜ë¥¼
+	// ë§Œë“ ë‹¤.
 	UFUNCTION()
 	void AnimNotify_Combo();
 

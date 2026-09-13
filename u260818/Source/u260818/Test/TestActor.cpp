@@ -9,8 +9,8 @@ ATestActor::ATestActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// ÄÄÆ÷³ÍÆ®¸¦ »ı¼ºÇÑ´Ù.
-	// ¾ğ¸®¾ó¿£ÁøÀº À¯´ÏÄÚµå ¹®ÀÚ¿­À» »ç¿ëÇÑ´Ù.
+	// ì»´í¬ë„ŒíŠ¸ë¥¼ ìƒì„±í•œë‹¤.
+	// ì–¸ë¦¬ì–¼ì—”ì§„ì€ ìœ ë‹ˆì½”ë“œ ë¬¸ìì—´ì„ ì‚¬ìš©í•œë‹¤.
 	mMesh = CreateDefaultSubobject<UStaticMeshComponent>(
 		TEXT("Mesh"));
 
@@ -20,28 +20,28 @@ ATestActor::ATestActor()
 	mRotMovement = CreateDefaultSubobject<URotatingMovementComponent>(
 		TEXT("RotMove"));
 
-	// »ı¼ºÇÑ ÄÄÆ÷³ÍÆ®¸¦ Root·Î ¸¸µç´Ù.
-	// Root ÄÄÆ÷³ÍÆ®´Â World(Àı´ë)ÁÂÇ¥¸¦ µû¸¥´Ù.
+	// ìƒì„±í•œ ì»´í¬ë„ŒíŠ¸ë¥¼ Rootë¡œ ë§Œë“ ë‹¤.
+	// Root ì»´í¬ë„ŒíŠ¸ëŠ” World(ì ˆëŒ€)ì¢Œí‘œë¥¼ ë”°ë¥¸ë‹¤.
 	SetRootComponent(mMesh);
 
-	// mChildMeshÀÇ ºÎ¸ğ ÄÄÆ÷³ÍÆ®·Î mMesh¸¦ ÁöÁ¤ÇÑ´Ù.
+	// mChildMeshì˜ ë¶€ëª¨ ì»´í¬ë„ŒíŠ¸ë¡œ mMeshë¥¼ ì§€ì •í•œë‹¤.
 	mChildMesh->SetupAttachment(mMesh);
 
-	// SetRelativeLocation : ºÎ¸ğ·ÎºÎÅÍ ¾ó¸¶³ª ¶³¾îÁ®ÀÖ´ÂÁö¿¡ ´ëÇÑ
-	// »ó´ë À§Ä¡¸¦ ÁöÁ¤ÇÏ´Â ÇÔ¼öÀÌ´Ù.
+	// SetRelativeLocation : ë¶€ëª¨ë¡œë¶€í„° ì–¼ë§ˆë‚˜ ë–¨ì–´ì ¸ìˆëŠ”ì§€ì— ëŒ€í•œ
+	// ìƒëŒ€ ìœ„ì¹˜ë¥¼ ì§€ì •í•˜ëŠ” í•¨ìˆ˜ì´ë‹¤.
 	mChildMesh->SetRelativeLocation(FVector(300.0, 0.0, 0.0));
 
-	// RotMove°¡ ¾÷µ¥ÀÌÆ®ÇÒ ÄÄÆ÷³ÍÆ®¸¦ ÁöÁ¤ÇÑ´Ù.
+	// RotMoveê°€ ì—…ë°ì´íŠ¸í•  ì»´í¬ë„ŒíŠ¸ë¥¼ ì§€ì •í•œë‹¤.
 	mRotMovement->SetUpdatedComponent(mMesh);
 
-	// StaticMesh¸¦ ºÒ·¯¿Â´Ù.
-	// FObjectFinder¸¦ ÀÌ¿ëÇØ¼­ StaticMesh¸¦ ºÒ·¯¿À´Âµ¥ »ı¼ºÀÚ¿¡¼­
-	// ¿¡¼ÂÀÇ °æ·Î¸¦ ÁöÁ¤ÇÏ¸é ºÒ·¯¿Â´Ù.
+	// StaticMeshë¥¼ ë¶ˆëŸ¬ì˜¨ë‹¤.
+	// FObjectFinderë¥¼ ì´ìš©í•´ì„œ StaticMeshë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ”ë° ìƒì„±ìì—ì„œ
+	// ì—ì…‹ì˜ ê²½ë¡œë¥¼ ì§€ì •í•˜ë©´ ë¶ˆëŸ¬ì˜¨ë‹¤.
 	ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(
 		TEXT("/Script/Engine.StaticMesh'/Game/Cube1.Cube1'"));
 
-	// ºÒ·¯¿À´Â°Ô ¼º°øÇß´Ù¸é MeshComponent¿¡ ÁöÁ¤ÇÑ´Ù.
-	// ºÒ·¯¿Â Mesh´Â FObjectFinderÀÇ Object º¯¼ö¿¡ ÀúÀåµÇ¾î ÀÖ´Ù.
+	// ë¶ˆëŸ¬ì˜¤ëŠ”ê²Œ ì„±ê³µí–ˆë‹¤ë©´ MeshComponentì— ì§€ì •í•œë‹¤.
+	// ë¶ˆëŸ¬ì˜¨ MeshëŠ” FObjectFinderì˜ Object ë³€ìˆ˜ì— ì €ì¥ë˜ì–´ ìˆë‹¤.
 	if (MeshAsset.Succeeded())
 	{
 		mMesh->SetStaticMesh(MeshAsset.Object);
@@ -61,14 +61,14 @@ void ATestActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// xÃà -¹æÇâÀ¸·Î ÀÌµ¿ÇÏ°Ô ¸¸µç´Ù.
-	// Actor´Â TransformÀÌ ¾ø´Ù. ActorÀÇ TransformÀ» º¯°æÇÏ´Â°ÍÀº
-	// RootComponentÀÇ TransformÀ» º¯°æÇÏ´Â°Í°ú °°´Ù.
-	// FVector´Â X, Y, Z¸¦ °¡Áö°í ÀÖ´Â ¹éÅÍ ±¸Á¶Ã¼ÀÌ´Ù.
-	// X, Y, Z´Â ±âº»À¸·Î doubleÅ¸ÀÔÀ¸·Î µÇ¾î ÀÖ´Ù.
+	// xì¶• -ë°©í–¥ìœ¼ë¡œ ì´ë™í•˜ê²Œ ë§Œë“ ë‹¤.
+	// ActorëŠ” Transformì´ ì—†ë‹¤. Actorì˜ Transformì„ ë³€ê²½í•˜ëŠ”ê²ƒì€
+	// RootComponentì˜ Transformì„ ë³€ê²½í•˜ëŠ”ê²ƒê³¼ ê°™ë‹¤.
+	// FVectorëŠ” X, Y, Zë¥¼ ê°€ì§€ê³  ìˆëŠ” ë°±í„° êµ¬ì¡°ì²´ì´ë‹¤.
+	// X, Y, ZëŠ” ê¸°ë³¸ìœ¼ë¡œ doubleíƒ€ì…ìœ¼ë¡œ ë˜ì–´ ìˆë‹¤.
 	AddActorWorldOffset(FVector(-200.0 * DeltaTime, 0.0, 0.0));
 
-	// Áü¹ú¶ô : ÃàÀÌ °ãÄ¡´Â Çö»ó
+	// ì§ë²Œë½ : ì¶•ì´ ê²¹ì¹˜ëŠ” í˜„ìƒ
 	//AddActorWorldRotation(FRotator(0.0, 180.0 * DeltaTime, 0.0));
 
 

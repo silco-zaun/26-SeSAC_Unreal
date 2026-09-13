@@ -10,7 +10,7 @@ void UAnimNotify_MonsterDeathEnd::Notify(USkeletalMeshComponent* MeshComp,
 {
 	Super::Notify(MeshComp, Animation, EventReference);
 
-	// SkeletalMeshComponent¸¦ °¡Áö°í ÀÖ´Â Actor¸¦ ¾ò¾î¿Â´Ù.
+	// SkeletalMeshComponentë¥¼ ê°€ì§€ê³  ìžˆëŠ” Actorë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	TObjectPtr<AMonsterBase> Monster =
 		MeshComp->GetOwner<AMonsterBase>();
 

@@ -8,10 +8,10 @@ UBTTask_MonsterPatrolWait::UBTTask_MonsterPatrolWait()
 {
 	NodeName = TEXT("MonsterPatrolWait");
 
-	// TickÀ» È£ÃâÇÒ ¼ö ÀÖ°Ô ÇÑ´Ù.
+	// Tickì„ í˜¸ì¶œí•  ìˆ˜ ìˆê²Œ í•œë‹¤.
 	bNotifyTick = true;
 
-	// Task°¡ ³¡³µÀ» ¶§, OnTaskFinished¸¦ È£ÃâÇÒ ¼ö ÀÖ°Ô ÇÑ´Ù.
+	// Taskê°€ ëë‚¬ì„ ë•Œ, OnTaskFinishedë¥¼ í˜¸ì¶œí•  ìˆ˜ ìˆê²Œ í•œë‹¤.
 	bNotifyTaskFinished = true;
 }
 
@@ -23,19 +23,19 @@ uint16 UBTTask_MonsterPatrolWait::GetInstanceMemorySize() const
 EBTNodeResult::Type UBTTask_MonsterPatrolWait::ExecuteTask(
 	UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	// AIController¸¦ ¾ò¾î¿Â´Ù.
+	// AIControllerë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
 		return EBTNodeResult::Failed;
 
-	// OwnerComp°¡ °¡Áö°í ÀÖ´Â BlackboardComponent¸¦ ¾ò¾î¿Â´Ù.
+	// OwnerCompê°€ ê°€ì§€ê³  ìˆëŠ” BlackboardComponentë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
 		return EBTNodeResult::Failed;
 
-	// ºí·¢º¸µå¿¡¼­ TargetÀ» ¾ò¾î¿Â´Ù.
+	// ë¸”ë™ë³´ë“œì—ì„œ Targetì„ ì–»ì–´ì˜¨ë‹¤.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (Target)
@@ -56,14 +56,14 @@ EBTNodeResult::Type UBTTask_MonsterPatrolWait::ExecuteTask(
 		FTimerDelegate::CreateUObject(this, &UBTTask_MonsterPatrolWait::WaitFinish,
 			NodeMemory), mWaitTime, false);
 
-	// µµÂøÇÒ¶§±îÁö Task°¡ Á¾·áµÇ¸é ¾ÈµÇ±â ¶§¹®¿¡ °è¼Ó ÁøÇà½ÃÅ²´Ù.
+	// ë„ì°©í• ë•Œê¹Œì§€ Taskê°€ ì¢…ë£Œë˜ë©´ ì•ˆë˜ê¸° ë•Œë¬¸ì— ê³„ì† ì§„í–‰ì‹œí‚¨ë‹¤.
 	return EBTNodeResult::InProgress;
 }
 
 void UBTTask_MonsterPatrolWait::TickTask(UBehaviorTreeComponent& OwnerComp,
 	uint8* NodeMemory, float DeltaSeconds)
 {
-	// AIController¸¦ ¾ò¾î¿Â´Ù.
+	// AIControllerë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
@@ -72,7 +72,7 @@ void UBTTask_MonsterPatrolWait::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// OwnerComp°¡ °¡Áö°í ÀÖ´Â BlackboardComponent¸¦ ¾ò¾î¿Â´Ù.
+	// OwnerCompê°€ ê°€ì§€ê³  ìˆëŠ” BlackboardComponentë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
@@ -81,7 +81,7 @@ void UBTTask_MonsterPatrolWait::TickTask(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	// ºí·¢º¸µå¿¡¼­ TargetÀ» ¾ò¾î¿Â´Ù.
+	// ë¸”ë™ë³´ë“œì—ì„œ Targetì„ ì–»ì–´ì˜¨ë‹¤.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (Target)

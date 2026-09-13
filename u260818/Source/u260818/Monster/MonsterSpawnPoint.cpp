@@ -16,7 +16,7 @@ AMonsterSpawnPoint::AMonsterSpawnPoint()
 	mPatrolPath->SetupAttachment(mRoot);
 
 #if WITH_EDITORONLY_DATA
-	// ¿¡µğÅÍ¿¡¼­´Â RootComponent°¡ ¾îµğ¿¡ ÀÖ´ÂÁö Ç¥½ÃÇØÁØ´Ù.
+	// ì—ë””í„°ì—ì„œëŠ” RootComponentê°€ ì–´ë””ì— ìˆëŠ”ì§€ í‘œì‹œí•´ì¤€ë‹¤.
 	mRoot->bVisualizeComponent = true;
 
 	mArrow = CreateEditorOnlyDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
@@ -42,7 +42,7 @@ void AMonsterSpawnPoint::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 
-	// ¹è¿­À» ºñ¿öÁØ´Ù.
+	// ë°°ì—´ì„ ë¹„ì›Œì¤€ë‹¤.
 	mPatrolPoints.Empty();
 
 	int32 Count = mPatrolPath->GetNumberOfSplinePoints();
@@ -75,7 +75,7 @@ void AMonsterSpawnPoint::ResetSpawn()
 		SpawnMonster();
 	else
 	{
-		// Å¸ÀÌ¸Ó¸¦ »ı¼ºÇÑ´Ù.
+		// íƒ€ì´ë¨¸ë¥¼ ìƒì„±í•œë‹¤.
 		GetWorldTimerManager().SetTimer(mSpawnTimerHandle,
 			this, &AMonsterSpawnPoint::SpawnTimerCallback, mSpawnDelay,
 			false);
@@ -95,7 +95,7 @@ void AMonsterSpawnPoint::SpawnMonster()
 	{
 		FVector SpawnLocation = GetActorLocation();
 
-		// »ı¼ºÇÒ Å¬·¡½º¸¦ ÀÌ¿ëÇØ¼­ CDO¸¦ ¾ò¾î¿Ã ¼ö ÀÖ´Ù.
+		// ìƒì„±í•  í´ë˜ìŠ¤ë¥¼ ì´ìš©í•´ì„œ CDOë¥¼ ì–»ì–´ì˜¬ ìˆ˜ ìˆë‹¤.
 		TObjectPtr<AMonsterBase> CDO
 			= mSpawnClass->GetDefaultObject<AMonsterBase>();
 
@@ -113,7 +113,7 @@ void AMonsterSpawnPoint::SpawnMonster()
 
 		mSpawnMonster->SetSpawnPoint(this);
 
-		// ¼øÂû °æ·Î Àü´Ş.
+		// ìˆœì°° ê²½ë¡œ ì „ë‹¬.
 		mSpawnMonster->SetPatrolPoints(mPatrolPoints);
 	}
 }

@@ -114,30 +114,30 @@ void AMonsterBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		{
 			if (AssetSystem->GetLoadMonsterInfo())
 			{
-				// Drop ¾ÆÀÌÅÛ È®·üÀ» °è»êÇÏ°í Á¤º¸¸¦ ³Ñ°ÜÁØ´Ù.
+				// Drop ì•„ì´í…œ í™•ë¥ ì„ ê³„ì‚°í•˜ê³  ì •ë³´ë¥¼ ë„˜ê²¨ì¤€ë‹¤.
 				for (auto& Item : mDropItems)
 				{
-					// FRand() ÇÔ¼ö´Â 0 ~ 1 »çÀÌÀÇ floatÅ¸ÀÔ ³­¼ö¸¦ ¾ò¾î¿Â´Ù.
+					// FRand() í•¨ìˆ˜ëŠ” 0 ~ 1 ì‚¬ì´ì˜ floatíƒ€ì… ë‚œìˆ˜ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 					float Percent = FMath::FRand();
 
-					// RoundToFloat ÇÔ¼ö´Â ¼Ò¼öÁ¡ ÀÚ¸®¸¦ °¡Àå °¡±î¿î Á¤¼ö °ªÀ¸·Î ¹İ¿Ã¸²ÇØ¼­
-					// floatÀ¸·Î ¹İÈ¯ÇØÁÖ´Â ÇÔ¼öÀÌ´Ù.
+					// RoundToFloat í•¨ìˆ˜ëŠ” ì†Œìˆ˜ì  ìë¦¬ë¥¼ ê°€ì¥ ê°€ê¹Œìš´ ì •ìˆ˜ ê°’ìœ¼ë¡œ ë°˜ì˜¬ë¦¼í•´ì„œ
+					// floatìœ¼ë¡œ ë°˜í™˜í•´ì£¼ëŠ” í•¨ìˆ˜ì´ë‹¤.
 					Percent = FMath::RoundToFloat(Percent * 10000.f) / 100.f;
 
 					UE_LOG(Sac8Debug, Warning, TEXT("%s (%.2f <= %.2f)"), *Item.ItemKey, Percent, Item.Percent);
 
 					if (Percent <= Item.Percent)
 					{
-						// ¾ÆÀÌÅÛ Å°¸¦ ÀÌ¿ëÇØ¼­ Á¤º¸¸¦ ¾ò¾î¿Â´Ù.
+						// ì•„ì´í…œ í‚¤ë¥¼ ì´ìš©í•´ì„œ ì •ë³´ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 						const FItemTableInfo* ItemInfo =
 							AssetSystem->FindItemInfo(*Item.ItemKey);
 
-						// ¾ÆÀÌÅÛ Á¤º¸°¡ ÀÖÀ» °æ¿ì ¾ÆÀÌÅÛÀ» »ı¼ºÇÑ´Ù.
+						// ì•„ì´í…œ ì •ë³´ê°€ ìˆì„ ê²½ìš° ì•„ì´í…œì„ ìƒì„±í•œë‹¤.
 						if (ItemInfo)
 						{
 							UE_LOG(Sac8Debug, Warning, TEXT("DropItem : %s"), *Item.ItemKey);
-							// Ä®, °©¿Ê, Ã¼·ÂÈ¸º¹¹°¾àÁß 1°³¸¦ ·£´ıÇÏ°Ô °¡Áö°í ÀÖ´Â
-							// »óÀÚ¸¦ ¸¸µé¾îº¸ÀÚ.
+							// ì¹¼, ê°‘ì˜·, ì²´ë ¥íšŒë³µë¬¼ì•½ì¤‘ 1ê°œë¥¼ ëœë¤í•˜ê²Œ ê°€ì§€ê³  ìˆëŠ”
+							// ìƒìë¥¼ ë§Œë“¤ì–´ë³´ì.
 							FActorSpawnParameters param;
 							param.SpawnCollisionHandlingOverride =
 								ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -199,10 +199,10 @@ float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 		if (!mState->AddHP(-DamageAmount))
 		{
 			//Destroy();
-			// Á×´Â ¸ğ¼ÇÀ» Àç»ıÇÑ´Ù.
+			// ì£½ëŠ” ëª¨ì…˜ì„ ì¬ìƒí•œë‹¤.
 			ChangeAnim((uint8)EMonsterNormalAnimType::Death);
 
-			// ÀÎ°øÁö´ÉÀ» ¸ØÃá´Ù.
+			// ì¸ê³µì§€ëŠ¥ì„ ë©ˆì¶˜ë‹¤.
 			AAIController* AI = GetController<AAIController>();
 
 			AI->BrainComponent->StopLogic(TEXT("Death"));
@@ -211,10 +211,10 @@ float AMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 
 			mCapsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-			// Component ºñÈ°¼ºÈ­.
+			// Component ë¹„í™œì„±í™”.
 			mMovement->Deactivate();
 
-			// Tick ºñÈ°¼ºÈ­
+			// Tick ë¹„í™œì„±í™”
 			mMovement->SetComponentTickEnabled(false);
 		}
 	}

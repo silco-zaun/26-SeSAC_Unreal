@@ -56,13 +56,13 @@ bool UInventoryComponent::AddItem(const FItemTableInfo& ItemInfo)
 			}
 		}
 
-		// ������ �������� ���� ���
+		// 동일한 아이템이 없을 경우
 		if (!Item)
 		{
 			Item = NewObject<UItemObject>();
 			Item->SetItemInfo(ItemInfo);
 
-			// �κ��丮 ĭ���� ����ִ� ĭ�� ã�´�.
+			// 인벤토리 칸에서 비어있는 칸을 찾는다.
 			for (int32 i = 0; i < MaxCount; ++i)
 			{
 				if (!mItemList[i])
@@ -80,7 +80,7 @@ bool UInventoryComponent::AddItem(const FItemTableInfo& ItemInfo)
 		UItemObject* Item = NewObject<UItemObject>();
 		Item->SetItemInfo(ItemInfo);
 
-		// �κ��丮 ĭ���� ����ִ� ĭ�� ã�´�.
+		// 인벤토리 칸에서 비어있는 칸을 찾는다.
 		for (int32 i = 0; i < MaxCount; ++i)
 		{
 			if (!mItemList[i])
