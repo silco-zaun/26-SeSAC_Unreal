@@ -113,7 +113,7 @@ struct FItemTableInfo : public FTableRowBase
 	TObjectPtr<USkeletalMesh> ItemMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	TArray<FItemOption> Option;
+	TArray<FItemOption> Options;
 };
 
 UENUM(BlueprintType)
