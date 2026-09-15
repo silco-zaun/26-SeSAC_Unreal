@@ -15,4 +15,10 @@ class U260818_API UIconDragDropOperation : public UDragDropOperation
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY()
+	class UIconWidget* mDragIcon = nullptr;
+
+	UPROPERTY()
+	class USlotWidget* mDragStartSlot = nullptr;
 };

@@ -86,22 +86,48 @@ FReply UInventoryWidget::NativeOnMouseMove(const FGeometry& InGeometry,
 	return FReply::Handled();
 }
 
+// Component를 넘겨야 하나?
+// Inventory Max Count, Item Object를 넘기는건?
 void UInventoryWidget::InitInventory(UInventoryComponent* Inventory)
 {
+	mInventoryComponent = Inventory;
 
+	int32 MaxCount = mInventoryComponent->GetInventoryMaxCount();
+
+	for (int32 i = 0; i < MaxCount; ++i)
+	{
+		FString SlotName = FString::Printf(TEXT("WB_Slot_%03d"), i + 1);
+
+		USlotWidget* SlotWidget = Cast<USlotWidget>(GetWidgetFromName(*SlotName));
+
+		SlotWidget->SetSlotIndex(i);
+		SlotWidget->SetItem(nullptr);
+
+		mSlotWidgetArray.Add(SlotWidget);
+
+		UItemObject* Item = mInventoryComponent->GetItem(i);
+
+		if (Item)
+			SlotWidget->SetItem(Item);
+	}
+
+	mInventoryComponent->AddItemChangeCallback<UInventoryWidget>(this,
+		&UInventoryWidget::ItemChange);
+	mInventoryComponent->AddItemCountChangeCallback<UInventoryWidget>(this,
+		&UInventoryWidget::ItemCountChange);
 }
 
 void UInventoryWidget::CloseButtonClick()
 {
-
+	SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UInventoryWidget::ItemChange(UItemObject* Item, int32 Index)
 {
-
+	mSlotWidgetArray[Index]->SetItem(Item);
 }
 
 void UInventoryWidget::ItemCountChange(int32 Count, int32 Index)
 {
-
+	mSlotWidgetArray[Index]->SetItemCount(Count);
 }
