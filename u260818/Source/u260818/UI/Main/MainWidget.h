@@ -24,6 +24,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
 	TObjectPtr<class UInventoryWidget> mInventory;
 
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<class UItemInfoWidget> mItemInfo;
+
 protected:
 	virtual void NativeOnInitialized();
+
+public:
+	void EnableItemInfoWidget(bool Enable = true);
+	void ComputeItemInfoLocation(const FPointerEvent& InMouseEvent);
+	void SetItemInfo(class UItemObject* Item);
 };

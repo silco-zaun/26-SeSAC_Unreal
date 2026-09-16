@@ -7,7 +7,9 @@
 #include "Components/EditableTextBox.h"
 #include "Components/Border.h"
 #include "Components/ScrollBox.h"
+#include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
+#include "Components/ListView.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/WidgetLayoutLibrary.h"

@@ -31,6 +31,8 @@ protected:
 	class USlotWidget* mParentSlot = nullptr;
 	UTexture2D* mIconTexture = nullptr;
 
+	bool mMouseOn = false;
+
 public:
 	void SetParentSlot(class USlotWidget* ParentSlot)
 	{
@@ -42,6 +44,7 @@ protected:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
 	virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation);
+	
 
 public:
 	void SetIconImage(UTexture2D* Image);
