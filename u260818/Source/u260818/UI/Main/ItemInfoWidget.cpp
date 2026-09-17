@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "ItemInfoWidget.h"
@@ -27,30 +27,29 @@ void UItemInfoWidget::SetItemInfo(const FItemTableInfo& Info,
 
 	mItemDesc->SetText(FText::FromString(Info.Desc));
 
-	FString Price = FString::Printf(TEXT("±¸¸Å°¡°İ : %d"), Info.PurchasePrice);
+	FString Price = FString::Printf(TEXT("êµ¬ë§¤ê°€ê²© : %d"), Info.PurchasePrice);
 
 	mItemPrice->SetText(FText::FromString(Price));
 
-	FString Sell = FString::Printf(TEXT("ÆÇ¸Å°¡°İ : %d"), Info.SellPrice);
+	FString Sell = FString::Printf(TEXT("íŒë§¤ê°€ê²© : %d"), Info.SellPrice);
 
 	mItemSell->SetText(FText::FromString(Sell));
 
-	// ¿É¼Ç ¸ñ·ÏÀ» ºñ¿öÁØ´Ù.
+	// ì˜µì…˜ ëª©ë¡ì„ ë¹„ì›Œì¤€ë‹¤.
 	mOptionList->ClearListItems();
 
-	// ¿É¼Ç ¼ö¸¸Å­ ¹İº¹ÇÑ´Ù.
+	// ì˜µì…˜ ìˆ˜ë§Œí¼ ë°˜ë³µí•œë‹¤.
 	for (auto Option : Info.Options)
 	{
 		UItemOptionEntryObject* EntryObject =
 			NewObject<UItemOptionEntryObject>();
 
-		//FString OptionName = ConvertItemOptionName(Option.Type);
+		FString OptionName = ConvertItemOptionName(Option.Type);
 
-		//EntryObject->SetOptionName(OptionName);
-		//EntryObject->SetOption(Option.Option);
+		EntryObject->SetOptionName(OptionName);
+		EntryObject->SetOption(Option.Option);
 
-		//mOptionList->AddItem(EntryObject);
-
+		mOptionList->AddItem(EntryObject);
 	}
 }
 

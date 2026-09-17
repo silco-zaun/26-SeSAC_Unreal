@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -29,7 +29,7 @@ protected:
 	virtual void NativeOnInitialized();
 
 protected:
-	// ºí·çÇÁ¸°Æ®¿¡¼­ È£Ãâ °¡´ÉÇÑ ÇÔ¼ö¸¦ ¸¸µç´Ù.
+	// ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ í˜¸ì¶œ ê°€ëŠ¥í•œ í•¨ìˆ˜ë¥¼ ë§Œë“ ë‹¤.
 	UFUNCTION(BlueprintCallable)
 	void SetData(UObject* EntryObject);
 };

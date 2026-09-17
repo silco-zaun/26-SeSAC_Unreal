@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "SlotWidget.h"
@@ -42,7 +42,7 @@ bool USlotWidget::NativeOnDrop(const FGeometry& InGeometry,
 	if (!Inventory)
 		return false;
 
-	// ÀÎº¥Åä¸® ÄÄÆ÷³ÍÆ®¸¦ ¾ò¾î¿Â´Ù.
+	// ì¸ë²¤í† ë¦¬ ì»´í¬ë„ŒíŠ¸ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	UInventoryComponent* InventoryComponent = Inventory->GetInventoryComponent();
 
 	if (!InventoryComponent)

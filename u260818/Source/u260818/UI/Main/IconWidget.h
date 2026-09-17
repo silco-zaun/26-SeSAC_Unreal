@@ -44,7 +44,8 @@ protected:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
 	virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation);
-	
+	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent);
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent);
 
 public:
 	void SetIconImage(UTexture2D* Image);
@@ -55,4 +56,7 @@ private:
 	void UseInventoryItem();
 	void UseSkill();
 	void UseQuickSlotItem();
+	void InventoryItemRender();
+	void QuickSlotItemRender();
+	void SkillInfoRender();
 };

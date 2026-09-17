@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "EngineMinimal.h"
 #include "Engine.h"
@@ -78,6 +78,8 @@ struct FItemOption
 	UPROPERTY(EditANywhere, BlueprintReadWrite, Category = "ItemInfo")
 	float Option;
 };
+
+FString ConvertItemOptionName(EItemOptionType Type);
 
 // 데이터테이블용 구조체는 반드시 FTableRowBase를 상속받아야 한다.
 USTRUCT(BlueprintType)

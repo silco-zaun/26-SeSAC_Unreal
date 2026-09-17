@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -17,10 +17,10 @@ public:
 	UInventoryWidget(const FObjectInitializer& ObjectInitializer);
 
 protected:
-	// À§Á¬ ºí·çÇÁ¸°Æ®¿¡¼­ ¹èÄ¡ÇÑ À§Á¬ÀÌ º¯¼ö¿©ºÎ Ã¼Å©°¡ µÇ¾îÀÖÀ» °æ¿ì
-	// UPROPERTYÀÇ meta¿¡ BindWidgetÀ» ÀÌ¿ëÇØ¼­ ¹èÄ¡ÇÑ À§Á¬ÀÇ °´Ã¼¸¦
-	// ¾ò¾î¿Ã ¼ö ÀÖ´Ù. º¯¼ö ÀÌ¸§Àº ¹İµå½Ã À§Á¬ ºí·çÇÁ¸°Æ®¿¡¼­ ÀÛ¼ºÇÑ ÀÌ¸§°ú
-	// µ¿ÀÏÇØ¾ß ÇÑ´Ù.
+	// ìœ„ì ¯ ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ ë°°ì¹˜í•œ ìœ„ì ¯ì´ ë³€ìˆ˜ì—¬ë¶€ ì²´í¬ê°€ ë˜ì–´ìˆì„ ê²½ìš°
+	// UPROPERTYì˜ metaì— BindWidgetì„ ì´ìš©í•´ì„œ ë°°ì¹˜í•œ ìœ„ì ¯ì˜ ê°ì²´ë¥¼
+	// ì–»ì–´ì˜¬ ìˆ˜ ìˆë‹¤. ë³€ìˆ˜ ì´ë¦„ì€ ë°˜ë“œì‹œ ìœ„ì ¯ ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ ì‘ì„±í•œ ì´ë¦„ê³¼
+	// ë™ì¼í•´ì•¼ í•œë‹¤.
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> mCloseButton;
 
@@ -34,10 +34,10 @@ protected:
 
 	bool mDragEnable = false;
 
-	// Drag¸¦ ½ÃÀÛÇÑ ¸¶¿ì½º À§Ä¡.
+	// Dragë¥¼ ì‹œì‘í•œ ë§ˆìš°ìŠ¤ ìœ„ì¹˜.
 	FVector2D mDragStartMousePos;
 
-	// Drag¸¦ ½ÃÀÛÇßÀ» ¶§ À§Á¬ÀÇ À§Ä¡.
+	// Dragë¥¼ ì‹œì‘í–ˆì„ ë•Œ ìœ„ì ¯ì˜ ìœ„ì¹˜.
 	FVector2D mDragStartWidgetPos;
 
 public:

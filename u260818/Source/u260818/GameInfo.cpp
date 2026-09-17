@@ -1,4 +1,4 @@
-#include "GameInfo.h"
+﻿#include "GameInfo.h"
 
 // 로그 정의
 DEFINE_LOG_CATEGORY(Sac8Debug);
@@ -36,4 +36,35 @@ bool GetRandomNavigationPoint(FVector& Result, UWorld* World,
 	}
 
 	return false;
+}
+
+FString ConvertItemOptionName(EItemOptionType Type)
+{
+	switch (Type)
+	{
+	case EItemOptionType::Attack:
+		return TEXT("Attack");
+	case EItemOptionType::Defense:
+		return TEXT("Defense");
+	case EItemOptionType::HPMax:
+		return TEXT("HPMax");
+	case EItemOptionType::MPMax:
+		return TEXT("MPMax");
+	case EItemOptionType::HPRecovery:
+		return TEXT("HPRecovery");
+	case EItemOptionType::MPRecovery:
+		return TEXT("MPRecovery");
+	case EItemOptionType::MoveSpeed:
+		return TEXT("MoveSpeed");
+	case EItemOptionType::AttackSpeed:
+		return TEXT("AttackSpeed");
+	case EItemOptionType::AttackDistance:
+		return TEXT("AttackDistance");
+	case EItemOptionType::CriticalRatio:
+		return TEXT("CriticalRatio");
+	case EItemOptionType::CriticalDamage:
+		return TEXT("CriticalDamage");
+	}
+
+	return TEXT("");
 }

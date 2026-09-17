@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "MainWidget.h"
@@ -25,20 +25,20 @@ void UMainWidget::EnableItemInfoWidget(bool Enable)
 
 void UMainWidget::ComputeItemInfoLocation(const FPointerEvent& InMouseEvent)
 {
-	// ItemInfoWidgetÀÇ CanvasPanelSlotÀ» ±¸ÇÑ´Ù.
+	// ItemInfoWidgetì˜ CanvasPanelSlotì„ êµ¬í•œë‹¤.
 	UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(mItemInfo->Slot);
 
-	// ScreenSpace¿¡¼­ÀÇ ¸¶¿ì½º À§Ä¡¸¦ ±¸ÇÑ´Ù.
+	// ScreenSpaceì—ì„œì˜ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ êµ¬í•œë‹¤.
 	FVector2D MousePos = InMouseEvent.GetScreenSpacePosition();
 
-	// ItemInfoWidgetÀÇ ºÎ¸ğ PanelÀ» ±¸ÇÑ´Ù.
+	// ItemInfoWidgetì˜ ë¶€ëª¨ Panelì„ êµ¬í•œë‹¤.
 	UPanelWidget* ParentPanel = mItemInfo->GetParent();
 
-	// ¸¶¿ì½º À§Ä¡¸¦ ÀÌ À§Á¬ ³»ºÎ¿¡¼­ÀÇ À§Ä¡·Î ±¸ÇÑ´Ù.
+	// ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ ì´ ìœ„ì ¯ ë‚´ë¶€ì—ì„œì˜ ìœ„ì¹˜ë¡œ êµ¬í•œë‹¤.
 	FVector2D WidgetPos = ParentPanel->GetCachedGeometry().AbsoluteToLocal(MousePos);
-
-	// Á¤È®ÇÏ°Ô ¸¶¿ì½ºÀÇ À§Ä¡·Î ³ª¿À±â ¶§¹®¿¡ ÀÌ À§Ä¡¿¡¼­ ¿À¸¥ÂÊÀ¸·Î
-	// ¾à°£ ¶³¾îÁö°Ô ÁÂÇ¥¸¦ ÁöÁ¤ÇÑ´Ù.
+	
+	// ì •í™•í•˜ê²Œ ë§ˆìš°ìŠ¤ì˜ ìœ„ì¹˜ë¡œ ë‚˜ì˜¤ê¸° ë•Œë¬¸ì— ì´ ìœ„ì¹˜ì—ì„œ ì˜¤ë¥¸ìª½ìœ¼ë¡œ
+	// ì•½ê°„ ë–¨ì–´ì§€ê²Œ ì¢Œí‘œë¥¼ ì§€ì •í•œë‹¤.
 	WidgetPos.X += 20.0;
 
 	PanelSlot->SetPosition(WidgetPos);

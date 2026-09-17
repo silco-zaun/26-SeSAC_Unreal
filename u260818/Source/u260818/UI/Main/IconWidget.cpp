@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "IconWidget.h"
@@ -7,6 +7,7 @@
 #include "../../Subsystem/UISubsystem.h"
 #include "InventoryWidget.h"
 #include "../../Player/InventoryComponent.h"
+#include "MainWidget.h"
 
 
 UIconWidget::UIconWidget(const FObjectInitializer& ObjectInitializer) :
@@ -38,45 +39,120 @@ FReply UIconWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 	}
 	else if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
 	{
-		// Drag ½ÃÀÛ ÀÌº¥Æ®¸¦ ¹ß»ı½ÃÅ²´Ù.
+		// Drag ì‹œì‘ ì´ë²¤íŠ¸ë¥¼ ë°œìƒì‹œí‚¨ë‹¤.
 		FEventReply EventReply = UWidgetBlueprintLibrary::DetectDragIfPressed(
 			InMouseEvent, this, EKeys::LeftMouseButton);
 
 		return EventReply.NativeReply;
 	}
 	
-	// Handled()·Î Ã³¸®¸¦ ÇÏ¿© ÀÌ À§Á¬ÀÌ ¸¶¿ì½º Å¬¸¯ ÀÌº¥Æ®¸¦ Ã³¸®Çß´Ù´Â ÀÇ¹Ì°¡ µÈ´Ù.
+	// Handled()ë¡œ ì²˜ë¦¬ë¥¼ í•˜ì—¬ ì´ ìœ„ì ¯ì´ ë§ˆìš°ìŠ¤ í´ë¦­ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í–ˆë‹¤ëŠ” ì˜ë¯¸ê°€ ëœë‹¤.
 	return FReply::Unhandled();
 }
 
 FReply UIconWidget::NativeOnMouseMove(const FGeometry& InGeometry,
 	const FPointerEvent& InMouseEvent)
 {
+	if (GetVisibility() == ESlateVisibility::Collapsed)
+		return FReply::Unhandled();
+	else if (!mMouseOn)
+		return FReply::Unhandled();
+
+	// ì•„ì´í…œ ì •ë³´ ìœ„ì ¯ì˜ ìœ„ì¹˜ë¥¼ êµ¬í•œë‹¤.
+	UUISubsystem* UISubsystem = GetGameInstance()->GetSubsystem<UUISubsystem>();
+
+	if (UISubsystem)
+	{
+		UMainWidget* Main = UISubsystem->FindWidget<UMainWidget>(TEXT("Main"));
+
+		if (Main)
+		{
+			Main->ComputeItemInfoLocation(InMouseEvent);
+		}
+	}
+
 	return FReply::Handled();
 }
 
 void UIconWidget::NativeOnDragDetected(const FGeometry& InGeometry,
 	const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
-	// Drag¸¦ ÇÏ±â À§ÇÑ OperationÀ» »ı¼ºÇÑ´Ù.
+	// Dragë¥¼ í•˜ê¸° ìœ„í•œ Operationì„ ìƒì„±í•œë‹¤.
 	UIconDragDropOperation* DragIcon = NewObject<UIconDragDropOperation>();
 
 	DragIcon->mDragIcon = this;
 	DragIcon->mDragStartSlot = mParentSlot;
 	DragIcon->Pivot = EDragPivot::MouseDown;
 
-	// DragÇÒ ¶§ º¸¿©ÁÙ IconÀ» »õ·Î »ı¼ºÇÏ¿© º¸¿©ÁÖ°Ô ÇÑ´Ù.
+	// Dragí•  ë•Œ ë³´ì—¬ì¤„ Iconì„ ìƒˆë¡œ ìƒì„±í•˜ì—¬ ë³´ì—¬ì£¼ê²Œ í•œë‹¤.
 	UIconWidget* DragRenderWidget = CreateWidget<UIconWidget>(GetWorld(),
 		mDragIconClass);
 
 	DragRenderWidget->mIconImage->SetBrushFromTexture(mIconTexture);
-	// Alpha¸¦ 0.5·Î ÁÖ¾î¼­ ¹İÅõ¸íÇÏ°Ô Ãâ·ÂµÇµµ·Ï ÇÑ´Ù.
+	// Alphaë¥¼ 0.5ë¡œ ì£¼ì–´ì„œ ë°˜íˆ¬ëª…í•˜ê²Œ ì¶œë ¥ë˜ë„ë¡ í•œë‹¤.
 	DragRenderWidget->mIconImage->SetBrushTintColor(FLinearColor(1.f, 1.f, 1.f, 0.5f));
 	DragRenderWidget->EnableCount(false);
 
 	DragIcon->DefaultDragVisual = DragRenderWidget;
 
 	OutOperation = DragIcon;
+}
+
+void UIconWidget::NativeOnMouseEnter(const FGeometry& InGeometry,
+	const FPointerEvent& InMouseEvent)
+{
+	UE_LOG(Sac8Debug, Warning, TEXT("UIconWidget::NativeOnMouseEnter"));
+
+	mMouseOn = true;
+
+	UUISubsystem* UISubsystem = GetGameInstance()->GetSubsystem<UUISubsystem>();
+
+	if (UISubsystem)
+	{
+		UMainWidget* Main = UISubsystem->FindWidget<UMainWidget>(TEXT("Main"));
+
+		if (Main)
+		{
+			UE_LOG(Sac8Debug, Warning, TEXT("EnableItemInfoWidget"));
+			Main->EnableItemInfoWidget(true);
+
+			// ì•„ì´í…œ ì •ë³´ë¥¼ ItemInfoWidgetì— ì „ë‹¬í•´ì„œ ì •ë³´ë¥¼ ê°±ì‹ í•œë‹¤.
+			// ì´ ì•„ì´ì½˜ì´ ì†Œì†ë˜ì–´ ìˆëŠ” SlotWidgetì´ ì–´ë–¤ UIì— ì†í•œ
+			// ìœ„ì ¯ì¸ì§€ íŒë‹¨í•œë‹¤.
+			switch (mParentSlot->GetSlotType())
+			{
+			case ESlotType::Inventory:
+				InventoryItemRender();
+				break;
+			case ESlotType::Skill:
+				SkillInfoRender();
+				break;
+			case ESlotType::Quick:
+				QuickSlotItemRender();
+				break;
+			}
+		}
+	}
+}
+
+void UIconWidget::NativeOnMouseLeave(const FPointerEvent& InMouseEvent)
+{
+	UE_LOG(Sac8Debug, Warning, TEXT("UIconWidget::NativeOnMouseLeave"));
+
+	mMouseOn = false;
+
+	UUISubsystem* UISubsystem = GetGameInstance()->GetSubsystem<UUISubsystem>();
+
+	if (UISubsystem)
+	{
+		UMainWidget* Main = UISubsystem->FindWidget<UMainWidget>(TEXT("Main"));
+
+		if (Main)
+		{
+			UE_LOG(Sac8Debug, Warning, TEXT("DisableItemInfoWidget"));
+			Main->EnableItemInfoWidget(false);
+		}
+	}
 }
 
 void UIconWidget::SetIconImage(UTexture2D* Image)
@@ -121,3 +197,44 @@ void UIconWidget::UseQuickSlotItem()
 {
 }
 
+void UIconWidget::InventoryItemRender()
+{
+	// í˜„ì¬ ìŠ¬ë¡¯ì˜ ì¸ë±ìŠ¤ë¥¼ ì–»ì–´ì˜¨ë‹¤.
+	uint32 SlotIndex = mParentSlot->GetIndex();
+
+	// ì¸ë²¤í† ë¦¬ ì»´í¬ë„ŒíŠ¸ë¥¼ ì–»ì–´ì˜¨ë‹¤.
+	UUISubsystem* UISubsystem = GetGameInstance()->GetSubsystem<UUISubsystem>();
+
+	if (UISubsystem)
+	{
+		UInventoryWidget* InventoryWidget = UISubsystem->FindWidget<UInventoryWidget>(TEXT("Inventory"));
+
+		if (InventoryWidget)
+		{
+			UInventoryComponent* Inventory =
+				InventoryWidget->GetInventoryComponent();
+
+			UItemObject* Item = Inventory->GetItem(SlotIndex);
+
+			if (Item)
+			{
+				UMainWidget* Main = UISubsystem->FindWidget<UMainWidget>(TEXT("Main"));
+
+				if (Main)
+				{
+					Main->SetItemInfo(Item);
+				}
+			}
+		}
+	}
+}
+
+void UIconWidget::QuickSlotItemRender()
+{
+
+}
+
+void UIconWidget::SkillInfoRender()
+{
+
+}

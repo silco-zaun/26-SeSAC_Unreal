@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "InventoryWidget.h"
@@ -15,8 +15,8 @@ void UInventoryWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
 
-	// À§Á¬ ºí·çÇÁ¸°Æ®¿¡¼­ º¯¼ö¿©ºÎ Ã¼Å©°¡ ¾ÈµÇ¾î ÀÖÀ» °æ¿ì GetWidgetFromName ÇÔ¼ö¸¦
-	// ÀÌ¿ëÇÏ¿© ¹èÄ¡µÈ À§Á¬ÀÌ °´Ã¼¸¦ ¾ò¾î¿Ã ¼ö ÀÖ´Ù.
+	// ìœ„ì ¯ ë¸”ë£¨í”„ë¦°íŠ¸ì—ì„œ ë³€ìˆ˜ì—¬ë¶€ ì²´í¬ê°€ ì•ˆë˜ì–´ ìˆì„ ê²½ìš° GetWidgetFromName í•¨ìˆ˜ë¥¼
+	// ì´ìš©í•˜ì—¬ ë°°ì¹˜ëœ ìœ„ì ¯ì´ ê°ì²´ë¥¼ ì–»ì–´ì˜¬ ìˆ˜ ìˆë‹¤.
 	mTitleBar = Cast<UBorder>(GetWidgetFromName(TEXT("TitleBar")));
 
 	mCloseButton->OnClicked.AddDynamic(this, &UInventoryWidget::CloseButtonClick);
@@ -27,12 +27,12 @@ void UInventoryWidget::NativeOnInitialized()
 FReply UInventoryWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 	const FPointerEvent& InMouseEvent)
 {
-	// ¸¶¿ì½º ¿ŞÂÊ¹öÆ°À» ´©¸¥°Ô ¾Æ´Ò °æ¿ì
+	// ë§ˆìš°ìŠ¤ ì™¼ìª½ë²„íŠ¼ì„ ëˆ„ë¥¸ê²Œ ì•„ë‹ ê²½ìš°
 	if (InMouseEvent.GetEffectingButton() != EKeys::LeftMouseButton)
 		return FReply::Unhandled();
 
-	// ¸¶¿ì½º À§Ä¡°¡ TitleBar ¾ÈÀÌ ¾Æ´Ï¶ó¸é µ¿ÀÛÇÏÁö ¾Ê´Â´Ù.
-	// GetScreenSpacePosition : È­¸é¿¡¼­ÀÇ ¸¶¿ì½º À§Ä¡¸¦ ¾ò¾î¿Â´Ù.
+	// ë§ˆìš°ìŠ¤ ìœ„ì¹˜ê°€ TitleBar ì•ˆì´ ì•„ë‹ˆë¼ë©´ ë™ì‘í•˜ì§€ ì•ŠëŠ”ë‹¤.
+	// GetScreenSpacePosition : í™”ë©´ì—ì„œì˜ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	if (!mTitleBar->GetCachedGeometry().IsUnderLocation(
 		InMouseEvent.GetScreenSpacePosition()))
 		return FReply::Unhandled();
@@ -41,25 +41,25 @@ FReply UInventoryWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry,
 
 	mDragStartMousePos = InMouseEvent.GetScreenSpacePosition();
 
-	// GetRenderTranform : Ãâ·ÂÇÒ Transform Á¤º¸.
+	// GetRenderTranform : ì¶œë ¥í•  Transform ì •ë³´.
 	mDragStartWidgetPos = GetRenderTransform().Translation;
 
-	// Handled()·Î Ã³¸®¸¦ ÇÏ¿© ÀÌ À§Á¬ÀÌ ¸¶¿ì½º Å¬¸¯ ÀÌº¥Æ®¸¦ Ã³¸®Çß´Ù´Â ÀÇ¹Ì°¡ µÈ´Ù.
-	// CaptureMouse ÇÔ¼ö·Î TakeWidgetÀ» ÁöÁ¤ÇÏ¸é ¸¶¿ì½º¸¦ ´©¸¥ µÚºÎÅÍ´Â ¸¶¿ì½º Ä¿¼­°¡
-	// À§Á¬ ¹ÛÀ¸·Î ³ª°¡µµ ÀÌ À§Á¬ÀÌ °è¼Ó ¸¶¿ì½º ÀÌº¥Æ®¸¦ ¹Ş°Ô µÈ´Ù.
+	// Handled()ë¡œ ì²˜ë¦¬ë¥¼ í•˜ì—¬ ì´ ìœ„ì ¯ì´ ë§ˆìš°ìŠ¤ í´ë¦­ ì´ë²¤íŠ¸ë¥¼ ì²˜ë¦¬í–ˆë‹¤ëŠ” ì˜ë¯¸ê°€ ëœë‹¤.
+	// CaptureMouse í•¨ìˆ˜ë¡œ TakeWidgetì„ ì§€ì •í•˜ë©´ ë§ˆìš°ìŠ¤ë¥¼ ëˆ„ë¥¸ ë’¤ë¶€í„°ëŠ” ë§ˆìš°ìŠ¤ ì»¤ì„œê°€
+	// ìœ„ì ¯ ë°–ìœ¼ë¡œ ë‚˜ê°€ë„ ì´ ìœ„ì ¯ì´ ê³„ì† ë§ˆìš°ìŠ¤ ì´ë²¤íŠ¸ë¥¼ ë°›ê²Œ ëœë‹¤.
 	return FReply::Handled().CaptureMouse(TakeWidget());
 }
 
 FReply UInventoryWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry,
 	const FPointerEvent& InMouseEvent)
 {
-	// ¸¶¿ì½º ¿ŞÂÊ¹öÆ°À» ´©¸¥°Ô ¾Æ´Ò °æ¿ì
+	// ë§ˆìš°ìŠ¤ ì™¼ìª½ë²„íŠ¼ì„ ëˆ„ë¥¸ê²Œ ì•„ë‹ ê²½ìš°
 	if (InMouseEvent.GetEffectingButton() != EKeys::LeftMouseButton)
 		return FReply::Unhandled();
 
 	mDragEnable = false;
 
-	// Mouse Capture¸¦ ÇØÁ¦ÇÑ´Ù.
+	// Mouse Captureë¥¼ í•´ì œí•œë‹¤.
 	return FReply::Handled().ReleaseMouseCapture();
 }
 
@@ -69,16 +69,16 @@ FReply UInventoryWidget::NativeOnMouseMove(const FGeometry& InGeometry,
 	if (!mDragEnable)
 		return FReply::Unhandled();
 
-	// ÇöÀç ¸¶¿ì½º À§Ä¡¸¦ ¾ò¾î¿Â´Ù.
+	// í˜„ì¬ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ë¥¼ ì–»ì–´ì˜¨ë‹¤.
 	FVector2D CurrentMousePos = InMouseEvent.GetScreenSpacePosition();
 
-	// Drag¸¦ ½ÃÀÛÇÑ À§Ä¡¿Í ºñ±³ÇÏ¿© ¾ó¸¶³ª ¶³¾îÁ³´ÂÁö ±¸ÇÑ´Ù.
+	// Dragë¥¼ ì‹œì‘í•œ ìœ„ì¹˜ì™€ ë¹„êµí•˜ì—¬ ì–¼ë§ˆë‚˜ ë–¨ì–´ì¡ŒëŠ”ì§€ êµ¬í•œë‹¤.
 	FVector2D MouseDelta = CurrentMousePos - mDragStartMousePos;
 
-	// DPI ScaleÀ» ¾ò¾î¿Â´Ù.
+	// DPI Scaleì„ ì–»ì–´ì˜¨ë‹¤.
 	float ViewScale = UWidgetLayoutLibrary::GetViewportScale(this);
 
-	// ¸¶¿ì½º°¡ ÀÌµ¿ÇÑ ¾çÀ» ViewScaleÀ» ÀÌ¿ëÇÏ¿© È­¸é¿¡¼­ ¿òÁ÷ÀÎ ¾çÀ¸·Î º¯°æÇÑ´Ù.
+	// ë§ˆìš°ìŠ¤ê°€ ì´ë™í•œ ì–‘ì„ ViewScaleì„ ì´ìš©í•˜ì—¬ í™”ë©´ì—ì„œ ì›€ì§ì¸ ì–‘ìœ¼ë¡œ ë³€ê²½í•œë‹¤.
 	FVector2D WidgetPos = mDragStartWidgetPos + MouseDelta / ViewScale;
 
 	SetRenderTranslation(WidgetPos);
@@ -86,8 +86,8 @@ FReply UInventoryWidget::NativeOnMouseMove(const FGeometry& InGeometry,
 	return FReply::Handled();
 }
 
-// Component¸¦ ³Ñ°Ü¾ß ÇÏ³ª?
-// Inventory Max Count, Item Object¸¦ ³Ñ±â´Â°Ç?
+// Componentë¥¼ ë„˜ê²¨ì•¼ í•˜ë‚˜?
+// Inventory Max Count, Item Objectë¥¼ ë„˜ê¸°ëŠ”ê±´?
 void UInventoryWidget::InitInventory(UInventoryComponent* Inventory)
 {
 	mInventoryComponent = Inventory;
