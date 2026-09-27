@@ -38,6 +38,9 @@ void UItemInfoWidget::SetItemInfo(const FItemTableInfo& Info,
 	// 옵션 목록을 비워준다.
 	mOptionList->ClearListItems();
 
+
+	UE_LOG(Sac8Debug, Warning, TEXT("Option Num : %d"), Info.Options.Num());
+
 	// 옵션 수만큼 반복한다.
 	for (auto Option : Info.Options)
 	{

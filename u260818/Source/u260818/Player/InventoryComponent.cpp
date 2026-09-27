@@ -72,7 +72,7 @@ bool UInventoryComponent::AddItem(const FItemTableInfo& ItemInfo)
 					Item = mItemList[i];
 					Item->AddItemCount();
 
-					// 카운트 벼노하가 생길경우 등록된 함수 호출.
+					// 카운트 변화가 생길경우 등록된 함수 호출.
 					if (mItemCountChangeDelegate.IsBound())
 						mItemCountChangeDelegate.Broadcast(mItemList[i]->GetItemCount(), i);
 					break;

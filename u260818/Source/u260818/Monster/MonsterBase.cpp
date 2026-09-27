@@ -7,6 +7,8 @@
 #include "MonsterSpawnPoint.h"
 #include "MonsterController.h"
 #include "../Item/ItemBox.h"
+#include "../ShareComponent/BillboardWidgetComponent.h"
+#include "../UI/Main/WorldInfoWidget.h"
 
 // Sets default values
 AMonsterBase::AMonsterBase()
@@ -16,6 +18,7 @@ AMonsterBase::AMonsterBase()
 
 	mCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	mMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	mHPBarWC = CreateDefaultSubobject<UBillboardWidgetComponent>(TEXT("HPBar"));
 
 	mState = CreateDefaultSubobject<UMonsterStateComponent>(TEXT("State"));
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
@@ -25,14 +28,30 @@ AMonsterBase::AMonsterBase()
 	SetRootComponent(mCapsule);
 
 	mMesh->SetupAttachment(mCapsule);
-	mCapsule->SetCollisionProfileName(TEXT("Monster"));
+	mHPBarWC->SetupAttachment(mMesh, TEXT("HealthBar"));
 
+	mCapsule->SetCollisionProfileName(TEXT("Monster"));
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	AIControllerClass = AMonsterController::StaticClass();
 
 	bUseControllerRotationYaw = true;
+
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		HPWidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Main/WB_WorldInfo.WB_WorldInfo_C'"));
+
+	if (HPWidgetClass.Succeeded())
+	{
+		mHPBarWC->SetWidgetClass(HPWidgetClass.Class);
+	}
+
+	mHPBarWC->SetWidgetSpace(EWidgetSpace::World);
+	mHPBarWC->SetDrawSize(FVector2D(200.0, 80.0));
+	mHPBarWC->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// 양면을 모두 보이게 한다.
+	mHPBarWC->SetTwoSided(true);
 }
 
 bool AMonsterBase::GetDeath()	const
@@ -80,11 +99,14 @@ void AMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// WidgetComponent가 생성한 위젯을 얻어온다.
+	mWorldInfo = Cast<UWorldInfoWidget>(mHPBarWC->GetWidget());
+
 	UAssetSubsystem* AssetSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
 	
 	if (AssetSystem)
 	{
-		if (AssetSystem->GetLoadPlayerInfo())
+		if (AssetSystem->GetLoadMonsterInfo())
 		{
 			InfoLoadComplete();
 		}
@@ -262,6 +284,11 @@ void AMonsterBase::InfoLoadComplete()
 				AICtrl->SetDetectRange(Info->DetectRange);
 				AICtrl->SetAttackDistance(Info->AttackDistance);
 			}
+
+			mWorldInfo->SetInfoName(Info->MonsterName);
+
+			mState->AddHPChangeCallback<UWorldInfoWidget>(mWorldInfo,
+				&UWorldInfoWidget::SetHP);
 		}
 	}
 }

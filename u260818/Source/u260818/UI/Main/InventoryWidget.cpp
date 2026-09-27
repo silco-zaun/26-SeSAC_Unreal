@@ -86,8 +86,6 @@ FReply UInventoryWidget::NativeOnMouseMove(const FGeometry& InGeometry,
 	return FReply::Handled();
 }
 
-// Component를 넘겨야 하나?
-// Inventory Max Count, Item Object를 넘기는건?
 void UInventoryWidget::InitInventory(UInventoryComponent* Inventory)
 {
 	mInventoryComponent = Inventory;

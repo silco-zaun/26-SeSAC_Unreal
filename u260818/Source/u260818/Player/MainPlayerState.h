@@ -60,6 +60,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float		mAttackDistance = 200.f;
 
+	FHPChange mHPChange;
+
 public:
 	void SetPlayerName(const FString& Name)
 	{
@@ -116,20 +118,7 @@ public:
 		mGold = Gold;
 	}
 
-	bool AddHP(int32 HP)
-	{
-		mHP += HP;
-
-		if (mHP > mHPMax)
-			mHP = mHPMax;
-		else if (mHP < 0.f)
-		{
-			mHP = 0.f;
-			return false;
-		}
-
-		return true;
-	}
+	bool AddHP(int32 HP);
 
 	void AddGold(int32 Gold)
 	{
@@ -228,5 +217,12 @@ public:
 	float GetAttackDistance()	const
 	{
 		return mAttackDistance;
+	}
+
+public:
+	template <typename T>
+	void AddHPChangeCallback(T* Obj, void (T::* Func)(float, float))
+	{
+		mHPChange.AddUObject(Obj, Func);
 	}
 };

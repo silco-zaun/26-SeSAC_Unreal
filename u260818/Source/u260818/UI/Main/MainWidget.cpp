@@ -4,6 +4,7 @@
 #include "MainWidget.h"
 #include "ItemInfoWidget.h"
 #include "../../Item/ItemObject.h"
+#include "PlayerHUDWidget.h"
 
 UMainWidget::UMainWidget(const FObjectInitializer& ObjectInitializer) :
 	Super(ObjectInitializer)
@@ -48,4 +49,19 @@ void UMainWidget::SetItemInfo(UItemObject* Item)
 {
 	mItemInfo->SetItemInfo(Item->GetItemInfo(),
 		Item->GetItemUpgrade());
+}
+
+void UMainWidget::SetPlayerName(const FString& Name)
+{
+	mPlayerHUD->SetPlayerName(Name);
+}
+
+void UMainWidget::SetPlayerHP(float HP, float HPMax)
+{
+	mPlayerHUD->SetPlayerHP(HP, HPMax);
+}
+
+void UMainWidget::SetPlayerMP(float MP, float MPMax)
+{
+	mPlayerHUD->SetPlayerMP(MP, MPMax);
 }

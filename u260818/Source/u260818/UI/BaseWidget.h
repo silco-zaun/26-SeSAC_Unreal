@@ -24,11 +24,17 @@ protected:
 
 	AActor* mOwnerActor = nullptr;
 
+	TMap<FString, TObjectPtr<UWidgetAnimation>> mAnimMap;
+
 public:
 	void SetOwnerActor(AActor* OwnerActor)
 	{
 		mOwnerActor = OwnerActor;
 	}
+
+	void PlayWidgetAnimation(const FString& Name, float StartTime = 0.f,
+		float PlaySpeed = 1.f, bool Forward = true,
+		bool RestoreState = false, int32 LoopCount = 1);
 
 protected:
 	virtual void NativeOnInitialized();

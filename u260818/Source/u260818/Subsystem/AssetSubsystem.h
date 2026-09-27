@@ -90,7 +90,7 @@ public:
 
 public:
 	template <typename T>
-	void AddDataAssetLoadingDelegate(T* Obj, void (T::* Func)())
+	void AddPlayerDataAssetLoadingDelegate(T* Obj, void (T::* Func)())
 	{
 		mOnPlayerDataLoading.AddUObject(Obj, Func);
 	}

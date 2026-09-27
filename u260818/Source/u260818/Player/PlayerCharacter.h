@@ -26,6 +26,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UInventoryComponent> mInventory;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UBillboardWidgetComponent> mHPBarWC;
+
+	TObjectPtr<class UWorldInfoWidget> mWorldInfo;
+
 	UPROPERTY()
 	TObjectPtr<class UPlayerAnimInstance> mAnimInst;
 
@@ -39,6 +44,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void PossessedBy(AController* NewController) override;
 
 public:	
 	// Called every frame
@@ -86,4 +92,7 @@ public:
 
 public:
 	bool AddInventoryItem(const FItemTableInfo& ItemInfo);
+
+protected:
+	void ChangeHP(float HP, float HPMax);
 };

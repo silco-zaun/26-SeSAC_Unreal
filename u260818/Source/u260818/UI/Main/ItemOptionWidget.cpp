@@ -20,11 +20,18 @@ void UItemOptionWidget::SetData(UObject* EntryObject)
 	UItemOptionEntryObject* Obj = Cast<UItemOptionEntryObject>(EntryObject);
 
 	if (!Obj)
+	{
+		UE_LOG(Sac8Debug, Warning, TEXT("ItemOptionEntryObject is null."));
+
 		return;
+	}
+
 
 	mOptionName->SetText(FText::FromString(Obj->GetOptionName()));
 
 	FString Option = FString::Printf(TEXT("%.2f"), Obj->GetOption());
 
 	mOption->SetText(FText::FromString(Option));
+
+	UE_LOG(Sac8Debug, Warning, TEXT("Name : %s, Option : %s"), *Obj->GetOptionName(), *Option);
 }

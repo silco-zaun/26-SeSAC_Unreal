@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UItemInfoWidget> mItemInfo;
 
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<class UPlayerHUDWidget> mPlayerHUD;
+
 protected:
 	virtual void NativeOnInitialized();
 
@@ -34,4 +37,7 @@ public:
 	void EnableItemInfoWidget(bool Enable = true);
 	void ComputeItemInfoLocation(const FPointerEvent& InMouseEvent);
 	void SetItemInfo(class UItemObject* Item);
+	void SetPlayerName(const FString& Name);
+	void SetPlayerHP(float HP, float HPMax);
+	void SetPlayerMP(float HP, float HPMax);
 };

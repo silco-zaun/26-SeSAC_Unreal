@@ -55,6 +55,8 @@ void UAssetSubsystem::LoadItem()
 
 void UAssetSubsystem::PlayerInfoLoadComplete(FPrimaryAssetId LoadId)
 {
+	UE_LOG(Sac8Order, Warning, TEXT("UAssetSubsystem::PlayerInfoLoadComplete"));
+
 	// 로딩된 오브젝트를 얻어온다.
 	TObjectPtr<UObject> LoadedObject = UAssetManager::Get().GetPrimaryAssetObject(LoadId);
 
@@ -70,6 +72,8 @@ void UAssetSubsystem::PlayerInfoLoadComplete(FPrimaryAssetId LoadId)
 		// 델리게이트에 등록된 함수가 있을 경우
 		if (mOnPlayerDataLoading.IsBound())
 		{
+			UE_LOG(Sac8Order, Warning, TEXT("mOnPlayerDataLoading.Broadcast()"));
+
 			// 등록된 모든 함수를 호출한다.
 			mOnPlayerDataLoading.Broadcast();
 		}

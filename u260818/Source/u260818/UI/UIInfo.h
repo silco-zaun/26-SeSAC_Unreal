@@ -12,7 +12,9 @@
 #include "Components/ListView.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Blueprint/WidgetBlueprintGeneratedClass.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Animation/WidgetAnimation.h"
 
 UENUM(BlueprintType)
 enum class ESlotType : uint8

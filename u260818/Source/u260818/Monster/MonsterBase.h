@@ -40,6 +40,11 @@ protected:
 
 	TArray<FDropItemInfo> mDropItems;
 
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UBillboardWidgetComponent> mHPBarWC;
+
+	TObjectPtr<class UWorldInfoWidget> mWorldInfo;
+
 public:
 	UCapsuleComponent* GetCapsule()	const
 	{

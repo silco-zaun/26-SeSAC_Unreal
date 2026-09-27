@@ -6,6 +6,8 @@
 
 AMainPlayerController::AMainPlayerController()
 {
+	UE_LOG(Sac8Order, Warning, TEXT("AMainPlayerController::Constructor - %s"), *GetName());
+
 	PrimaryActorTick.bCanEverTick = true;
 
 	// 마우스 커서를 보이게 한다.
@@ -21,6 +23,11 @@ AMainPlayerController::AMainPlayerController()
 void AMainPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UE_LOG(Sac8Order, Warning,
+		TEXT("AMainPlayerController::BeginPlay - Pawn : %s / PlayerState : %s"),
+		IsValid(GetPawn()) ? *GetPawn()->GetName() : TEXT("null"),
+		IsValid(PlayerState) ? *PlayerState->GetName() : TEXT("null"));
 
 	// 입력 모드를 세팅한다.
 	// FInputModeGameOnly
@@ -48,7 +55,16 @@ void AMainPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void AMainPlayerController::OnPossess(APawn* aPawn)
 {
+	UE_LOG(Sac8Order, Warning,
+		TEXT("AMainPlayerController::OnPossess(Before Super) - Pawn : %s / Controller PlayerState : %s"),
+		IsValid(aPawn) ? *aPawn->GetName() : TEXT("null"),
+		IsValid(PlayerState) ? *PlayerState->GetName() : TEXT("null"));
+
 	Super::OnPossess(aPawn);
+
+	UE_LOG(Sac8Order, Warning,
+		TEXT("AMainPlayerController::OnPossess(After Super) - Pawn PlayerState : %s"),
+		(IsValid(aPawn) && IsValid(aPawn->GetPlayerState())) ? *aPawn->GetPlayerState()->GetName() : TEXT("null"));
 }
 
 void AMainPlayerController::OnUnPossess()

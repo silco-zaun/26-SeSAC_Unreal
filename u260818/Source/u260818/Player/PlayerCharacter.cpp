@@ -5,11 +5,17 @@
 #include "PlayerAnimInstance.h"
 #include "MainPlayerState.h"
 #include "../Subsystem/AssetSubsystem.h"
+#include "../Subsystem/UISubsystem.h"
+#include "../UI/Main/MainWidget.h"
 #include "InventoryComponent.h"
+#include "../UI/Main/WorldInfoWidget.h"
+#include "../ShareComponent/BillboardWidgetComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
+	UE_LOG(Sac8Order, Warning, TEXT("APlayerCharacter::Constructor - %s"), *GetName());
+
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -18,10 +24,12 @@ APlayerCharacter::APlayerCharacter()
 	// Scene Component 가 아니라 Actor Component이기 때문에
 	// 계증 구조 구성이 필요 없다.
 	mInventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
+	mHPBarWC = CreateDefaultSubobject<UBillboardWidgetComponent>(TEXT("HPBar"));
 
 	mArm->SetupAttachment(GetMesh());
 	mCamera->SetupAttachment(mArm);
 	mArm->TargetArmLength = 500.f;
+	mHPBarWC->SetupAttachment(GetMesh(), TEXT("HealthBar"));
 
 	// 충돌 설정
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -29,6 +37,21 @@ APlayerCharacter::APlayerCharacter()
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
 
 	SetGenericTeamId(FGenericTeamId(TeamPlayer));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		HPWidgetClass(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/Main/WB_WorldInfo.WB_WorldInfo_C'"));
+
+	if (HPWidgetClass.Succeeded())
+	{
+		mHPBarWC->SetWidgetClass(HPWidgetClass.Class);
+	}
+
+	mHPBarWC->SetWidgetSpace(EWidgetSpace::World);
+	mHPBarWC->SetDrawSize(FVector2D(200.0, 80.0));
+	mHPBarWC->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// 양면을 모두 보이게 한다.
+	mHPBarWC->SetTwoSided(true);
 }
 
 FVector APlayerCharacter::GetImpactLocation() const
@@ -42,6 +65,14 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	UE_LOG(Sac8Order, Warning,
+		TEXT("APlayerCharacter::BeginPlay - %s / Controller : %s / PlayerState : %s"),
+		*GetName(),
+		IsValid(GetController()) ? *GetController()->GetName() : TEXT("null"),
+		IsValid(GetPlayerState<AMainPlayerState>()) ? TEXT("Valid") : TEXT("null"));
+
+	mWorldInfo = Cast<UWorldInfoWidget>(mHPBarWC->GetWidget());
+
 	UAssetSubsystem* AssetSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
 
 	if (AssetSystem)
@@ -52,7 +83,7 @@ void APlayerCharacter::BeginPlay()
 		}
 		else
 		{
-			AssetSystem->AddMonsterDataAssetLoadingDelegate(this, &APlayerCharacter::InfoLoadComplete);
+			AssetSystem->AddPlayerDataAssetLoadingDelegate(this, &APlayerCharacter::InfoLoadComplete);
 		}
 	}
 	
@@ -81,6 +112,22 @@ void APlayerCharacter::BeginPlay()
 		// InputMappingContext를 InputSystem에 등록한다.
 		InputSystem->AddMappingContext(InputCDO->mContext, 0);
 	}
+}
+
+void APlayerCharacter::PossessedBy(AController* NewController)
+{
+	UE_LOG(Sac8Order, Warning,
+		TEXT("APlayerCharacter::PossessedBy(Before Super) - %s / PlayerState : %s"),
+		*GetName(),
+		IsValid(GetPlayerState<AMainPlayerState>()) ? TEXT("Valid") : TEXT("null"));
+
+	Super::PossessedBy(NewController); // 여기서 PlayerState 가 세팅된다.
+
+	UE_LOG(Sac8Order, Warning,
+		TEXT("APlayerCharacter::PossessedBy(After Super) - %s / Controller : %s / PlayerState : %s"),
+		*GetName(),
+		IsValid(NewController) ? *NewController->GetName() : TEXT("null"),
+		IsValid(GetPlayerState<AMainPlayerState>()) ? TEXT("Valid") : TEXT("null"));
 }
 
 // Called every frame
@@ -318,6 +365,12 @@ void APlayerCharacter::Skill1Release()
 
 void APlayerCharacter::InfoLoadComplete()
 {
+	UE_LOG(Sac8Order, Warning,
+		TEXT("APlayerCharacter::InfoLoadComplete - %s / Controller : %s / PlayerState : %s"),
+		*GetName(),
+		IsValid(GetController()) ? *GetController()->GetName() : TEXT("null"),
+		IsValid(GetPlayerState<AMainPlayerState>()) ? TEXT("Valid") : TEXT("null"));
+
 	UAssetSubsystem* AssetSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
 
 	if (AssetSystem)
@@ -330,7 +383,7 @@ void APlayerCharacter::InfoLoadComplete()
 
 			if (IsValid(State))
 			{
-				State->SetPlayerName(Info->PlayerName);
+				//State->SetPlayerName(Info->PlayerName);
 				State->SetPlayerJob(Info->Job);
 				State->SetAttack(Info->Attack);
 				State->SetDefense(Info->Defense);
@@ -344,6 +397,30 @@ void APlayerCharacter::InfoLoadComplete()
 				State->SetMoveSpeed(Info->MoveSpeed);
 				State->SetAttackSpeed(Info->AttackSpeed);
 				State->SetAttackDistance(Info->AttackDistance);
+
+				State->AddHPChangeCallback<APlayerCharacter>(this,
+					&APlayerCharacter::ChangeHP);
+
+				if (IsValid(mWorldInfo))
+					mWorldInfo->SetInfoName(State->GetPlayerName());
+
+				UUISubsystem* Subsystem = GetGameInstance()->GetSubsystem<UUISubsystem>();
+
+				if (Subsystem)
+				{
+					UMainWidget* MainWidget = Subsystem->FindWidget<UMainWidget>(TEXT("Main"));
+
+					if (MainWidget)
+					{
+						MainWidget->SetPlayerName(State->GetPlayerName());
+						State->AddHPChangeCallback<UMainWidget>(MainWidget,
+							&UMainWidget::SetPlayerHP);
+					}
+				}
+			}
+			else
+			{
+				UE_LOG(Sac8Debug, Warning, TEXT("AMainPlayerState is null."));
 			}
 		}
 	}
@@ -377,4 +454,9 @@ ETeamAttitude::Type APlayerCharacter::GetTeamAttitudeTowards(
 bool APlayerCharacter::AddInventoryItem(const FItemTableInfo& ItemInfo)
 {
 	return mInventory->AddItem(ItemInfo);
+}
+
+void APlayerCharacter::ChangeHP(float HP, float HPMax)
+{
+	mWorldInfo->SetHP(HP, HPMax);
 }

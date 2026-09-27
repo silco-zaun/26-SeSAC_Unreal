@@ -20,10 +20,15 @@
 #include "NavigationSystem.h"
 #include "Navigation/PathFollowingComponent.h"
 
+#include "Components/WidgetComponent.h"
+
 #include "GameInfo.generated.h"
 
 // 로그 카테고리 선언.
 DECLARE_LOG_CATEGORY_EXTERN(Sac8Debug, Warning, All);
+
+// 호출 순서 추적 전용 로그 카테고리.
+DECLARE_LOG_CATEGORY_EXTERN(Sac8Order, Warning, All);
 
 FRotator GetTargetRotation(const FVector& Target,
 	const FVector& Self);
@@ -35,6 +40,8 @@ bool GetRandomNavigationPoint(FVector& Result, UWorld* World,
 #define TeamNeutral 255
 #define TeamPlayer 10
 #define TeamMonster 20
+
+DECLARE_MULTICAST_DELEGATE_TwoParams(FHPChange, float, float);
 
 UENUM(BlueprintType)
 enum class EItemType : uint8
@@ -73,10 +80,10 @@ struct FItemOption
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	EItemOptionType Type;
+	EItemOptionType Type = EItemOptionType::Attack;
 
-	UPROPERTY(EditANywhere, BlueprintReadWrite, Category = "ItemInfo")
-	float Option;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	float Option = 0.0f;
 };
 
 FString ConvertItemOptionName(EItemOptionType Type);
@@ -91,22 +98,22 @@ struct FItemTableInfo : public FTableRowBase
 	FString ItemName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	EItemType Type;
+	EItemType Type = EItemType::Weapon;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	EItemUILayerType UILayerType;
+	EItemUILayerType UILayerType = EItemUILayerType::Single;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	int32 Level;
+	int32 Level = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	FString Desc;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	int32 PurchasePrice;
+	int32 PurchasePrice = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	int32 SellPrice;
+	int32 SellPrice = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
 	TObjectPtr<UTexture2D> IconImage;
@@ -186,7 +193,7 @@ struct FDropItemInfo
 	FString ItemKey;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
-	float Percent;
+	float Percent = 0.0f;
 };
 
 // 데이터테이블용 구조체는 반드시 FTableRowBase를 상속받아야 한다.

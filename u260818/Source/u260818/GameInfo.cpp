@@ -2,6 +2,7 @@
 
 // 로그 정의
 DEFINE_LOG_CATEGORY(Sac8Debug);
+DEFINE_LOG_CATEGORY(Sac8Order);
 
 FRotator GetTargetRotation(const FVector& Target, const FVector& Self)
 {

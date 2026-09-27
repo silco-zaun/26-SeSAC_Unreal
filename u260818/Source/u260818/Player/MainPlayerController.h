@@ -24,10 +24,23 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UMainWidget> mMainWidget;
 
+	FString mPlayerName;
+
 public:
 	class UMainWidget* GetMainWidget() const
 	{
 		return mMainWidget;
+	}
+
+	const FString& GetPlayerName() const
+	{
+		return mPlayerName;
+	}
+
+public:
+	void SetPlayerName(const FString& Name)
+	{
+		mPlayerName = Name;
 	}
 
 protected:

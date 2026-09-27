@@ -154,6 +154,8 @@ public:
 		mDetectRange = Range;
 	}
 
+	FHPChange	mChangeHPDelegate;
+
 public:
 	const FString& GetPlayerName()	const
 	{
@@ -238,5 +240,10 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+public:
+	template <typename T>
+	void AddHPChangeCallback(T* Obj, void(T::* Func)(float, float))
+	{
+		mChangeHPDelegate.AddUObject(Obj, Func);
+	}
 };
