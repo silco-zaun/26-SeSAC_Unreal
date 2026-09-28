@@ -61,3 +61,10 @@ void ASelectPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
+
+// Called to bind functionality to input
+void ASelectPawn::EnableOutLine(bool Enable)
+{
+	mMesh->SetRenderCustomDepth(Enable);
+}
+

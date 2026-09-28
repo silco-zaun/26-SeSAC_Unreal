@@ -65,15 +65,26 @@ void ACharacterSelectPlayerController::Tick(float DeltaTime)
 
 		if (SelectPawn)
 		{
+			// 기존에 선택된 Pawn이 있을 경우 OutLine을 끈다.
+			if (mSelectPawn)
+				mSelectPawn->EnableOutLine(false);
+
 			mSelectPawn = SelectPawn;
+			mSelectPawn->EnableOutLine(true);
 		}
 		else
 		{
+			if (mSelectPawn)
+				mSelectPawn->EnableOutLine(false);
+
 			mSelectPawn = nullptr;
 		}
 	}
 	else
 	{
+		if (mSelectPawn)
+			mSelectPawn->EnableOutLine(false);
+
 		mSelectPawn = nullptr;
 	}
 }
