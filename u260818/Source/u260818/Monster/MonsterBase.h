@@ -3,11 +3,12 @@
 #pragma once
 
 #include "../GameInfo.h"
+#include "../Render/OutLineInterface.h"
 #include "GameFramework/Pawn.h"
 #include "MonsterBase.generated.h"
 
 UCLASS()
-class U260818_API AMonsterBase : public APawn
+class U260818_API AMonsterBase : public APawn, public IOutLineInterface
 {
 	GENERATED_BODY()
 
@@ -111,4 +112,8 @@ public:
 public:
 	UFUNCTION()
 	void InfoLoadComplete();
+
+	// Interface
+public:
+	virtual void EnableOutLine(bool Enable);
 };

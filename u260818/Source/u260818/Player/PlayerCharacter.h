@@ -3,12 +3,13 @@
 #pragma once
 
 #include "../Input/Input.h"
+#include "../Render/OutLineInterface.h"
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
 UCLASS()
 class U260818_API APlayerCharacter : public ACharacter,
-	public IGenericTeamAgentInterface
+	public IGenericTeamAgentInterface, public IOutLineInterface
 {
 	GENERATED_BODY()
 
@@ -95,4 +96,8 @@ public:
 
 protected:
 	void ChangeHP(float HP, float HPMax);
+
+	// Interface
+public:
+	virtual void EnableOutLine(bool Enable);
 };

@@ -52,6 +52,8 @@ APlayerCharacter::APlayerCharacter()
 
 	// 양면을 모두 보이게 한다.
 	mHPBarWC->SetTwoSided(true);
+
+	GetMesh()->SetRenderCustomDepth(true);
 }
 
 FVector APlayerCharacter::GetImpactLocation() const
@@ -459,4 +461,18 @@ bool APlayerCharacter::AddInventoryItem(const FItemTableInfo& ItemInfo)
 void APlayerCharacter::ChangeHP(float HP, float HPMax)
 {
 	mWorldInfo->SetHP(HP, HPMax);
+}
+
+void APlayerCharacter::EnableOutLine(bool Enable)
+{
+	if (Enable)
+	{
+		int32 Value = GetMesh()->CustomDepthStencilValue | 1;
+		GetMesh()->SetCustomDepthStencilValue(Value);
+	}
+	else
+	{
+		if (GetMesh()->CustomDepthStencilValue & 1)
+			GetMesh()->SetCustomDepthStencilValue(GetMesh()->CustomDepthStencilValue ^ 1);
+	}
 }

@@ -52,6 +52,9 @@ AMonsterBase::AMonsterBase()
 
 	// 양면을 모두 보이게 한다.
 	mHPBarWC->SetTwoSided(true);
+
+	mMesh->SetRenderCustomDepth(true);
+	mMesh->SetCustomDepthStencilValue(2);
 }
 
 bool AMonsterBase::GetDeath()	const
@@ -290,5 +293,19 @@ void AMonsterBase::InfoLoadComplete()
 			mState->AddHPChangeCallback<UWorldInfoWidget>(mWorldInfo,
 				&UWorldInfoWidget::SetHP);
 		}
+	}
+}
+
+void AMonsterBase::EnableOutLine(bool Enable)
+{
+	if (Enable)
+	{
+		int32 Value = mMesh->CustomDepthStencilValue | 1;
+		mMesh->SetCustomDepthStencilValue(Value);
+	}
+	else
+	{
+		if (mMesh->CustomDepthStencilValue & 1)
+			mMesh->SetCustomDepthStencilValue(mMesh->CustomDepthStencilValue ^ 1);
 	}
 }

@@ -3,6 +3,7 @@
 
 #include "MainPlayerController.h"
 #include "../UI/Main/MainWidget.h"
+#include "../Render/OutLineInterface.h"
 
 AMainPlayerController::AMainPlayerController()
 {
@@ -75,4 +76,34 @@ void AMainPlayerController::OnUnPossess()
 void AMainPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FHitResult Hit;
+
+	// 기존에 선택된 Pawn이 있을 경우 OutLine을 끈다.
+	if (mSelectActor)
+		mSelectActor->EnableOutLine(false);
+
+	// 마우스가 픽한 물체가 있는지 판단한다.
+	bool Pick = GetHitResultUnderCursor(ECollisionChannel::ECC_GameTraceChannel6,
+		false, Hit);
+
+	if (Pick)
+	{
+		IOutLineInterface* SelectActor = Cast<IOutLineInterface>(Hit.GetActor());
+
+		if (SelectActor)
+		{
+			mSelectActor = SelectActor;
+
+			mSelectActor->EnableOutLine(true);
+		}
+		else
+		{
+			mSelectActor = nullptr;
+		}
+	}
+	else
+	{
+		mSelectActor = nullptr;
+	}
 }

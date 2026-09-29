@@ -26,6 +26,8 @@ protected:
 
 	FString mPlayerName;
 
+	class IOutLineInterface* mSelectActor = nullptr;
+
 public:
 	class UMainWidget* GetMainWidget() const
 	{
