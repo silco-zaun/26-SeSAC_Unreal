@@ -94,7 +94,17 @@ void AMonsterBase::AttackEnd()
 
 void AMonsterBase::DeathEnd()
 {
-	Destroy();
+	//Destroy();
+
+	// Dissolve를 동작시킨다.
+	mDeathEnable = true;
+
+	for (auto& Mtrl : mMaterials)
+	{
+		// SetScalarParameterValue 함수를 이용해서 Material의 ScalarParameter의 값을
+		// 변경할 수 있다.
+		Mtrl->SetScalarParameterValue(TEXT("DissolveEnable"), 1.f);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -117,6 +127,16 @@ void AMonsterBase::BeginPlay()
 		{
 			AssetSystem->AddMonsterDataAssetLoadingDelegate(this, &AMonsterBase::InfoLoadComplete);
 		}
+	}
+
+	int32 MaterialCount = mMesh->GetNumMaterials();
+
+	for (int32 i = 0; i < MaterialCount; ++i)
+	{
+		// 2번 인자에 SourceMaterial을 넣어주면 해당 Material의 DynamicMaterialInstance를
+		// 만들어서 지정하고 nullptr이 들어가면 이 MeshComponent가 가지고 있는 Material의
+		// DynamicMaterialInstance를 만들어서 지정한다.
+		mMaterials.Add(mMesh->CreateDynamicMaterialInstance(i));
 	}
 
 	UE_LOG(Sac8Debug, Warning, TEXT("Monster BeginPlay"));
@@ -195,6 +215,26 @@ void AMonsterBase::OnConstruction(const FTransform& Transform)
 void AMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (mDeathEnable)
+	{
+		mDissolve -= DeltaTime / 4.f;
+
+		// 0 ~ 1 사이의 Dissolve값을 -1.5 ~ 1.5 사이의 값으로 변환한다.
+		float Dissolve = mDissolve * 3.f - 1.5f;
+
+		for (auto& Mtrl : mMaterials)
+		{
+			// SetScalarParameterValue 함수를 이용해서 Material의 ScalarParameter의 값을
+			// 변견할 수 있다.
+			Mtrl->SetScalarParameterValue(TEXT("Dissolve"), Dissolve);
+		}
+
+		if (mDissolve <= 0.f)
+		{
+			Destroy();
+		}
+	}
 }
 
 void AMonsterBase::PossessedBy(AController* NewController)

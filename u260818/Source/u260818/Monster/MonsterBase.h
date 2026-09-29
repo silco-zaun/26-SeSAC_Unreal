@@ -46,6 +46,11 @@ protected:
 
 	TObjectPtr<class UWorldInfoWidget> mWorldInfo;
 
+	TArray<TObjectPtr<UMaterialInstanceDynamic>> mMaterials;
+
+	float mDissolve = 1.f;
+	bool mDeathEnable = false;
+
 public:
 	UCapsuleComponent* GetCapsule()	const
 	{
