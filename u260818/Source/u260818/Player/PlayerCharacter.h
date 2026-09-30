@@ -75,12 +75,16 @@ private:
 	void HitKey(const FInputActionValue& Value);
 	void Skill1Key(const FInputActionValue& Value);
 	void Skill1ReleaseKey(const FInputActionValue& Value);
+	void Skill2Key(const FInputActionValue& Value);
+	void Skill3Key(const FInputActionValue& Value);
 
 public:
 	virtual void Attack();
 	virtual void Death();
 	virtual void Skill1();
 	virtual void Skill1Release();
+	virtual void Skill2();
+	virtual void Skill3();
 
 public:
 	UFUNCTION()

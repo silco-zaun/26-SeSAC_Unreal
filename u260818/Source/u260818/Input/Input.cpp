@@ -69,4 +69,16 @@ UTestInput::UTestInput()
 
 	if (Skill1Action.Succeeded())
 		mActions.Add(TEXT("Skill1"), Skill1Action.Object);
+
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		Skill2Action(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/IA_Skill2.IA_Skill2'"));
+
+	if (Skill2Action.Succeeded())
+		mActions.Add(TEXT("Skill2"), Skill2Action.Object);
+
+	static ConstructorHelpers::FObjectFinder<UInputAction>
+		Skill3Action(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/IA_Skill3.IA_Skill3'"));
+
+	if (Skill3Action.Succeeded())
+		mActions.Add(TEXT("Skill3"), Skill3Action.Object);
 }

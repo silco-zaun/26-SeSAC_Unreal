@@ -186,6 +186,10 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		Input->BindAction(InputCDO->FindAction(TEXT("Skill1")),
 			ETriggerEvent::Completed, this, &APlayerCharacter::Skill1ReleaseKey);
+
+		Input->BindAction(InputCDO->FindAction(TEXT("Skill2")),
+			ETriggerEvent::Started, this, &APlayerCharacter::Skill2Key);
+
 	}
 }
 
@@ -326,6 +330,15 @@ void APlayerCharacter::Skill1ReleaseKey(const FInputActionValue& Value)
 	Skill1Release();
 }
 
+void APlayerCharacter::Skill2Key(const FInputActionValue& Value)
+{
+	Skill2();
+}
+
+void APlayerCharacter::Skill3Key(const FInputActionValue& Value)
+{
+}
+
 void APlayerCharacter::Attack()
 {
 
@@ -362,6 +375,15 @@ void APlayerCharacter::Skill1()
 }
 
 void APlayerCharacter::Skill1Release()
+{
+}
+
+void APlayerCharacter::Skill2()
+{
+
+}
+
+void APlayerCharacter::Skill3()
 {
 }
 

@@ -5,6 +5,7 @@
 #include "MainPlayerState.h"
 #include "PlayerAnimInstance.h"
 #include "../Monster/MonsterBase.h"
+#include "GhostActor.h"
 
 // Sets default values
 AWukong::AWukong()
@@ -55,6 +56,35 @@ void AWukong::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (mGhostEnable)
+	{
+		mGhostTime += DeltaTime;
+
+		mGhostCreateTime += DeltaTime;
+
+		if (mGhostCreateTime >= 0.1f)
+		{
+			mGhostCreateTime -= 0.1f;
+
+			FVector Loc = GetActorLocation();
+
+			// 현재 플레이어의 위치는 캡슐의 절반 길이만큼 위로 올라가있기 때문에 Z값을
+			// 낮춰준다.
+			Loc.Z -= GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+
+			AGhostActor* Ghost = GetWorld()->SpawnActor<AGhostActor>(Loc,
+				GetActorRotation());
+
+			Ghost->CopyPose(GetMesh());
+			//Ghost->SetLifeSpan(1.f);
+		}
+
+		if (mGhostTime >= 5.f)
+		{
+			mGhostEnable = false;
+			mGhostTime = 0.f;
+		}
+	}
 }
 
 void AWukong::Attack()
@@ -138,4 +168,19 @@ void AWukong::Skill1()
 
 void AWukong::Skill1Release()
 {
+}
+
+void AWukong::Skill2()
+{
+	if (!mGhostEnable)
+	{
+		mGhostEnable = true;
+		mGhostTime = 0.f;
+		mGhostCreateTime = 0.f;
+	}
+}
+
+void AWukong::Skill3()
+{
+
 }

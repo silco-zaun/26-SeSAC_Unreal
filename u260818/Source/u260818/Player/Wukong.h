@@ -19,6 +19,11 @@ public:
 	AWukong();
 
 protected:
+	float mGhostTime = 0.f;
+	float mGhostCreateTime = 0.f;
+	bool mGhostEnable = false;
+
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -30,4 +35,6 @@ public:
 	virtual void Attack();
 	virtual void Skill1();
 	virtual void Skill1Release();
+	virtual void Skill2();
+	virtual void Skill3();
 };
