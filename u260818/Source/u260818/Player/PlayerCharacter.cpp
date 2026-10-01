@@ -190,6 +190,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		Input->BindAction(InputCDO->FindAction(TEXT("Skill2")),
 			ETriggerEvent::Started, this, &APlayerCharacter::Skill2Key);
 
+		Input->BindAction(InputCDO->FindAction(TEXT("Skill3")),
+			ETriggerEvent::Started, this, &APlayerCharacter::Skill3Key);
+
 	}
 }
 
@@ -337,6 +340,7 @@ void APlayerCharacter::Skill2Key(const FInputActionValue& Value)
 
 void APlayerCharacter::Skill3Key(const FInputActionValue& Value)
 {
+	Skill3();
 }
 
 void APlayerCharacter::Attack()

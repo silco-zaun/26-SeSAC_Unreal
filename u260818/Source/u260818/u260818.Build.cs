@@ -20,7 +20,10 @@ public class u260818 : ModuleRules
 			"Chaos",
 			"FieldSystemEngine",
 			"UMG",
-			"Niagara"
+			"Niagara",
+			"GameplayTags",
+			"GameplayTasks",
+			"GameplayAbilities"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

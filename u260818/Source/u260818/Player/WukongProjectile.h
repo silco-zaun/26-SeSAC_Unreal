@@ -14,4 +14,15 @@ class U260818_API AWukongProjectile : public AProjectileBaseActor
 {
 	GENERATED_BODY()
 	
+public:
+	AWukongProjectile();
+
+protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UParticleSystemComponent> mParticle;
+
+	TObjectPtr<UMaterialInterface> mDecalMaterial;
+
+public:
+	virtual void StopCallback(const FHitResult& ImpactResult);
 };

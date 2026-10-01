@@ -16,6 +16,12 @@ public:
 	ADecalBase();
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadonly)
+	TObjectPtr<UDecalComponent> mDecal;
+
+	TObjectPtr<UMaterialInstanceDynamic> mDecalDynamicMaterial;
+
+protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -23,4 +29,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	void SetDecalMaterial(UMaterialInterface* Material);
+	void SetDecalMaterial(const FString& Path);
+	void ChangeDynamicMaterialDecal();
 };

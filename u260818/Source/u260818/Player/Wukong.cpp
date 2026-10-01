@@ -6,6 +6,7 @@
 #include "PlayerAnimInstance.h"
 #include "../Monster/MonsterBase.h"
 #include "GhostActor.h"
+#include "WukongProjectile.h"
 
 // Sets default values
 AWukong::AWukong()
@@ -182,5 +183,7 @@ void AWukong::Skill2()
 
 void AWukong::Skill3()
 {
+	FVector Loc = GetActorLocation() + GetActorForwardVector() * 100.f;
 
+	AWukongProjectile* Projectile = GetWorld()->SpawnActor<AWukongProjectile>(Loc, GetActorRotation());
 }
