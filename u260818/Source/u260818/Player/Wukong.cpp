@@ -7,6 +7,7 @@
 #include "../Monster/MonsterBase.h"
 #include "GhostActor.h"
 #include "WukongProjectile.h"
+#include "../Render/PhysicalMaterialBase.h"
 
 // Sets default values
 AWukong::AWukong()
@@ -50,6 +51,9 @@ void AWukong::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// 일반적인 충돌체 컴포넌트는 PhysicalMaterial을 지정하고 사용해야 부딪혔을 떄
+	// PhysicalMaterial을 얻어올 수 있다.
+	//GetCapsuleCOmponent()->SetPhysMaterialOverride();
 }
 
 // Called every frame
@@ -98,6 +102,9 @@ void AWukong::Attack()
 	FVector End = Start + GetActorForwardVector() * 200.f;
 
 	FCollisionQueryParams param(NAME_None, false, this);
+
+	// 부딪힌 물체의 PhysicalMaterial을 얻어올 때 true로 설정한다.
+	param.bReturnPhysicalMaterial = true;
 	//param.AddIgnoredActor();
 
 	bool Hit = GetWorld()->SweepMultiByChannel(HitArray, Start, End,
@@ -129,6 +136,27 @@ void AWukong::Attack()
 			Result.GetActor()->TakeDamage(State->GetAttack(), DmgEvent, GetController(),
 				this);
 
+			if (Result.PhysMaterial.IsValid())
+			{
+				UPhysicalMaterialBase* PhysMat =
+					Cast<UPhysicalMaterialBase>(Result.PhysMaterial.Get());
+
+				if (PhysMat)
+				{
+					if (IsValid(PhysMat->GetSound()))
+					{
+						UGameplayStatics::SpawnSoundAtLocation(GetWorld(),
+							PhysMat->GetSound(), Result.ImpactPoint);
+					}
+
+					if (IsValid(PhysMat->GetParticle()))
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
+							PhysMat->GetParticle(), Result.ImpactPoint);
+					}
+				}
+			}
+
 			AMonsterBase* Monster = Cast<AMonsterBase>(Result.GetActor());
 
 			if (Monster)
@@ -140,7 +168,7 @@ void AWukong::Attack()
 				}
 			}
 			
-			TObjectPtr<USoundBase> HitSound = LoadObject<USoundBase>(GetWorld(),
+			/*TObjectPtr<USoundBase> HitSound = LoadObject<USoundBase>(GetWorld(),
 				TEXT("/Script/Engine.SoundWave'/Game/Sound/Fire1.Fire1'"));
 
 			if (IsValid(HitSound))
@@ -149,15 +177,14 @@ void AWukong::Attack()
 					HitSound, Result.ImpactPoint);
 			}
 
-			TObjectPtr<UParticleSystem> HitParticle =
-				LoadObject<UParticleSystem>(GetWorld(),
-					TEXT("/Script/Engine.ParticleSystem'/Game/ParagonSunWukong/FX/Particles/Wukong/Abilities/Primary/FX/P_Wukong_Impact_Empowered.P_Wukong_Impact_Empowered'"));
+			TObjectPtr<UParticleSystem> HitParticle = LoadObject<UParticleSystem>(GetWorld(),
+				TEXT("/Script/Engine.ParticleSystem'/Game/ParagonSunWukong/FX/Particles/Wukong/Abilities/Primary/FX/P_Wukong_Impact_Empowered.P_Wukong_Impact_Empowered'"));
 
 			if (IsValid(HitParticle))
 			{
 				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),
 					HitParticle, Result.ImpactPoint);
-			}
+			}*/
 		}
 	}
 }

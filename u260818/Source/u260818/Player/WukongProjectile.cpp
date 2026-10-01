@@ -2,6 +2,7 @@
 
 
 #include "WukongProjectile.h"
+#include "../Render/DecalBase.h"
 
 AWukongProjectile::AWukongProjectile()
 {
@@ -31,4 +32,17 @@ AWukongProjectile::AWukongProjectile()
 void AWukongProjectile::StopCallback(const FHitResult& ImpactResult)
 {
 	Destroy();
+
+	UParticleSystem* Particle = LoadObject<UParticleSystem>(GetWorld(),
+		TEXT("/Script/Engine.ParticleSystem'/Game/ParagonSunWukong/FX/Particles/Wukong/Abilities/Primary/FX/P_Wukong_Impact_Empowered.P_Wukong_Impact_Empowered'"));
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, GetActorLocation(),
+		FRotator::ZeroRotator);
+
+	ADecalBase* Decal = GetWorld()->SpawnActor<ADecalBase>(GetActorLocation(),
+		GetActorRotation());
+
+	Decal->SetDecalMaterial(mDecalMaterial);
+
+	Decal->SetLifeSpan(5.f);
 }
