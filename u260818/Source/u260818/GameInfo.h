@@ -25,6 +25,11 @@
 
 #include "Components/WidgetComponent.h"
 
+#include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemGlobals.h"
+
 #include "GameInfo.generated.h"
 
 // 로그 카테고리 선언.

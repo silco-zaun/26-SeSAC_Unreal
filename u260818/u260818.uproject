@@ -13,7 +13,8 @@
 				"CoreUObject",
 				"AIModule",
 				"UMG",
-				"PhysicsCore"
+				"PhysicsCore",
+				"GameplayAbilities"
 			]
 		}
 	],
@@ -24,6 +25,10 @@
 			"TargetAllowList": [
 				"Editor"
 			]
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
 		}
 	]
 }
