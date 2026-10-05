@@ -45,6 +45,12 @@ FRotator GetTargetRotationYaw(FVector Target,
 bool GetRandomNavigationPoint(FVector& Result, UWorld* World,
 	const FVector& Center, float Radius);
 
+#define ATTRIBUTE_FUNCTION(ClassName, AttributeName) \
+	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, AttributeName) \
+	GAMEPLAYATTRIBUTE_VALUE_GETTER(AttributeName) \
+	GAMEPLAYATTRIBUTE_VALUE_SETTER(AttributeName) \
+	GAMEPLAYATTRIBUTE_VALUE_INITTER(AttributeName)
+
 #define TeamNeutral 255
 #define TeamPlayer 10
 #define TeamMonster 20
