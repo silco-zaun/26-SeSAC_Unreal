@@ -6,6 +6,8 @@
 #include "MainPlayerState.h"
 #include "../Input/DefaultInput.h"
 #include "../Subsystem/AssetSubsystem.h"
+#include "../Subsystem/UISubsystem.h"
+#include "../UI/Main/MainWidget.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -209,22 +211,45 @@ void APlayerCharacter::Attack()
 
 void APlayerCharacter::InfoLoadComplete()
 {
+	UE_LOG(LogTestDebug, Warning, TEXT("InfoName : %s"), *mInfoName.ToString());
+
 	UAssetSubsystem* AssetSubSystem = GetGameInstance()->GetSubsystem<UAssetSubsystem>();
 
 	if (AssetSubSystem)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("AssetSubSystem : %s"), *mInfoName.ToString());
+
 		const FPlayerInfo* Info = AssetSubSystem->FindPlayerInfo(mInfoName);
 
-		if (Info)
+		// Todo : 가져오지 못하는 버그
+		//if (Info)
 		{
+			UE_LOG(LogTestDebug, Warning, TEXT("Info : %s"), *mInfoName.ToString());
+
 			AMainPlayerState* State = GetPlayerState<AMainPlayerState>();
 
 			if (IsValid(State))
 			{
-				State->SetAttack(Info->Attack);
-				State->SetDefense(Info->Defense);
-				State->SetHP(Info->HP);
-				State->SetHPMax(Info->HPMax);
+				//UE_LOG(LogTestDebug, Warning, TEXT("Info HP : %.1f / %.1f"), Info->HP, Info->HPMax);
+
+				State->SetAttack(50.f);
+				//State->SetDefense(Info->Defense);
+				State->SetHP(3000.f);
+				State->SetHPMax(3000.f);
+
+				UUISubsystem* Subsystem = GetGameInstance()->GetSubsystem<UUISubsystem>();
+
+				if (Subsystem)
+				{
+					UMainWidget* MainWidget = Subsystem->FindWidget<UMainWidget>(TEXT("Main"));
+
+					if (MainWidget)
+					{
+						State->AddHPChangeCallback<UMainWidget>(
+							MainWidget,	&UMainWidget::SetNexusHP);
+						State->AddHP(0.f);
+					}
+				}
 			}
 		}
 	}

@@ -33,6 +33,9 @@ FRotator GetTargetRotationYaw(FVector Target,
 #define TeamPlayer 10
 #define TeamMonster 20
 
+DECLARE_MULTICAST_DELEGATE_TwoParams(FHPChange, float, float);
+DECLARE_MULTICAST_DELEGATE(FMonsterDeath);
+
 // 데이터테이블용 구조체는 반드시 FTableRowBase를 상속받아야 한다.
 USTRUCT(BlueprintType)
 struct FPlayerInfo : public FTableRowBase

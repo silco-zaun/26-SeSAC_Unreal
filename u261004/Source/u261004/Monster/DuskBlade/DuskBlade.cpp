@@ -2,6 +2,9 @@
 
 
 #include "DuskBlade.h"
+#include "../MonsterStateComponent.h"
+#include "../../Environment/Nexus.h"
+#include "AIController.h"
 
 
 ADuskBlade::ADuskBlade()
@@ -46,5 +49,16 @@ void ADuskBlade::Tick(float DeltaTime)
 
 void ADuskBlade::Attack()
 {
+	UBlackboardComponent* Blackboard = GetController<AAIController>()->GetBlackboardComponent();
 
+	if (Blackboard)
+	{
+		AActor* Target = Cast<AActor>(Blackboard->GetValueAsObject(TEXT("Target")));
+
+		if (Target)
+		{
+			FDamageEvent DmgEvent;
+			Target->TakeDamage(mState->GetAttack(), DmgEvent, GetController(), this);
+		}
+	}
 }

@@ -23,24 +23,36 @@ EBTNodeResult::Type UBTTask_MonsterAttack::ExecuteTask(
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("AttackExecuteTask : Invalid AIController"));
 		return EBTNodeResult::Failed;
+	}
 
 	// OwnerComp가 가지고 있는 BlackboardComponent를 얻어온다.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("AttackExecuteTask : Invalid BlackboardComp"));
 		return EBTNodeResult::Failed;
+	}
 
 	// 블랙보드에서 Target을 얻어온다.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (!Target)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("AttackExecuteTask : Invalid Target"));
 		return EBTNodeResult::Failed;
+	}
 
 	AMonsterPawn* Monster = AIController->GetPawn<AMonsterPawn>();
 
 	if (!Monster)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("AttackExecuteTask : Invalid Monster"));
 		return EBTNodeResult::Failed;
+	}
 
 	// 공격 애니메이션을 재생한다.
 	Monster->ChangeAnim((uint8)EMonsterAnimType::Attack);
@@ -57,6 +69,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!AIController)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Attack : Invalid AIController"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
@@ -66,6 +79,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!BlackboardComp)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Attack : Invalid BlackboardComp"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
@@ -75,6 +89,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!Target)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Attack : Invalid Target"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
@@ -83,6 +98,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!Monster)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Attack : Invalid Monster"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
@@ -126,6 +142,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 		// 여전히 공격거리 안쪽에 있을 경우
 		else
 		{
+			//UE_LOG(LogTestDebug, Warning, TEXT("Attack : Arrive AttackDist"));
 			FRotator Rot = GetTargetRotationYaw(TargetLocation,
 				MonsterLocation);
 
@@ -137,7 +154,7 @@ void UBTTask_MonsterAttack::TickTask(UBehaviorTreeComponent& OwnerComp,
 void UBTTask_MonsterAttack::OnTaskFinished(UBehaviorTreeComponent& OwnerComp,
 	uint8* NodeMemory, EBTNodeResult::Type TaskResult)
 {
-	//AAIController* AIController = OwnerComp.GetAIOwner();
+	AAIController* AIController = OwnerComp.GetAIOwner();
 
-	//AIController->StopMovement();
+	AIController->StopMovement();
 }

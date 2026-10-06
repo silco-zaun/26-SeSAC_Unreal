@@ -39,20 +39,13 @@ protected:
 	TArray<TObjectPtr<class AMonsterPawn>> mSpawnMonsters;
 
 	UPROPERTY()
-	int32 Wave = 1;
-
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterSpawnPoint")
-	//EMonsterSpawnType mSpawnType = EMonsterSpawnType::Loop;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterSpawnPoint")
-	float mSpawnDelay = 0.f;
-	
-	UPROPERTY()
 	FTimerHandle mSpawnTimerHandle;
 
-	UPROPERTY(VisibleAnywhere)
-	TArray<FVector> mSpawnPoints;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MonsterSpawnPoint")
+	float mSpawnDelay = 20.f;
 
+	uint8 mWave = 1;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -63,11 +56,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
-public:
-	void ResetSpawn();
-
 private:
 	void SpawnTimerCallback();
 	void SpawnMonster();
+
+public:
+	void MonsterChange();
+
 };

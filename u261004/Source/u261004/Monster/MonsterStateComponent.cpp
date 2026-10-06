@@ -34,16 +34,22 @@ void UMonsterStateComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 bool UMonsterStateComponent::AddHP(int32 HP)
 {
+	//UE_LOG(LogTestDebug, Warning, TEXT("Monster HP : %.1f / %.1f"), mHP, mHPMax);
+
 	mHP += HP;
 
 	if (mHP > mHPMax)
 		mHP = mHPMax;
 	else if (mHP < 0.f)
+	{
 		mHP = 0.f;
+	}
+
+	if (mHPChange.IsBound())
+		mHPChange.Broadcast(mHP, mHPMax);
 
 	if (mHP <= 0.f)
 		return false;
 
 	return true;
 }
-

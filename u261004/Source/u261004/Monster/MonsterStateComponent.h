@@ -32,6 +32,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float		mHPMax = 100.f;
 
+	FHPChange mHPChange;
+
 public:
 	void SetName(const FString& Name)
 	{
@@ -94,4 +96,11 @@ public:
 
 public:
 	bool AddHP(int32 HP);
+
+public:
+	template <typename T>
+	void AddHPChangeCallback(T* Obj, void (T::* Func)(float, float))
+	{
+		mHPChange.AddUObject(Obj, Func);
+	}
 };

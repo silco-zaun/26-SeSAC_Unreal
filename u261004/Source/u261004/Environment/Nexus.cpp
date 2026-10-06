@@ -2,6 +2,10 @@
 
 
 #include "Nexus.h"
+#include "../Player/PlayerCharacter.h"
+#include "../Player/MainPlayerState.h"
+#include "../Subsystem/UISubsystem.h"
+#include "../UI/Main/MainWidget.h"
 
 // Sets default values
 ANexus::ANexus()
@@ -32,7 +36,15 @@ ANexus::ANexus()
 	if (MtrlAsset.Succeeded())
 		mMesh->SetMaterial(0, MtrlAsset.Object);
 
-	//mMesh->SetCanEverAffectNavigation(false);
+	// Nexus가 NavMesh에 구멍을 뚫으면 Nexus 중심점을 NavMesh에 투영할 수 없어
+	// MoveToActor의 경로 탐색이 실패한다. 네비게이션에 영향을 주지 않게 한다.
+	// (Capsule도 BlockAllDynamic 프로필이므로 같이 꺼야 한다)
+	mCapsule->SetCanEverAffectNavigation(false);
+	mMesh->SetCanEverAffectNavigation(false);
+
+	//mCapsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	//mCapsule->SetCollisionProfileName(TEXT("Nexus"));
+	//mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SetGenericTeamId(FGenericTeamId(TeamPlayer));
 }
@@ -83,5 +95,45 @@ ETeamAttitude::Type ANexus::GetTeamAttitudeTowards(const AActor& Other) const
 		return ETeamAttitude::Neutral;
 
 	return GetGenericTeamId() == OtherTeamId ? ETeamAttitude::Friendly : ETeamAttitude::Hostile;
+}
+
+float ANexus::TakeDamage(float DamageAmount,
+	struct FDamageEvent const& DamageEvent, class AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	DamageAmount = Super::TakeDamage(DamageAmount, DamageEvent,
+		EventInstigator, DamageCauser);
+
+	APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(DamageCauser);
+
+	if (IsValid(PlayerCharacter))
+		return DamageAmount;
+
+	UE_LOG(LogTestDebug, Warning, TEXT("Nexus Damage : %.2f"), DamageAmount);
+
+	if (DamageAmount > 0.f)
+	{
+		AMainPlayerState* State = 
+			Cast<AMainPlayerState>(UGameplayStatics::GetPlayerState(GetWorld(), 0));
+
+		if (!State->AddHP(-DamageAmount))
+		{
+			UUISubsystem* Subsystem = GetGameInstance()->GetSubsystem<UUISubsystem>();
+
+			if (Subsystem)
+			{
+				UMainWidget* MainWidget = Subsystem->FindWidget<UMainWidget>(TEXT("Main"));
+
+				if (MainWidget)
+				{
+					MainWidget->SetResultText(TEXT("패배"));
+				}
+			}
+
+			Destroy();
+		}
+	}
+
+	return DamageAmount;
 }
 

@@ -19,7 +19,7 @@ AMonsterPawn::AMonsterPawn()
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 
 	mMovement->SetUpdatedComponent(mCapsule);
-	mMovement->MaxSpeed = 100.f;
+	mMovement->MaxSpeed = 300.f;
 	// 이동을 XY 평면으로 제한한다. (Z축 이동 차단)
 	mMovement->SetPlaneConstraintEnabled(true);
 	mMovement->SetPlaneConstraintNormal(FVector::UpVector);
@@ -116,6 +116,11 @@ float AMonsterPawn::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 		if (!mState->AddHP(-DamageAmount))
 		{
 			Destroy();
+
+			UE_LOG(LogTestDebug, Warning, TEXT("몬스터 사망"));
+
+			if (mMonsterDeath.IsBound())
+				mMonsterDeath.Broadcast();
 
 			/*AAIController* AI = GetController<AAIController>();
 

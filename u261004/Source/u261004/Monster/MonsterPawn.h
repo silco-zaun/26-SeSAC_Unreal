@@ -35,6 +35,8 @@ protected:
 	TObjectPtr<class AMonsterSpawnPoint> mSpawnPoint;
 	TObjectPtr<UBehaviorTree> mBehaviorTree;
 
+	FMonsterDeath mMonsterDeath;
+
 public:
 	UCapsuleComponent* GetCapsule()	const
 	{
@@ -66,4 +68,11 @@ public:
 public:
 	UFUNCTION()
 	void InfoLoadComplete();
+
+public:
+	template <typename T>
+	void AddMonsterDeathCallback(T* Obj, void (T::* Func)(void))
+	{
+		mMonsterDeath.AddUObject(Obj, Func);
+	}
 };

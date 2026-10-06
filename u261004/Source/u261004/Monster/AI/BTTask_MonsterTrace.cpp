@@ -21,35 +21,49 @@ EBTNodeResult::Type UBTTask_MonsterTrace::ExecuteTask(UBehaviorTreeComponent& Ow
 	AAIController* AIController = OwnerComp.GetAIOwner();
 
 	if (!AIController)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("TraceExecuteTask : Invalid AIController"));
 		return EBTNodeResult::Failed;
+	}
 
 	// OwnerComp가 가지고 있는 BlackboardComponent를 얻어온다.
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 
 	if (!BlackboardComp)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("TraceExecuteTask : Invalid BlackboardComp"));
 		return EBTNodeResult::Failed;
+	}
 
 	// 블랙보드에서 Target을 얻어온다.
 	AActor* Target = Cast<AActor>(BlackboardComp->GetValueAsObject(TEXT("Target")));
 
 	if (!Target)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("TraceExecuteTask : Invalid Target"));
 		return EBTNodeResult::Failed;
+	}
 
 	float AttackDist = BlackboardComp->GetValueAsFloat(TEXT("AttackDistance"));
 
 	// 타겟을 향해 이동시킨다.
 	// AIController는 NavAgent를 다중상속받아 구현되어 길찾기 기능을 이용할 수
 	// 있다.
-	EPathFollowingRequestResult::Type PathResult =
-		AIController->MoveToActor(Target, AttackDist * 0.8f);
+	EPathFollowingRequestResult::Type PathResult = AIController->MoveToActor(Target);
 
 	if (PathResult == EPathFollowingRequestResult::Failed)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("TraceExecuteTask : PathResult %s"), *Target->GetName());
 		return EBTNodeResult::Failed;
+	}
 
 	AMonsterPawn* Monster = AIController->GetPawn<AMonsterPawn>();
 
 	if (!Monster)
+	{
+		UE_LOG(LogTestDebug, Warning, TEXT("TraceExecuteTask : Invalid AIController"));
 		return EBTNodeResult::Failed;
+	}
 
 	Monster->ChangeAnim((uint8)EMonsterAnimType::Run);
 
@@ -65,6 +79,7 @@ void UBTTask_MonsterTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!AIController)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Trace : Invalid AIController"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return;
 	}
@@ -74,6 +89,7 @@ void UBTTask_MonsterTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!BlackboardComp)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Trace : Invalid BlackboardComp"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return;
 	}
@@ -83,6 +99,7 @@ void UBTTask_MonsterTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!Target)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Trace : Invalid Target"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return;
 	}
@@ -92,6 +109,7 @@ void UBTTask_MonsterTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (PathStatus == EPathFollowingStatus::Idle)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Trace : Arrive"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
@@ -100,6 +118,7 @@ void UBTTask_MonsterTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	if (!Monster)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Trace : Invalid Monster"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Succeeded);
 		return;
 	}
@@ -128,8 +147,11 @@ void UBTTask_MonsterTrace::TickTask(UBehaviorTreeComponent& OwnerComp,
 
 	float AttackDist = BlackboardComp->GetValueAsFloat(TEXT("AttackDistance"));
 
+	//UE_LOG(LogTestDebug, Warning, TEXT("Distance : %f"), Distance);
+
 	if (Distance <= AttackDist)
 	{
+		UE_LOG(LogTestDebug, Warning, TEXT("Arrive AttackDist"));
 		FinishLatentTask(OwnerComp, EBTNodeResult::Failed);
 		return;
 	}
