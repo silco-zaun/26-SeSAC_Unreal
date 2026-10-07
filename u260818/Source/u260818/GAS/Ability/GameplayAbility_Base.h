@@ -18,22 +18,19 @@ public:
 	UGameplayAbility_Base();
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
-	float mMana;
+	FGameplayTag mCoolDownTag;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
-	float mHP;
+	// mutable은 const 함수 안에서도 이 변수만은 수정할 수 있게 허용한다.
+	mutable FGameplayTagContainer mCoolDownTagsContainer;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintREadOnly, Category = "Ability")
-	float mStamina;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ability")
-	float mCoolDown;
+	// 현재 Ability가 사용할 수 있는 Ability인지 판단하는 변수.
+	bool mAbilityActive = true;
 
 public:
-	virtual const FGameplayTagContainer* GetCooldownTags() const;
+	virtual const FGameplayTagContainer* GetCooldownTags() const override;
 
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+	virtual void ActivateAbility(
+		const FGameplayAbilitySpecHandle Handle,
 		const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo,
 		const FGameplayEventData* TriggerEventData);
